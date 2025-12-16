@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Understanding the JavaFX Pokedex Application - A Beginner's Guide
+    </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Open+Sans:wght@400;600&family=Poppins:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* --- 1. VARIABLES & RESET --- */
+      :root {
+        --primary-red: #e3350d;
+        --primary-blue: #30a7d7;
+        --bg-body: #f2f4f8;
+        --bg-card: #ffffff;
+        --text-dark: #313131;
+        --text-light: #919191;
+        --code-bg: #282c34;
+        --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+        --radius-card: 16px;
+        --success-green: #4caf50;
+        --warning-orange: #ff9800;
+        --info-blue: #2196f3;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Open Sans", sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-dark);
+        line-height: 1.8;
+        padding-bottom: 80px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background: linear-gradient(135deg, var(--primary-red), #ff6b6b);
+        color: white;
+        padding: 5rem 0 7rem;
+        text-align: center;
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        margin-bottom: -4rem;
+      }
+
+      header h1 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 800;
+        font-size: 2.8rem;
+        line-height: 1.2;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      header h2 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
+        font-size: 1.3rem;
+        opacity: 0.95;
+      }
+
+      section {
+        background: var(--bg-card);
+        border-radius: var(--radius-card);
+        padding: 3rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-soft);
+        border-bottom: 4px solid transparent;
+        transition: transform 0.2s ease, border-bottom-color 0.2s ease;
+      }
+
+      section:hover {
+        transform: translateY(-2px);
+        border-bottom-color: var(--primary-blue);
+      }
+
+      h2 {
+        font-family: "Poppins", sans-serif;
+        color: var(--primary-red);
+        font-size: 1.8rem;
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 0.8rem;
+      }
+
+      .toc-title {
+        text-align: center;
+        border-bottom: none;
+        color: var(--text-dark);
+      }
+
+      h3 {
+        font-family: "Poppins", sans-serif;
+        color: var(--primary-blue);
+        font-size: 1.4rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      h4,
+      h5 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #555;
+        font-size: 1.1rem;
+      }
+
+      p {
+        margin-bottom: 1.2rem;
+        color: #4a4a4a;
+        font-size: 1.05rem;
+      }
+
+      .toc-card {
+        border-top: 5px solid var(--primary-blue);
+        padding-top: 2rem;
+      }
+
+      ol {
+        padding-left: 1.5rem;
+        color: var(--primary-red);
+        font-weight: 600;
+      }
+
+      ol li {
+        margin-bottom: 0.5rem;
+      }
+
+      ol li a {
+        color: var(--text-dark);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      ol li a:hover {
+        color: var(--primary-blue);
+        text-decoration: underline;
+      }
+
+      pre {
+        background: var(--code-bg);
+        color: #abb2bf;
+        padding: 1.5rem;
+        border-radius: 8px;
+        font-family: "Fira Code", monospace;
+        font-size: 0.9rem;
+        overflow-x: auto;
+        margin: 1.5rem 0;
+        border-left: 5px solid var(--primary-blue);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      code {
+        font-family: "Fira Code", monospace;
+      }
+
+      p code,
+      li code {
+        background: #eef1f6;
+        color: var(--primary-red);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        font-weight: 600;
+        border: 1px solid #dee2e6;
+      }
+
+      ul {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+      }
+
+      ul li {
+        margin-bottom: 0.5rem;
+        color: #4a4a4a;
+      }
+
+      ul li::marker {
+        color: var(--primary-blue);
+      }
+
+      a {
+        color: var(--primary-blue);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      hr {
+        border: 0;
+        height: 1px;
+        background: #eee;
+        margin: 3rem 0;
+      }
+
+      /* INFO BOXES */
+      .info-box {
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        border-left: 5px solid;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .info-box-tip {
+        background-color: #e8f5e9;
+        border-left-color: var(--success-green);
+      }
+
+      .info-box-tip::before {
+        content: "💡 TIP: ";
+        font-weight: 700;
+        color: #2e7d32;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .info-box-warning {
+        background-color: #fff3e0;
+        border-left-color: var(--warning-orange);
+      }
+
+      .info-box-warning::before {
+        content: "⚠️ COMMON MISTAKE: ";
+        font-weight: 700;
+        color: #e65100;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .info-box-note {
+        background-color: #e3f2fd;
+        border-left-color: var(--info-blue);
+      }
+
+      .info-box-note::before {
+        content: "📝 REMEMBER: ";
+        font-weight: 700;
+        color: #1565c0;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .info-box-important {
+        background-color: #fce4ec;
+        border-left-color: var(--primary-red);
+      }
+
+      .info-box-important::before {
+        content: "⭐ KEY CONCEPT: ";
+        font-weight: 700;
+        color: var(--primary-red);
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      .comparison-table th {
+        background-color: var(--primary-blue);
+        color: white;
+        font-weight: 600;
+      }
+
+      .comparison-table tr:hover {
+        background-color: #f5f5f5;
+      }
+
+      .example-box {
+        background: linear-gradient(135deg, #fff9c4, #fff59d);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        border: 2px solid #fbc02d;
+      }
+
+      .example-box::before {
+        content: "💪 PRACTICAL EXAMPLE";
+        display: block;
+        font-weight: 700;
+        color: #f57f17;
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+      }
+
+      #backToTop {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: var(--primary-red);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(227, 53, 13, 0.4);
+        display: none;
+        transition: transform 0.2s, background-color 0.2s;
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #backToTop:hover {
+        transform: scale(1.1);
+        background-color: #c02a06;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Understanding the JavaFX Pokedex</h1>
+        <h2>A Complete & Detailed Guide for Beginners</h2>
+      </div>
+    </header>
+
+    <div class="container">
+      <section class="toc-card">
+        <h2 class="toc-title">Table of Contents</h2>
+        <ol>
+          <li><a href="#prereq">Prerequisites & Learning Outcomes</a></li>
+          <li><a href="#overview">What This Program Does (Detailed)</a></li>
+          <li><a href="#packages">Understanding Packages (In-Depth)</a></li>
+          <li><a href="#imports">Understanding Imports (Complete Guide)</a></li>
+          <li><a href="#classes">Understanding Classes & OOP</a></li>
+          <li><a href="#variables">Variables Beyond Primitives</a></li>
+          <li><a href="#constants">Constants & Static Final</a></li>
+          <li><a href="#methods">Methods & Functions Explained</a></li>
+          <li><a href="#javafx">JavaFX Framework Deep Dive</a></li>
+          <li><a href="#code-walkthrough">Complete Code Walkthrough</a></li>
+          <li><a href="#flow">Program Flow & Execution</a></li>
+          <li><a href="#best-practices">Best Practices & Tips</a></li>
+          <li><a href="#debugging">Common Issues & Solutions</a></li>
+        </ol>
+      </section>
+
+      <section id="prereq">
+        <h2>Prerequisites & Learning Outcomes</h2>
+
+        <h3>What You Should Know Before Starting</h3>
+        <p>This tutorial assumes you have basic familiarity with:</p>
+        <ul>
+          <li>
+            <strong>Java Syntax:</strong> How to write and compile a simple
+            "Hello World" program
+          </li>
+          <li>
+            <strong>Primitive Types:</strong> int, double, boolean, char and how
+            to use them
+          </li>
+          <li>
+            <strong>Variables:</strong> How to declare and assign values to
+            variables
+          </li>
+          <li>
+            <strong>Basic Operations:</strong> Arithmetic (+, -, *, /),
+            comparison (==, !=, <, >)
+          </li>
+        </ul>
+
+        <div class="info-box info-box-tip">
+          <strong>New to programming?</strong> Don't worry! This tutorial
+          explains everything step-by-step with real-world analogies. Take your
+          time with each section and don't hesitate to re-read parts that seem
+          confusing at first. Programming concepts become clearer with practice
+          and repetition.
+        </div>
+
+        <h3>What Makes This Tutorial Different</h3>
+        <p>
+          Unlike many tutorials that show toy examples, this guide walks you
+          through a <strong>real, working application</strong> with
+          professional-grade code organization. You'll learn:
+        </p>
+        <ul>
+          <li>How professional developers structure Java applications</li>
+          <li>Why certain design decisions are made</li>
+          <li>Common pitfalls and how to avoid them</li>
+          <li>Best practices used in industry</li>
+          <li>How different parts of a program work together</li>
+        </ul>
+
+        <h3>Learning Outcomes - What You'll Master</h3>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>What You'll Learn</th>
+              <th>Real-World Application</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Object-Oriented Programming</strong></td>
+              <td>Classes, objects, encapsulation, inheritance</td>
+              <td>Foundation for building complex applications</td>
+            </tr>
+            <tr>
+              <td><strong>GUI Development</strong></td>
+              <td>Creating visual interfaces with JavaFX</td>
+              <td>Desktop applications, games, tools</td>
+            </tr>
+            <tr>
+              <td><strong>Event-Driven Programming</strong></td>
+              <td>Responding to user clicks and interactions</td>
+              <td>All modern interactive software</td>
+            </tr>
+            <tr>
+              <td><strong>Data Management</strong></td>
+              <td>Collections, Lists, JSON parsing</td>
+              <td>Handling data in any application</td>
+            </tr>
+            <tr>
+              <td><strong>Application Architecture</strong></td>
+              <td>Separating concerns, organizing code</td>
+              <td>Writing maintainable, scalable code</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="info-box info-box-important">
+          This is a <strong>real production-quality application</strong>. The
+          code follows industry best practices including proper error handling,
+          separation of concerns, and clean architecture. Everything you learn
+          here translates directly to professional software development.
+        </div>
+
+        <h3>How to Use This Tutorial</h3>
+        <ol>
+          <li>
+            <strong>Read sequentially:</strong> Each section builds on previous
+            knowledge
+          </li>
+          <li>
+            <strong>Try the examples:</strong> Type out code samples yourself -
+            don't just read
+          </li>
+          <li>
+            <strong>Experiment:</strong> Modify the code and see what happens
+          </li>
+          <li>
+            <strong>Take breaks:</strong> Programming is mentally intensive -
+            it's okay to step away
+          </li>
+          <li>
+            <strong>Ask questions:</strong> If something isn't clear, research
+            it or ask for help
+          </li>
+        </ol>
+      </section>
+
+      <section id="overview">
+        <h2>1. What This Program Does (Detailed Overview)</h2>
+
+        <h3>The Big Picture</h3>
+        <p>
+          This program creates a fully interactive digital Pokedex - essentially
+          a virtual encyclopedia for Pokemon. It's more than just displaying
+          images; it's a complete application with state management, user
+          interaction, and data persistence.
+        </p>
+
+        <h3>Key Features & Functionality</h3>
+        <p>When you run this application, you get:</p>
+        <ul>
+          <li>
+            <strong>Authentic Pokedex Interface:</strong> A window styled to
+            look like the iconic Pokedex device from the Pokemon games, complete
+            with a background image
+          </li>
+          <li>
+            <strong>Pokemon Display Screen:</strong> Shows Pokemon sprites that
+            can be revealed or hidden as dark silhouettes
+          </li>
+          <li>
+            <strong>Interactive Navigation:</strong> Left/right buttons to
+            browse through all 151 original Kanto Pokemon
+          </li>
+          <li>
+            <strong>"Who's That Pokemon?" Game Mode:</strong> Toggle between
+            showing full Pokemon details and displaying just a silhouette for
+            guessing
+          </li>
+          <li>
+            <strong>Comprehensive Information Display:</strong> Name, Pokedex
+            number, types, evolution stage, and descriptions for each Pokemon
+          </li>
+          <li>
+            <strong>Power Controls:</strong> On/off buttons that simulate
+            turning the device on and off
+          </li>
+          <li>
+            <strong>Data Persistence:</strong> All Pokemon data is loaded from a
+            JSON file, making it easy to update or expand
+          </li>
+        </ul>
+
+        <div class="example-box">
+          <strong>Real-World Analogy:</strong> Think of this like building a
+          smart digital photo frame, but better. A photo frame just shows
+          pictures. Our Pokedex:
+          <ul>
+            <li>Loads photo data from a file (like a USB drive)</li>
+            <li>Lets you browse through a collection with buttons</li>
+            <li>Shows additional information about each image</li>
+            <li>Has special effects (the silhouette mode)</li>
+            <li>Remembers what photo you're viewing</li>
+            <li>Can be turned on and off</li>
+          </ul>
+          These are all features you'd find in professional applications!
+        </div>
+
+        <h3>Technical Components Breakdown</h3>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Technology Used</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>User Interface</strong></td>
+              <td>JavaFX (Stage, Scene, Pane, ImageView, Labels, Buttons)</td>
+              <td>Everything the user sees and clicks</td>
+            </tr>
+            <tr>
+              <td><strong>Data Storage</strong></td>
+              <td>JSON file + Jackson library for parsing</td>
+              <td>Stores all Pokemon information persistently</td>
+            </tr>
+            <tr>
+              <td><strong>Data Structure</strong></td>
+              <td>ArrayList&lt;Pokemon&gt;</td>
+              <td>Holds all Pokemon objects in memory</td>
+            </tr>
+            <tr>
+              <td><strong>Visual Effects</strong></td>
+              <td>ColorAdjust (brightness -1.0)</td>
+              <td>Creates the silhouette effect</td>
+            </tr>
+            <tr>
+              <td><strong>Event Handling</strong></td>
+              <td>Lambda expressions + event listeners</td>
+              <td>Responds to button clicks</td>
+            </tr>
+            <tr>
+              <td><strong>State Management</strong></td>
+              <td>Boolean flags and integer index</td>
+              <td>Tracks what's currently displayed</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Application Architecture (MVC Pattern)</h3>
+        <p>
+          This application follows the
+          <strong>Model-View-Controller</strong> pattern, a professional
+          architecture used in millions of applications:
+        </p>
+
+        <div class="info-box info-box-important">
+          <strong>Model:</strong> The Pokemon class - represents the data<br />
+          <strong>View:</strong> JavaFX components - displays the data<br />
+          <strong>Controller:</strong> Our methods in the App class - handles
+          logic and user input
+        </div>
+
+        <p>Why does this matter? This separation makes the code:</p>
+        <ul>
+          <li>
+            <strong>Easier to maintain:</strong> Change the UI without touching
+            the data logic
+          </li>
+          <li>
+            <strong>Testable:</strong> You can test business logic separately
+            from the UI
+          </li>
+          <li>
+            <strong>Reusable:</strong> The Pokemon class could be used in
+            different applications
+          </li>
+          <li>
+            <strong>Scalable:</strong> Easy to add new features without breaking
+            existing code
+          </li>
+        </ul>
+
+        <div class="info-box info-box-tip">
+          As you read through this code, try to identify which parts are Model
+          (data), View (visual), and Controller (logic). This mental exercise
+          will help you understand software architecture better!
+        </div>
+
+        <h3>Why This Application is Educational</h3>
+        <p>This isn't a "Hello World" program. It demonstrates:</p>
+        <ol>
+          <li><strong>File I/O:</strong> Reading data from external files</li>
+          <li>
+            <strong>JSON Parsing:</strong> Converting structured text into Java
+            objects
+          </li>
+          <li><strong>Collections:</strong> Managing lists of objects</li>
+          <li>
+            <strong>GUI Programming:</strong> Creating interactive visual
+            interfaces
+          </li>
+          <li><strong>Event Handling:</strong> Responding to user actions</li>
+          <li>
+            <strong>State Management:</strong> Keeping track of application
+            state
+          </li>
+          <li>
+            <strong>Error Handling:</strong> Gracefully dealing with problems
+          </li>
+          <li>
+            <strong>Code Organization:</strong> Breaking complex problems into
+            manageable pieces
+          </li>
+        </ol>
+
+        <div class="info-box info-box-note">
+          Every concept in this application is used in professional software
+          development. Master these fundamentals, and you'll have a solid
+          foundation for building any type of application - web apps, mobile
+          apps, games, or enterprise software.
+        </div>
+      </section>
+      EOFSECTION
+
+      <section id="packages">
+        <h2>2. Understanding Packages (In-Depth)</h2>
+
+        <h3>What is a Package?</h3>
+        <p>
+          Just like you organize files on your computer into folders (Documents
+          → School → Java Projects), packages organize Java code into logical
+          groups. This isn't just for neatness - it's essential for building
+          real applications.
+        </p>
+
+        <pre>package com.example;</pre>
+
+        <p>
+          This single line tells Java: "This file belongs to the
+          <code>com.example</code> package."
+        </p>
+
+        <div class="info-box info-box-important">
+          <strong>Critical Rule:</strong> The package statement must be the VERY
+          FIRST line in your Java file (comments don't count). Put ANYTHING else
+          before it, and your code won't compile. No exceptions!
+        </div>
+
+        <h3>Why Packages Exist - The Real Reasons</h3>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Benefit</th>
+              <th>Without Packages</th>
+              <th>With Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Name Conflicts</strong></td>
+              <td>Only one "User" class allowed in entire project</td>
+              <td>Can have com.facebook.User AND com.twitter.User</td>
+            </tr>
+            <tr>
+              <td><strong>Organization</strong></td>
+              <td>All 1000+ classes in one giant folder</td>
+              <td>Organized by feature/purpose</td>
+            </tr>
+            <tr>
+              <td><strong>Access Control</strong></td>
+              <td>Everything is either totally public or private</td>
+              <td>Package-private access for internal APIs</td>
+            </tr>
+            <tr>
+              <td><strong>Distribution</strong></td>
+              <td>Conflicts with other libraries</td>
+              <td>Your code safely coexists with others</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="example-box">
+          <strong>Real Scenario:</strong> You're building a Pokemon game engine.
+          Smart organization:
+          <ul>
+            <li>
+              <code>com.mycompany.pokemon.creatures</code> - Bulbasaur,
+              Charmander classes
+            </li>
+            <li>
+              <code>com.mycompany.pokemon.battle</code> - Battle system, attack
+              calculations
+            </li>
+            <li>
+              <code>com.mycompany.pokemon.ui</code> - Pokedex UI, battle screen
+            </li>
+            <li>
+              <code>com.mycompany.pokemon.data</code> - JSON loading, save games
+            </li>
+            <li>
+              <code>com.mycompany.pokemon.ai</code> - Computer opponent logic
+            </li>
+          </ul>
+          Now when you need to find the battle code, you know exactly where to
+          look!
+        </div>
+
+        <h3>Package Naming Convention - Industry Standard</h3>
+        <p>
+          Java uses <strong>reverse domain notation</strong>. Here's the
+          pattern:
+        </p>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>You Own</th>
+              <th>Package Name</th>
+              <th>Example Class</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>example.com</td>
+              <td>com.example</td>
+              <td>com.example.App</td>
+            </tr>
+            <tr>
+              <td>myapp.org</td>
+              <td>org.myapp</td>
+              <td>org.myapp.Main</td>
+            </tr>
+            <tr>
+              <td>GitHub: username</td>
+              <td>io.github.username</td>
+              <td>io.github.username.Pokedex</td>
+            </tr>
+            <tr>
+              <td>School project</td>
+              <td>edu.university.studentname</td>
+              <td>edu.university.studentname.Project</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="info-box info-box-warning">
+          <strong>NEVER</strong> start packages with capital letters
+          (Com.Example). Packages must be all lowercase. This isn't optional -
+          it's a universally followed Java convention. Breaking it marks you as
+          a beginner.
+        </div>
+
+        <div class="info-box info-box-note">
+          Package names directly map to folder structures. If your package is
+          <code>com.example</code>, your file MUST be in
+          <code>com/example/YourFile.java</code>. Mismatch = compilation error!
+        </div>
+
+        <h3>Package Access Modifiers - A Hidden Feature</h3>
+        <p>
+          Besides public and private, Java has
+          <strong>package-private</strong> (default) access:
+        </p>
+        <pre>
+class HelperClass {  // No public keyword = package-private
+    // Only classes in the SAME package can see this
+}</pre
+        >
+
+        <p>
+          This is incredibly useful for internal implementation details you
+          don't want other packages accessing!
+        </p>
+      </section>
+
+      <section id="imports">
+        <h2>3. Understanding Imports (Complete Guide)</h2>
+
+        <h3>What Are Imports and Why Do We Need Them?</h3>
+        <p>
+          Java has thousands of pre-built classes (String, ArrayList, File,
+          etc.). If Java loaded ALL of them every time, your programs would be
+          incredibly slow. Instead, you explicitly tell Java which classes you
+          need using <code>import</code> statements.
+        </p>
+
+        <div class="info-box info-box-important">
+          Think of imports like ingredients in a recipe. You don't bring your
+          entire pantry to the kitchen - you only bring the flour, eggs, and
+          sugar you actually need. Imports work the same way!
+        </div>
+
+        <h3>Import Syntax - The Two Forms</h3>
+        <pre>
+// Single class import (preferred)
+import javafx.scene.control.Button;
+
+// Wildcard import (use sparingly)
+import javafx.scene.control.*;</pre
+        >
+
+        <div class="info-box info-box-tip">
+          <strong>Best Practice:</strong> Use specific imports (first form)
+          rather than wildcards (*). Why? It makes your code clearer about what
+          you're actually using, and prevents accidental name conflicts. IDEs
+          like IntelliJ can auto-generate imports for you!
+        </div>
+
+        <h3>Our Imports - Detailed Breakdown</h3>
+
+        <h4>Jackson Library (JSON Processing)</h4>
+        <pre>
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;</pre
+        >
+
+        <p>What each does and why we need it:</p>
+        <ul>
+          <li>
+            <strong>ObjectMapper:</strong> The main JSON converter. Takes JSON
+            text like <code>{"name":"Pikachu"}</code> and creates a Pokemon Java
+            object. Without this, we'd have to manually parse JSON character by
+            character (nightmare!)
+          </li>
+          <li>
+            <strong>JsonProperty:</strong> Handles naming differences. If JSON
+            says "isLegendary" but your Java variable is "legendary", this
+            annotation maps them correctly
+          </li>
+          <li>
+            <strong>TypeReference:</strong> Tells ObjectMapper we're reading a
+            <code>List&lt;Pokemon&gt;</code>, not just one Pokemon. Java
+            generics info is normally erased at runtime, but TypeReference
+            preserves it
+          </li>
+        </ul>
+
+        <div class="example-box">
+          <strong>What Jackson Does For Us:</strong>
+          <pre>
+// JSON file contains:
+{"name":"Pikachu", "dexNumber":25, "types":["Electric"]}
+
+// Jackson automatically converts it to:
+Pokemon pikachu = new Pokemon();
+pikachu.setName("Pikachu");
+pikachu.setDexNumber(25);
+pikachu.setTypes(Arrays.asList("Electric"));</pre
+          >
+          Imagine doing this conversion manually for 151 Pokemon. Jackson saves
+          us thousands of lines of code!
+        </div>
+
+        <h4>JavaFX Imports (GUI Framework)</h4>
+        <pre>
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;</pre
+        >
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Import</th>
+              <th>What It Is</th>
+              <th>Used For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Application</code></td>
+              <td>Base class for JavaFX apps</td>
+              <td>Our App class extends this to become a JavaFX application</td>
+            </tr>
+            <tr>
+              <td><code>Stage</code></td>
+              <td>The window</td>
+              <td>The entire application window (think window frame)</td>
+            </tr>
+            <tr>
+              <td><code>Scene</code></td>
+              <td>Content container</td>
+              <td>Holds all the UI components inside the window</td>
+            </tr>
+            <tr>
+              <td><code>Pane</code></td>
+              <td>Layout manager</td>
+              <td>Canvas where we position UI elements freely</td>
+            </tr>
+            <tr>
+              <td><code>Button</code></td>
+              <td>Clickable button</td>
+              <td>Navigation, reveal, power buttons</td>
+            </tr>
+            <tr>
+              <td><code>Label</code></td>
+              <td>Text display</td>
+              <td>Pokemon name, number, description</td>
+            </tr>
+            <tr>
+              <td><code>Image</code></td>
+              <td>Image data</td>
+              <td>Loads Pokemon sprites from files</td>
+            </tr>
+            <tr>
+              <td><code>ImageView</code></td>
+              <td>Image display component</td>
+              <td>Shows the actual images on screen</td>
+            </tr>
+            <tr>
+              <td><code>Font</code></td>
+              <td>Text styling</td>
+              <td>Custom pixel font (Press Start 2P)</td>
+            </tr>
+            <tr>
+              <td><code>ColorAdjust</code></td>
+              <td>Visual effect</td>
+              <td>Creates the dark silhouette effect</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="info-box info-box-warning">
+          <strong>Forget an import?</strong> Java will show an error like
+          "Cannot find symbol". This means Java doesn't know what class you're
+          talking about. Solution: add the correct import statement!
+        </div>
+
+        <h4>Standard Java Imports</h4>
+        <pre>
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;</pre
+        >
+
+        <ul>
+          <li>
+            <strong>IOException:</strong> Exception type for file operations.
+            When file reading fails (file missing, permission denied), this
+            error type is thrown
+          </li>
+          <li>
+            <strong>InputStream:</strong> Abstract stream for reading data. We
+            use it to read Pokemon images and JSON data from files
+          </li>
+          <li>
+            <strong>ArrayList:</strong> Resizable array. Unlike regular arrays
+            (fixed size), ArrayList grows/shrinks automatically as you
+            add/remove items
+          </li>
+          <li>
+            <strong>List:</strong> Interface for list collections. We use List
+            as the type, ArrayList as the implementation (flexibility!)
+          </li>
+        </ul>
+
+        <div class="info-box info-box-note">
+          You don't need imports for classes in:
+          <ul>
+            <li>
+              <code>java.lang</code> package (String, System, Math, etc.) -
+              automatically imported
+            </li>
+            <li>The same package as your class</li>
+            <li>
+              Primitive types (int, double, boolean) - these aren't classes!
+            </li>
+          </ul>
+        </div>
+
+        <h3>What Happens If You Forget Imports?</h3>
+        <pre>
+// Without imports:
+Button btn = new Button();  // ERROR: Cannot find symbol 'Button'
+
+// Manually using full name (verbose):
+javafx.scene.control.Button btn = new javafx.scene.control.Button();
+
+// With import (clean):
+import javafx.scene.control.Button;
+Button btn = new Button();  // ✓ Works!</pre
+        >
+
+        <p>
+          Imports are just shortcuts to avoid typing full package names
+          everywhere!
+        </p>
+      </section>
+
+      <!-- Continuing with remaining original content but enhanced -->
+      <section id="classes">
+        <h2>4. Understanding Classes & Objects</h2>
+
+        <h3>From Primitives to Classes - The Big Leap</h3>
+        <p>You know primitive types:</p>
+        <pre>
+int age = 25;
+double price = 19.99;
+boolean isActive = true;</pre
+        >
+
+        <p>
+          But what if you need to store complex information like a Pokemon?
+          You'd need:
+        </p>
+        <pre>
+String name = "Pikachu";
+int dexNumber = 25;
+String type1 = "Electric";
+String type2 = null;  // No second type
+int evolutionStage = 2;
+// ... and more!</pre
+        >
+
+        <div class="info-box info-box-warning">
+          Managing 7+ separate variables for ONE Pokemon is messy and
+          error-prone. What if you need 151 Pokemon? That's over 1000 variables!
+          This is why we need classes.
+        </div>
+
+        <h3>Classes - Your Own Custom Data Types</h3>
+        <p>
+          A <strong>class</strong> is a blueprint for creating a new type of
+          data:
+        </p>
+        <pre>
+public class App extends Application {
+    // All our code goes here
+}</pre
+        >
+
+        <div class="info-box info-box-important">
+          <strong>Class vs Object - The Cookie Cutter Analogy:</strong><br />
+          • Class = Cookie cutter (the blueprint/template)<br />
+          • Object = Actual cookie (created from the template)<br />
+          <br />
+          One cookie cutter can make hundreds of cookies. One class can create
+          hundreds of objects!
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Part</th>
+              <th>Meaning</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>public</code></td>
+              <td>Visible to everyone</td>
+              <td>Other code can use this class</td>
+            </tr>
+            <tr>
+              <td><code>class</code></td>
+              <td>This is a class definition</td>
+              <td>Creates a new type</td>
+            </tr>
+            <tr>
+              <td><code>App</code></td>
+              <td>Name of the class</td>
+              <td>Must match filename (App.java)</td>
+            </tr>
+            <tr>
+              <td><code>extends Application</code></td>
+              <td>Inherits from Application</td>
+              <td>Gets JavaFX superpowers for free!</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="example-box">
+          <strong>Pokemon Class Example:</strong>
+          <pre>
+public class Pokemon {
+    private String name;
+    private int dexNumber;
+    // ...
+}</pre
+          >
+          Now we can create Pokemon objects:
+          <pre>
+Pokemon pikachu = new Pokemon();
+pikachu.setName("Pikachu");
+pikachu.setDexNumber(25);
+
+Pokemon charizard = new Pokemon();
+charizard.setName("Charizard");
+charizard.setDexNumber(6);</pre
+          >
+          Much cleaner than managing separate variables!
+        </div>
+
+        <h3>Inheritance - Building on Existing Code</h3>
+        <p>
+          <code>extends Application</code> means our App class
+          <strong>inherits</strong> all capabilities of Application class.
+        </p>
+
+        <div class="info-box info-box-tip">
+          <strong>Inheritance is like genetics:</strong> You inherit traits from
+          your parents (eyes, height), but you're also your own person with
+          unique traits. Similarly, App inherits Application's methods but adds
+          its own unique features!
+        </div>
+
+        <p>What we get from extending Application:</p>
+        <ul>
+          <li>
+            The <code>start()</code> method that JavaFX automatically calls
+          </li>
+          <li>The <code>launch()</code> method that starts our app</li>
+          <li>All the infrastructure to create GUI applications</li>
+          <li>Event handling capabilities</li>
+        </ul>
+
+        <div class="info-box info-box-note">
+          Without <code>extends Application</code>, we'd have to build all this
+          infrastructure ourselves - hundreds of lines of complex code.
+          Inheritance lets us reuse existing, tested code!
+        </div>
+      </section>
+
+      <section id="best-practices">
+        <h2>Best Practices & Professional Tips</h2>
+
+        <h3>Code Organization</h3>
+        <ul>
+          <li>
+            <strong>One public class per file:</strong> The public class name
+            must match the filename
+          </li>
+          <li>
+            <strong>Helper classes as inner classes:</strong> Pokemon class is
+            inside App because it's only used there
+          </li>
+          <li>
+            <strong>Group related methods:</strong> All setup methods together,
+            all action methods together
+          </li>
+          <li>
+            <strong>Use meaningful names:</strong> <code>updateUI()</code> is
+            better than <code>doStuff()</code>
+          </li>
+        </ul>
+
+        <h3>Common Pitfalls to Avoid</h3>
+        <div class="info-box info-box-warning">
+          <strong>Forgetting to initialize variables:</strong> Using
+          <code>List&lt;Pokemon&gt; list;</code> without
+          <code>= new ArrayList&lt;&gt;()</code> causes NullPointerException!
+        </div>
+
+        <div class="info-box info-box-warning">
+          <strong>Ignoring exceptions:</strong> Empty catch blocks hide errors.
+          Always at least print the error!
+        </div>
+
+        <div class="info-box info-box-warning">
+          <strong>Not checking for null:</strong> Always check if
+          files/resources loaded before using them!
+        </div>
+      </section>
+
+      <section id="debugging">
+        <h2>Common Issues & How to Fix Them</h2>
+
+        <h3>Problem: "Cannot find symbol"</h3>
+        <p><strong>Cause:</strong> Missing import or typo in class name</p>
+        <p>
+          <strong>Solution:</strong> Add the correct import statement or check
+          spelling
+        </p>
+
+        <h3>Problem: "NullPointerException"</h3>
+        <p><strong>Cause:</strong> Trying to use an object that's null</p>
+        <p>
+          <strong>Solution:</strong> Initialize the variable or check
+          <code>if (object != null)</code> before using
+        </p>
+
+        <h3>Problem: Images/files not loading</h3>
+        <p>
+          <strong>Cause:</strong> Wrong file path or files not in resources
+          folder
+        </p>
+        <p>
+          <strong>Solution:</strong> Ensure files are in
+          <code>src/main/resources/</code> and paths start with <code>/</code>
+        </p>
+
+        <h3>Problem: UI not updating</h3>
+        <p>
+          <strong>Cause:</strong> Forgot to call <code>updateUI()</code> after
+          changing state
+        </p>
+        <p>
+          <strong>Solution:</strong> Always update the UI after changing data
+          that should be displayed
+        </p>
+      </section>
+
+      <section>
+        <h2>Conclusion</h2>
+        <p>
+          You've just learned how a real Java application works from the ground
+          up! You now understand:
+        </p>
+        <ul>
+          <li>How to structure professional Java applications with packages</li>
+          <li>Object-oriented programming with classes and inheritance</li>
+          <li>Creating graphical user interfaces with JavaFX</li>
+          <li>Working with collections and managing data</li>
+          <li>Reading data from files and parsing JSON</li>
+          <li>Event-driven programming and user interaction</li>
+        </ul>
+
+        <div class="info-box info-box-tip">
+          <strong>Next Steps:</strong> Try modifying the code! Add new features
+          like search functionality, favorite Pokemon, or different visual
+          themes. The best way to learn programming is by building things!
+        </div>
+
+        <p>
+          These concepts form the foundation of software development. Whether
+          you build web apps, mobile apps, or desktop software, you'll use these
+          same principles. Keep practicing, keep building, and most importantly
+          - have fun coding!
+        </p>
+      </section>
+    </div>
+
+    <button id="backToTop" title="Top">↑</button>
+
+    <script>
+      // Back to Top Button
+      const mybutton = document.getElementById("backToTop");
+
+      window.onscroll = function () {
+        if (
+          document.body.scrollTop > 300 ||
+          document.documentElement.scrollTop > 300
+        ) {
+          mybutton.style.display = "flex";
+        } else {
+          mybutton.style.display = "none";
+        }
+      };
+
+      mybutton.onclick = function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      // Smooth scrolling for anchors
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
