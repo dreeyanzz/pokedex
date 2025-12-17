@@ -1,12 +1,19 @@
 module com.example {
+    // JavaFX dependencies
     requires javafx.controls;
-    requires javafx.fxml;
+    requires javafx.graphics;
 
-    // ADD THESE LINES:
+    // Jackson dependencies for JSON parsing
     requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.annotation;
 
-    opens com.example to javafx.fxml;
-
-    // ALLOW JACKSON TO SEE YOUR CODE (for JSON parsing):
+    // Export packages (makes them accessible to other modules)
     exports com.example;
+    exports com.example.controller;
+    exports com.example.view;
+    exports com.example.model;
+
+    // Open packages for reflection (required for Jackson to deserialize)
+    opens com.example.model to com.fasterxml.jackson.databind;
 }
