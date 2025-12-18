@@ -1,0 +1,3048 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaFX Pokedex - Developer Documentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;600;800&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #ff0000;
+        --secondary: #3b4cca;
+        --accent: #ffde00;
+        --text: #2c2c2c;
+        --text-light: #6b6b6b;
+        --bg: #f8f8f8;
+        --surface: #ffffff;
+        --surface-dark: #1a1a1a;
+        --code-bg: #0d1117;
+        --success: #00c851;
+        --border: #e0e0e0;
+        --code-orange: #ff8c42;
+        --code-yellow: #ffd166;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "JetBrains Mono", monospace;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* --- HEADER STYLES --- */
+      .header {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+        color: white;
+        padding: 80px 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 4px
+        );
+        pointer-events: none;
+      }
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .title {
+        font-family: "Press Start 2P", cursive;
+        font-size: 48px;
+        margin-bottom: 20px;
+        text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+        animation: glitch 3s infinite;
+      }
+      @keyframes glitch {
+        0%,
+        100% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-2px, 2px);
+        }
+        40% {
+          transform: translate(-2px, -2px);
+        }
+        60% {
+          transform: translate(2px, 2px);
+        }
+        80% {
+          transform: translate(2px, -2px);
+        }
+      }
+      .subtitle {
+        font-size: 18px;
+        opacity: 0.9;
+        font-weight: 400;
+        letter-spacing: 2px;
+      }
+
+      /* --- NAVIGATION --- */
+      .nav {
+        background: var(--surface-dark);
+        padding: 20px 40px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .nav-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+      .nav a {
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        position: relative;
+        padding: 10px 5px;
+        display: inline-block;
+      }
+      .nav a::after {
+        content: "";
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        transition: width 0.3s;
+      }
+      .nav a:hover::after {
+        width: 100%;
+      }
+      .nav a:active {
+        transform: scale(0.98);
+      }
+
+      /* --- LAYOUT --- */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 40px;
+      }
+      .section {
+        margin-bottom: 80px;
+        animation: fadeInUp 0.6s ease-out;
+        scroll-margin-top: 100px;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section-title {
+        font-size: 36px;
+        margin-bottom: 30px;
+        color: var(--primary);
+        font-weight: 800;
+        position: relative;
+        display: inline-block;
+      }
+      .section-title::before {
+        content: "//";
+        margin-right: 15px;
+        color: var(--secondary);
+      }
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+      }
+
+      /* --- CARDS & GRID --- */
+      .card {
+        background: var(--surface);
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary);
+        transform: scaleY(0);
+        transition: transform 0.3s;
+      }
+      .card:hover::before {
+        transform: scaleY(1);
+      }
+      .card:hover {
+        transform: translateX(10px);
+        box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Disable hover effects on touch devices */
+      @media (hover: none) {
+        .card:hover {
+          transform: none;
+          box-shadow: none;
+        }
+        .card:hover::before {
+          transform: scaleY(0);
+        }
+      }
+
+      .card:active {
+        transform: scale(0.995);
+      }
+
+      .card-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--code-orange);
+        margin-bottom: 15px;
+      }
+      .card-content {
+        color: var(--text-light);
+        line-height: 1.8;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      /* --- ELEMENTS --- */
+      .badge {
+        display: inline-block;
+        padding: 6px 16px;
+        background: var(--secondary);
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+      .badge.mvc {
+        background: var(--primary);
+      }
+      .badge.javafx {
+        background: var(--secondary);
+      }
+      .badge.jackson {
+        background: var(--success);
+      }
+      .badge.java21 {
+        background: var(--accent);
+        color: var(--text);
+      }
+
+      code {
+        background: var(--code-bg);
+        color: var(--code-yellow);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-family: "Space Mono", monospace;
+      }
+      pre {
+        background: var(--code-bg);
+        color: var(--code-yellow);
+        padding: 25px;
+        border-radius: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        font-size: 13px;
+        line-height: 1.6;
+        margin: 15px 0;
+      }
+      pre::-webkit-scrollbar {
+        height: 8px;
+      }
+      pre::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+      }
+      pre::-webkit-scrollbar-thumb {
+        background: rgba(255, 209, 102, 0.3);
+        border-radius: 4px;
+      }
+      pre::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 209, 102, 0.5);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 14px;
+      }
+      th {
+        background: var(--secondary);
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover {
+        background: rgba(59, 76, 202, 0.05);
+      }
+
+      /* Scrollable table wrapper for mobile */
+      .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 20px 0;
+      }
+      .table-wrapper table {
+        margin: 0;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+      }
+      .feature-list li {
+        padding: 12px 0;
+        padding-left: 30px;
+        position: relative;
+      }
+      .feature-list li::before {
+        content: "▸";
+        position: absolute;
+        left: 0;
+        color: var(--primary);
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      .command-block {
+        background: var(--code-bg);
+        color: var(--code-yellow);
+        padding: 15px 20px;
+        border-radius: 8px;
+        font-family: "Space Mono", monospace;
+        margin: 15px 0;
+        border-left: 4px solid var(--primary);
+      }
+
+      .warning {
+        background: rgba(255, 222, 0, 0.1);
+        border-left: 4px solid var(--accent);
+        padding: 15px 20px;
+        border-radius: 4px;
+        margin: 15px 0;
+      }
+
+      .info-box {
+        background: rgba(59, 76, 202, 0.1);
+        border-left: 4px solid var(--secondary);
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+
+      .highlight-box {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 0, 0, 0.05),
+          rgba(59, 76, 202, 0.05)
+        );
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        padding: 30px;
+        margin: 30px 0;
+      }
+
+      ol {
+        margin-left: 25px;
+        color: var(--text-light);
+      }
+      ol li {
+        padding: 8px 0;
+        line-height: 1.8;
+      }
+      ul {
+        margin-left: 25px;
+        color: var(--text-light);
+      }
+      ul li {
+        padding: 8px 0;
+        line-height: 1.8;
+      }
+
+      .tree-diagram {
+        font-family: "Space Mono", monospace;
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 30px;
+        border-radius: 8px;
+        margin: 20px 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid #333;
+      }
+      .tree-diagram::-webkit-scrollbar {
+        height: 8px;
+      }
+      .tree-diagram::-webkit-scrollbar-track {
+        background: #2a2a2a;
+        border-radius: 4px;
+      }
+      .tree-diagram::-webkit-scrollbar-thumb {
+        background: #4a4a4a;
+        border-radius: 4px;
+      }
+      .tree-diagram::-webkit-scrollbar-thumb:hover {
+        background: #5a5a5a;
+      }
+      .tree-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        margin-left: 24px;
+        position: relative;
+      }
+      .tree-list::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 10px;
+        bottom: 0;
+        width: 1px;
+        background: #4a4a4a;
+      }
+      .tree-list > li:last-child > .tree-list::before {
+        display: none;
+      }
+      .tree-item {
+        padding: 4px 0;
+        position: relative;
+        padding-left: 50px;
+        line-height: 1.6;
+        color: #d4d4d4;
+      }
+      .tree-item::before {
+        content: "";
+        position: absolute;
+        top: 14px;
+        left: 10px;
+        width: 14px;
+        height: 1px;
+        background: #4a4a4a;
+      }
+      .tree-item::after {
+        position: absolute;
+        left: 28px;
+        top: 4px;
+        font-size: 16px;
+      }
+      .tree-item.folder {
+        color: var(--code-orange);
+        font-weight: 500;
+      }
+      .tree-item.file {
+        color: var(--code-yellow);
+      }
+      .tree-item.folder::after {
+        content: "📁";
+        filter: saturate(0.7);
+      }
+      .tree-item.file::after {
+        content: "📄";
+        filter: saturate(0.5) brightness(0.9);
+      }
+      .tree-diagram > div:first-child {
+        color: var(--code-orange);
+        font-weight: 600;
+        margin-bottom: 12px;
+        font-size: 15px;
+        padding-left: 28px;
+        position: relative;
+      }
+      .tree-diagram > div:first-child::before {
+        content: "📁";
+        position: absolute;
+        left: 0;
+        font-size: 16px;
+        filter: saturate(0.7);
+      }
+
+      .footer {
+        background: var(--surface-dark);
+        color: white;
+        text-align: center;
+        padding: 40px 20px;
+        margin-top: 80px;
+      }
+
+      /* Flow Diagram Styles */
+      .flow-diagram {
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+      .flow-box {
+        background: white;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        padding: 20px 30px;
+        min-width: 280px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s;
+      }
+      .flow-box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+      .flow-box-title {
+        font-size: 16px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+      }
+      .flow-box-subtitle {
+        font-size: 13px;
+        color: var(--text-light);
+        margin-bottom: 6px;
+      }
+      .flow-box-desc {
+        font-size: 12px;
+        color: var(--text-light);
+        font-style: italic;
+      }
+      .user-box {
+        border-color: var(--primary);
+        background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+      }
+      .user-box .flow-box-title {
+        color: var(--primary);
+      }
+      .controller-box {
+        border-color: var(--secondary);
+        background: linear-gradient(135deg, #f5f5ff 0%, #ffffff 100%);
+      }
+      .controller-box .flow-box-title {
+        color: var(--secondary);
+      }
+      .view-box {
+        border-color: var(--accent);
+        background: linear-gradient(135deg, #fffef5 0%, #ffffff 100%);
+      }
+      .view-box .flow-box-title {
+        color: #d4a800;
+      }
+      .model-box {
+        border-color: var(--success);
+        background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+      }
+      .model-box .flow-box-title {
+        color: var(--success);
+      }
+      .resource-box,
+      .data-box {
+        border-color: #888;
+        background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+        min-width: 240px;
+        padding: 16px 24px;
+      }
+      .resource-box .flow-box-title,
+      .data-box .flow-box-title {
+        color: #555;
+        font-size: 14px;
+      }
+      .flow-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin: 0;
+      }
+      .flow-arrow-down {
+        width: 2px;
+        height: 40px;
+        background: linear-gradient(
+          to bottom,
+          var(--secondary),
+          var(--primary)
+        );
+        position: relative;
+      }
+      .flow-arrow-down::after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 8px solid var(--primary);
+      }
+      .arrow-label {
+        position: absolute;
+        left: 20px;
+        background: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--secondary);
+        white-space: nowrap;
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+      .flow-split {
+        display: flex;
+        gap: 60px;
+        margin-top: 20px;
+        justify-content: center;
+        width: 100%;
+        max-width: 800px;
+      }
+      .flow-split-left,
+      .flow-split-right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+      }
+      @media (max-width: 768px) {
+        .flow-split {
+          flex-direction: column;
+          gap: 20px;
+        }
+        .flow-box {
+          min-width: 240px;
+        }
+      }
+
+      /* Comprehensive Responsive Design */
+      @media (max-width: 1024px) {
+        .container {
+          padding: 40px 20px;
+        }
+        .header {
+          padding: 60px 20px;
+        }
+        .title {
+          font-size: 36px;
+        }
+        .subtitle {
+          font-size: 16px;
+        }
+        .section-title {
+          font-size: 28px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 14px;
+        }
+        .header {
+          padding: 40px 20px;
+        }
+        .title {
+          font-size: 24px;
+        }
+        .subtitle {
+          font-size: 14px;
+          letter-spacing: 1px;
+        }
+        .nav {
+          padding: 15px 20px;
+        }
+        .nav-content {
+          gap: 15px;
+          font-size: 13px;
+        }
+        .container {
+          padding: 30px 15px;
+        }
+        .section {
+          margin-bottom: 50px;
+        }
+        .section-title {
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+        .card {
+          padding: 20px;
+          margin-bottom: 20px;
+        }
+        .card-title {
+          font-size: 20px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        table {
+          font-size: 13px;
+        }
+        th,
+        td {
+          padding: 10px 8px;
+        }
+        /* Make tables scrollable on mobile with visual indicator */
+        .card-content {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        .card-content::-webkit-scrollbar {
+          height: 6px;
+        }
+        .card-content::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 3px;
+        }
+        .card-content::-webkit-scrollbar-thumb {
+          background: var(--secondary);
+          border-radius: 3px;
+        }
+        .card-content::-webkit-scrollbar-thumb:hover {
+          background: var(--primary);
+        }
+        table {
+          min-width: 600px;
+        }
+        /* Add scroll shadow indicator */
+        .card-content {
+          position: relative;
+        }
+        .card-content::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 30px;
+          background: linear-gradient(
+            to left,
+            rgba(255, 255, 255, 0.9),
+            transparent
+          );
+          pointer-events: none;
+        }
+        pre {
+          padding: 15px;
+          font-size: 12px;
+        }
+        code {
+          font-size: 12px;
+        }
+        .tree-diagram {
+          padding: 20px;
+          font-size: 13px;
+        }
+        .flow-diagram {
+          padding: 20px 10px;
+        }
+        .flow-box {
+          min-width: 100%;
+          padding: 16px 20px;
+        }
+        .flow-split {
+          gap: 15px;
+        }
+        .arrow-label {
+          font-size: 10px;
+          padding: 3px 8px;
+        }
+        .badge {
+          font-size: 11px;
+          padding: 5px 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .title {
+          font-size: 20px;
+        }
+        .subtitle {
+          font-size: 12px;
+        }
+        .section-title {
+          font-size: 20px;
+        }
+        .card {
+          padding: 15px;
+        }
+        .card-title {
+          font-size: 18px;
+        }
+        .nav-content {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .tree-diagram {
+          padding: 15px;
+          font-size: 12px;
+        }
+        .tree-list {
+          margin-left: 16px;
+        }
+        .tree-item {
+          padding-left: 36px;
+        }
+        .flow-box-title {
+          font-size: 14px;
+        }
+        .flow-box-subtitle {
+          font-size: 12px;
+        }
+        .flow-box-desc {
+          font-size: 11px;
+        }
+      }
+
+      /* Tablet landscape optimization */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .grid {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        .flow-split {
+          gap: 40px;
+        }
+      }
+
+      /* Print styles */
+      @media print {
+        .nav {
+          display: none;
+        }
+        .header {
+          padding: 20px;
+          page-break-after: avoid;
+        }
+        .section {
+          page-break-inside: avoid;
+        }
+        .card {
+          page-break-inside: avoid;
+          box-shadow: none;
+          border: 1px solid #000;
+        }
+        body {
+          background: white;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-content">
+        <h1 class="title">POKEDEX</h1>
+        <p class="subtitle">JAVAFX DEVELOPER DOCUMENTATION</p>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <div class="nav-content">
+        <a href="#overview">Overview</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#components">Components</a>
+        <a href="#project-structure">Structure</a>
+        <a href="#data">Data</a>
+        <a href="#ui">UI System</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#extensions">Extensions</a>
+        <a href="#dependencies">Dependencies</a>
+        <a href="#best-practices">Best Practices</a>
+      </div>
+    </nav>
+
+    <main class="container">
+      <!-- OVERVIEW -->
+      <section id="overview" class="section">
+        <h2 class="section-title">Project Overview</h2>
+
+        <div class="card">
+          <div class="card-content">
+            <p style="font-size: 18px; margin-bottom: 20px">
+              A retro-styled Pokédex application built with JavaFX, featuring
+              pixel-perfect UI positioning, JSON data loading, and an authentic
+              Pokémon lookup experience.
+            </p>
+
+            <div style="margin-top: 25px">
+              <span class="badge mvc">MVC Architecture</span>
+              <span class="badge javafx">JavaFX 21</span>
+              <span class="badge jackson">Jackson JSON</span>
+              <span class="badge java21">Java 21</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="card-title">✨ Key Features</div>
+            <div class="card-content">
+              <ul class="feature-list">
+                <li>Browse all 151 original Kanto Pokémon</li>
+                <li>Reveal/Hide toggle for mystery mode</li>
+                <li>Power on/off functionality</li>
+                <li>Navigate with previous/next buttons</li>
+                <li>Detailed Pokémon information display</li>
+                <li>Silhouette effect for hidden Pokémon</li>
+                <li>Authentic retro pixel art style</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🎯 Learning Objectives</div>
+            <div class="card-content">
+              <ul class="feature-list">
+                <li>MVC pattern implementation</li>
+                <li>JavaFX custom UI design</li>
+                <li>JSON data parsing with Jackson</li>
+                <li>Resource management (images, fonts)</li>
+                <li>Event-driven programming</li>
+                <li>State management patterns</li>
+                <li>Java Module System (JPMS)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔧 Technical Stack</div>
+          <div class="card-content">
+            <table>
+              <tr>
+                <th>Technology</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+              <tr>
+                <td>Java</td>
+                <td>21</td>
+                <td>Core programming language</td>
+              </tr>
+              <tr>
+                <td>JavaFX</td>
+                <td>21</td>
+                <td>UI framework for desktop application</td>
+              </tr>
+              <tr>
+                <td>Jackson</td>
+                <td>2.15.2</td>
+                <td>JSON parsing and data binding</td>
+              </tr>
+              <tr>
+                <td>Maven</td>
+                <td>3.x</td>
+                <td>Build automation and dependency management</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARCHITECTURE -->
+      <section id="architecture" class="section">
+        <h2 class="section-title">Architecture</h2>
+
+        <div class="info-box">
+          <h3
+            style="font-size: 20px; margin-bottom: 15px; color: var(--primary)"
+          >
+            MVC Design Pattern
+          </h3>
+          <p>
+            This application follows the Model-View-Controller architectural
+            pattern, ensuring clean separation of concerns, maintainability, and
+            testability. Each component has a distinct responsibility with
+            well-defined interfaces between layers.
+          </p>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="card-title">📦 Model Layer</div>
+            <div class="card-content">
+              <p><strong>File:</strong> <code>PokedexModel.java</code></p>
+              <p style="margin-top: 10px"><strong>Responsibilities:</strong></p>
+              <ul class="feature-list">
+                <li>Manages application state and business logic</li>
+                <li>Loads and stores Pokémon data from JSON</li>
+                <li>Handles navigation (next/previous)</li>
+                <li>Manages reveal/hide state</li>
+                <li>Tracks power on/off state</li>
+                <li>Provides data access methods</li>
+                <li>Wraps around boundaries (first ↔ last)</li>
+              </ul>
+              <p style="margin-top: 15px">
+                <strong>Key Methods:</strong>
+              </p>
+              <ul>
+                <li><code>loadPokemonData()</code> - JSON parsing</li>
+                <li><code>nextPokemon()</code> - Navigate forward</li>
+                <li><code>previousPokemon()</code> - Navigate backward</li>
+                <li><code>toggleRevealHide()</code> - Toggle display mode</li>
+                <li><code>getCurrentPokemon()</code> - Get active Pokémon</li>
+                <li><code>powerOn() / powerOff()</code> - State control</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🎨 View Layer</div>
+            <div class="card-content">
+              <p><strong>File:</strong> <code>PokedexView.java</code></p>
+              <p style="margin-top: 10px"><strong>Responsibilities:</strong></p>
+              <ul class="feature-list">
+                <li>Renders the user interface</li>
+                <li>Displays Pokémon information and sprites</li>
+                <li>Creates interactive button hitboxes</li>
+                <li>Applies visual effects (silhouettes)</li>
+                <li>Manages layout and positioning</li>
+                <li>Loads fonts and background images</li>
+                <li>Updates UI based on model state</li>
+              </ul>
+              <p style="margin-top: 15px">
+                <strong>UI Components:</strong>
+              </p>
+              <ul>
+                <li>Background image (pokedex.png)</li>
+                <li>Pokémon sprite display (ImageView)</li>
+                <li>Name, description, types labels</li>
+                <li>Dex number display</li>
+                <li>Interactive button rectangles</li>
+                <li>Custom pixel font (Press Start 2P)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🎮 Controller Layer</div>
+            <div class="card-content">
+              <p><strong>File:</strong> <code>PokedexController.java</code></p>
+              <p style="margin-top: 10px"><strong>Responsibilities:</strong></p>
+              <ul class="feature-list">
+                <li>Bridges Model and View</li>
+                <li>Handles user input events</li>
+                <li>Updates View when Model changes</li>
+                <li>Coordinates application flow</li>
+                <li>Enforces business rules (e.g., powered-on requirement)</li>
+                <li>Manages button click handlers</li>
+              </ul>
+              <p style="margin-top: 15px">
+                <strong>Event Handlers:</strong>
+              </p>
+              <ul>
+                <li><code>onPowerOn()</code> - Activates the Pokédex</li>
+                <li><code>onPowerOff()</code> - Deactivates the Pokédex</li>
+                <li><code>onNext()</code> - Shows next Pokémon</li>
+                <li><code>onPrevious()</code> - Shows previous Pokémon</li>
+                <li>
+                  <code>onRevealHideToggle()</code> - Toggles mystery mode
+                </li>
+                <li><code>updateView()</code> - Refreshes display</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📊 Data Flow Diagram</div>
+          <div class="card-content">
+            <div class="flow-diagram">
+              <!-- User Interaction -->
+              <div class="flow-box user-box">
+                <div class="flow-box-title">USER INTERACTION</div>
+                <div class="flow-box-subtitle">Button Clicks on View Layer</div>
+              </div>
+
+              <!-- Arrow Down -->
+              <div class="flow-arrow flow-arrow-down">
+                <div class="arrow-label">Events</div>
+              </div>
+
+              <!-- Controller -->
+              <div class="flow-box controller-box">
+                <div class="flow-box-title">CONTROLLER</div>
+                <div class="flow-box-subtitle">Event Handlers</div>
+                <div class="flow-box-desc">
+                  Manages event flow and coordinates between layers
+                </div>
+              </div>
+
+              <!-- Two-way arrows row -->
+              <div class="flow-split">
+                <div class="flow-split-left">
+                  <div class="flow-arrow flow-arrow-down">
+                    <div class="arrow-label">Updates UI</div>
+                  </div>
+                  <div class="flow-box view-box">
+                    <div class="flow-box-title">VIEW</div>
+                    <div class="flow-box-subtitle">UI Rendering</div>
+                    <div class="flow-box-desc">
+                      Displays components and layouts
+                    </div>
+                  </div>
+                  <div class="flow-arrow flow-arrow-down">
+                    <div class="arrow-label">Loads</div>
+                  </div>
+                  <div class="flow-box resource-box">
+                    <div class="flow-box-title">RESOURCES</div>
+                    <div class="flow-box-subtitle">Images & Fonts</div>
+                  </div>
+                </div>
+
+                <div class="flow-split-right">
+                  <div class="flow-arrow flow-arrow-down">
+                    <div class="arrow-label">Queries State</div>
+                  </div>
+                  <div class="flow-box model-box">
+                    <div class="flow-box-title">MODEL</div>
+                    <div class="flow-box-subtitle">Data & Logic</div>
+                    <div class="flow-box-desc">Manages application state</div>
+                  </div>
+                  <div class="flow-arrow flow-arrow-down">
+                    <div class="arrow-label">Loads</div>
+                  </div>
+                  <div class="flow-box data-box">
+                    <div class="flow-box-title">JSON DATA</div>
+                    <div class="flow-box-subtitle">Pokemon Information</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔄 State Management</div>
+          <div class="card-content">
+            <p>
+              The application maintains several state variables in the Model:
+            </p>
+            <table style="margin-top: 20px">
+              <tr>
+                <th>State Variable</th>
+                <th>Type</th>
+                <th>Purpose</th>
+              </tr>
+              <tr>
+                <td><code>currentIndex</code></td>
+                <td>int</td>
+                <td>Currently displayed Pokémon position</td>
+              </tr>
+              <tr>
+                <td><code>isRevealMode</code></td>
+                <td>boolean</td>
+                <td>Whether Pokémon details are visible</td>
+              </tr>
+              <tr>
+                <td><code>isPoweredOn</code></td>
+                <td>boolean</td>
+                <td>Whether the Pokédex is active</td>
+              </tr>
+              <tr>
+                <td><code>pokemonList</code></td>
+                <td>List&lt;Pokemon&gt;</td>
+                <td>All loaded Pokémon data</td>
+              </tr>
+            </table>
+            <div class="warning" style="margin-top: 20px">
+              <strong>Important:</strong> All interactive actions (navigation,
+              toggle) are blocked when <code>isPoweredOn == false</code>. This
+              simulates a real device that must be powered on to function.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPONENTS -->
+      <section id="components" class="section">
+        <h2 class="section-title">Core Components</h2>
+
+        <div class="card">
+          <div class="card-title">Pokemon.java - Data Model</div>
+          <div class="card-content">
+            <p>
+              Represents a single Pokémon with all its attributes. This POJO
+              (Plain Old Java Object) is used by Jackson for JSON
+              deserialization.
+            </p>
+            <pre>
+public class Pokemon {
+    private String picture;          // Filename of sprite image
+    private String name;             // Pokémon name
+    private int evolutionStage;      // 1, 2, or 3
+    private String shortDescription; // Brief description
+    private int dexNumber;           // National Pokédex number
+    private boolean isLegendary;     // Legendary status
+    private List&lt;String&gt; types;      // e.g., ["Fire", "Flying"]
+    
+    // Getters and setters for all fields
+}</pre
+            >
+            <div class="info-box" style="margin-top: 20px">
+              <strong>Jackson Annotations:</strong> No special annotations are
+              needed because field names match JSON keys exactly. Jackson uses
+              reflection to map JSON properties to Java fields automatically.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            PokedexApp.java - Application Entry Point
+          </div>
+          <div class="card-content">
+            <p>
+              The main class that extends <code>Application</code> and
+              initializes the MVC components. It sets up the Scene and Stage,
+              then delegates control to the Controller.
+            </p>
+            <pre>
+public class PokedexApp extends Application {
+    @Override
+    public void start(Stage primaryStage) {
+        // Initialize MVC components
+        PokedexModel model = new PokedexModel();
+        PokedexView view = new PokedexView();
+        PokedexController controller = 
+            new PokedexController(model, view);
+        
+        // Create scene
+        Scene scene = new Scene(
+            view.getRoot(), 
+            view.SCREEN_WIDTH, 
+            view.SCREEN_HEIGHT
+        );
+        
+        // Setup stage
+        primaryStage.setTitle("Pokédex");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+        
+        // Initial display
+        controller.updateView();
+    }
+}</pre
+            >
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Resource Loading Pattern</div>
+          <div class="card-content">
+            <p>
+              The application uses
+              <code>ClassLoader.getResourceAsStream()</code>
+              to load resources, ensuring they work correctly whether running
+              from IDE or JAR file.
+            </p>
+            <pre>
+// Loading an image
+InputStream stream = getClass()
+    .getResourceAsStream("/pokedex/bulbasaur.png");
+if (stream != null) {
+    Image image = new Image(stream);
+    imageView.setImage(image);
+}
+
+// Loading font
+InputStream fontStream = getClass()
+    .getResourceAsStream("/fonts/PressStart2P-Regular.ttf");
+Font customFont = Font.loadFont(fontStream, 12);</pre
+            >
+            <div class="warning" style="margin-top: 20px">
+              <strong>Always check for null!</strong> If a resource is not
+              found, <code>getResourceAsStream()</code> returns null. Always
+              validate before using to avoid NullPointerException.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">JSON Data Loading</div>
+          <div class="card-content">
+            <p>
+              Jackson ObjectMapper handles the deserialization of JSON data into
+              Java objects. The Model uses this to populate the Pokémon list at
+              startup.
+            </p>
+            <pre>
+public void loadPokemonData() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    InputStream jsonStream = getClass()
+        .getResourceAsStream("/kanto_pokemon.json");
+    
+    if (jsonStream == null) {
+        throw new IOException("Cannot find JSON file");
+    }
+    
+    // Deserialize JSON array into List&lt;Pokemon&gt;
+    pokemonList = mapper.readValue(
+        jsonStream,
+        new TypeReference&lt;List&lt;Pokemon&gt;&gt;() {}
+    );
+    
+    currentIndex = 0; // Start at first Pokémon
+}</pre
+            >
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">UI Positioning System</div>
+          <div class="card-content">
+            <p>
+              All UI elements use absolute positioning relative to the
+              background image. Constants define each component's exact location
+              to ensure pixel-perfect alignment.
+            </p>
+            <pre>
+// View class constants
+private static final double SCREEN_X = 128;
+private static final double SCREEN_Y = 125;
+private static final double SCREEN_WIDTH = 104;
+private static final double SCREEN_HEIGHT = 104;
+
+private static final double NAME_X = 337;
+private static final double NAME_Y = 128;
+
+private static final double DESC_X = 77;
+private static final double DESC_Y = 314;
+private static final double DESC_WIDTH = 111;
+private static final double DESC_HEIGHT = 43;</pre
+            >
+            <div class="info-box" style="margin-top: 20px">
+              <strong>Design Principle:</strong> This approach trades
+              flexibility for precision. The UI perfectly matches the background
+              image design, creating an authentic retro device experience.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Silhouette Effect Implementation</div>
+          <div class="card-content">
+            <p>
+              When in mystery mode (<code>isRevealMode = false</code>), the
+              Pokémon sprite is shown as a black silhouette using JavaFX's
+              ColorAdjust effect.
+            </p>
+            <pre>
+// Create the effect
+ColorAdjust blackout = new ColorAdjust();
+blackout.setBrightness(-1.0);  // Maximum darkness
+
+// Apply to ImageView
+if (!model.isRevealMode()) {
+    pokemonImageView.setEffect(blackout);
+} else {
+    pokemonImageView.setEffect(null);  // Clear effect
+}</pre
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECT STRUCTURE -->
+      <section id="project-structure" class="section">
+        <h2 class="section-title">Project Structure</h2>
+
+        <div class="card">
+          <div class="card-title">📁 Directory Layout</div>
+          <div class="card-content">
+            <div class="tree-diagram">
+              <div>pokedex-project/</div>
+              <ul class="tree-list">
+                <li class="tree-item folder">src/</li>
+                <ul class="tree-list">
+                  <li class="tree-item folder">main/</li>
+                  <ul class="tree-list">
+                    <li class="tree-item folder">java/</li>
+                    <ul class="tree-list">
+                      <li class="tree-item folder">com.pokedex/</li>
+                      <ul class="tree-list">
+                        <li class="tree-item file">PokedexApp.java</li>
+                        <li class="tree-item file">PokedexController.java</li>
+                        <li class="tree-item file">PokedexModel.java</li>
+                        <li class="tree-item file">PokedexView.java</li>
+                        <li class="tree-item folder">model/</li>
+                        <ul class="tree-list">
+                          <li class="tree-item file">Pokemon.java</li>
+                        </ul>
+                      </ul>
+                      <li class="tree-item file">module-info.java</li>
+                    </ul>
+                    <li class="tree-item folder">resources/</li>
+                    <ul class="tree-list">
+                      <li class="tree-item file">kanto_pokemon.json</li>
+                      <li class="tree-item folder">pokedex/</li>
+                      <ul class="tree-list">
+                        <li class="tree-item file">pokedex.png</li>
+                        <li class="tree-item file">bulbasaur.png</li>
+                        <li class="tree-item file">ivysaur.png</li>
+                        <li class="tree-item file">... (more sprites)</li>
+                        <li class="tree-item file">
+                          (151 Pokemon images total)
+                        </li>
+                      </ul>
+                      <li class="tree-item folder">fonts/</li>
+                      <ul class="tree-list">
+                        <li class="tree-item file">PressStart2P-Regular.ttf</li>
+                      </ul>
+                    </ul>
+                  </ul>
+                </ul>
+                <li class="tree-item file">pom.xml</li>
+                <li class="tree-item file">README.md</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⚙️ Installation & Setup</div>
+          <div class="card-content">
+            <p><strong>Prerequisites:</strong></p>
+            <ul>
+              <li>Java 21 or higher (JDK)</li>
+              <li>Maven 3.6 or higher</li>
+              <li>Git (for cloning)</li>
+            </ul>
+
+            <p style="margin-top: 20px">
+              <strong>Step 1: Clone Repository</strong>
+            </p>
+            <div class="command-block">
+              git clone &lt;repository-url&gt;<br />
+              cd pokedex-project
+            </div>
+
+            <p style="margin-top: 20px">
+              <strong>Step 2: Build Project</strong>
+            </p>
+            <div class="command-block">mvn clean install</div>
+
+            <p style="margin-top: 20px">
+              <strong>Step 3: Run Application</strong>
+            </p>
+            <div class="command-block">mvn javafx:run</div>
+
+            <div class="warning" style="margin-top: 20px">
+              <strong>Module System Note:</strong> Ensure your
+              <code>module-info.java</code> properly exports packages and opens
+              the model package to Jackson for reflection:
+              <pre style="margin-top: 10px">
+module com.pokedex {
+    requires javafx.controls;
+    requires com.fasterxml.jackson.databind;
+    
+    exports com.pokedex;
+    opens com.pokedex.model to com.fasterxml.jackson.databind;
+}</pre
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Maven Configuration (pom.xml)</div>
+          <div class="card-content">
+            <p>Key sections of the Maven configuration:</p>
+            <pre>
+&lt;properties&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+    &lt;javafx.version&gt;21&lt;/javafx.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+        &lt;artifactId&gt;javafx-controls&lt;/artifactId&gt;
+        &lt;version&gt;${javafx.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+        &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+        &lt;version&gt;2.15.2&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+
+&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+            &lt;artifactId&gt;javafx-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;0.0.8&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;mainClass&gt;com.pokedex.PokedexApp&lt;/mainClass&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;</pre
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- DATA STRUCTURE -->
+      <section id="data" class="section">
+        <h2 class="section-title">Data Structure</h2>
+
+        <div class="card">
+          <div class="card-title">JSON Format (kanto_pokemon.json)</div>
+          <div class="card-content">
+            <p>
+              The Pokémon data is stored in a JSON array. Each entry follows
+              this structure:
+            </p>
+            <pre>
+[
+  {
+    "picture": "bulbasaur.png",
+    "name": "Bulbasaur",
+    "evolutionStage": 1,
+    "shortDescription": "A strange seed was planted on its back at birth...",
+    "dexNumber": 1,
+    "isLegendary": false,
+    "types": ["Grass", "Poison"]
+  },
+  {
+    "picture": "ivysaur.png",
+    "name": "Ivysaur",
+    "evolutionStage": 2,
+    "shortDescription": "When the bulb on its back grows large...",
+    "dexNumber": 2,
+    "isLegendary": false,
+    "types": ["Grass", "Poison"]
+  }
+]</pre
+            >
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Field Descriptions</div>
+          <div class="card-content">
+            <table>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+              <tr>
+                <td><code>picture</code></td>
+                <td>String</td>
+                <td>
+                  Filename of the Pokémon sprite (must exist in
+                  <code>resources/pokedex/</code>)
+                </td>
+              </tr>
+              <tr>
+                <td><code>name</code></td>
+                <td>String</td>
+                <td>Pokémon name (displayed prominently)</td>
+              </tr>
+              <tr>
+                <td><code>evolutionStage</code></td>
+                <td>Integer</td>
+                <td>Evolution stage: 1 (basic), 2 (stage 1), 3 (stage 2)</td>
+              </tr>
+              <tr>
+                <td><code>shortDescription</code></td>
+                <td>String</td>
+                <td>Brief description shown in the Pokédex screen</td>
+              </tr>
+              <tr>
+                <td><code>dexNumber</code></td>
+                <td>Integer</td>
+                <td>National Pokédex number (1-151 for Kanto)</td>
+              </tr>
+              <tr>
+                <td><code>isLegendary</code></td>
+                <td>Boolean</td>
+                <td>Whether the Pokémon is legendary</td>
+              </tr>
+              <tr>
+                <td><code>types</code></td>
+                <td>Array[String]</td>
+                <td>Pokémon types (e.g., ["Fire"], ["Water", "Flying"])</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Data Validation Rules</div>
+          <div class="card-content">
+            <ul class="feature-list">
+              <li>
+                <strong>Picture field:</strong> Must match an actual image file
+                in <code>resources/pokedex/</code>
+              </li>
+              <li>
+                <strong>Evolution stage:</strong> Must be 1, 2, or 3 (no other
+                values)
+              </li>
+              <li>
+                <strong>Dex number:</strong> Should be unique and sequential for
+                Kanto (1-151)
+              </li>
+              <li>
+                <strong>Types:</strong> Can have 1 or 2 types (no Pokémon has
+                zero types)
+              </li>
+              <li>
+                <strong>Short description:</strong> Should be brief enough to
+                fit in the display area
+              </li>
+            </ul>
+            <div class="info-box" style="margin-top: 20px">
+              <strong>Tip:</strong> Keep descriptions under 150 characters to
+              ensure they fit properly in the UI. The font and text wrapping are
+              configured for concise entries.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Example Pokemon Types</div>
+          <div class="card-content">
+            <table>
+              <tr>
+                <th>Pokémon</th>
+                <th>Types</th>
+                <th>Type Combination</th>
+              </tr>
+              <tr>
+                <td>Bulbasaur</td>
+                <td>Grass, Poison</td>
+                <td>Dual-type</td>
+              </tr>
+              <tr>
+                <td>Charmander</td>
+                <td>Fire</td>
+                <td>Single-type</td>
+              </tr>
+              <tr>
+                <td>Gyarados</td>
+                <td>Water, Flying</td>
+                <td>Dual-type</td>
+              </tr>
+              <tr>
+                <td>Zapdos</td>
+                <td>Electric, Flying</td>
+                <td>Dual-type, Legendary</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- UI SYSTEM -->
+      <section id="ui" class="section">
+        <h2 class="section-title">UI System</h2>
+
+        <div class="card">
+          <div class="card-content">
+            <p>
+              The UI uses pixel-perfect absolute positioning relative to the
+              background image. Each component is carefully aligned to create an
+              authentic retro Pokédex experience.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="card-title">📺 Display Coordinates</div>
+            <div class="card-content">
+              <table>
+                <tr>
+                  <th>Component</th>
+                  <th>X, Y Position</th>
+                  <th>Dimensions</th>
+                </tr>
+                <tr>
+                  <td><strong>Window</strong></td>
+                  <td>-</td>
+                  <td>548 × 400 px</td>
+                </tr>
+                <tr>
+                  <td><strong>Pokémon Screen</strong></td>
+                  <td>128, 125</td>
+                  <td>104 × 104 px</td>
+                </tr>
+                <tr>
+                  <td><strong>Dex Number</strong></td>
+                  <td>79, 140</td>
+                  <td>Auto-sized</td>
+                </tr>
+                <tr>
+                  <td><strong>Description</strong></td>
+                  <td>77, 314</td>
+                  <td>111 × 43 px</td>
+                </tr>
+                <tr>
+                  <td><strong>Name Label</strong></td>
+                  <td>337, 128</td>
+                  <td>Auto-sized</td>
+                </tr>
+                <tr>
+                  <td><strong>Type Display</strong></td>
+                  <td>337, 173</td>
+                  <td>Auto-sized</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🎮 Button Hitboxes</div>
+            <div class="card-content">
+              <table>
+                <tr>
+                  <th>Button</th>
+                  <th>X, Y Position</th>
+                  <th>Size (W×H)</th>
+                  <th>Function</th>
+                </tr>
+                <tr>
+                  <td><strong>Reveal/Hide</strong></td>
+                  <td>30, 272</td>
+                  <td>25 × 25 px</td>
+                  <td>Toggle Mode</td>
+                </tr>
+                <tr>
+                  <td><strong>Power On</strong></td>
+                  <td>127.7, 14.3</td>
+                  <td>15 × 15 px</td>
+                  <td>Boot Device</td>
+                </tr>
+                <tr>
+                  <td><strong>Power Off</strong></td>
+                  <td>84.6, 14.3</td>
+                  <td>15 × 15 px</td>
+                  <td>Shutdown</td>
+                </tr>
+                <tr>
+                  <td><strong>Navigate Left</strong></td>
+                  <td>205, 309</td>
+                  <td>25 × 28 px</td>
+                  <td>Previous</td>
+                </tr>
+                <tr>
+                  <td><strong>Navigate Right</strong></td>
+                  <td>244, 309</td>
+                  <td>25 × 28 px</td>
+                  <td>Next</td>
+                </tr>
+              </table>
+              <div class="info-box" style="margin-top: 20px">
+                <strong>Implementation Note:</strong> Buttons are created as
+                transparent <code>Rectangle</code> objects with click handlers.
+                They are positioned precisely over the background button
+                graphics.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🎨 Visual Styling</div>
+          <div class="card-content">
+            <ul class="feature-list">
+              <li>
+                <strong>Font:</strong> Press Start 2P - Authentic retro pixel
+                font for that classic 8-bit feel
+              </li>
+              <li>
+                <strong>Text Colors:</strong>
+                <ul style="margin-top: 10px; margin-left: 20px">
+                  <li>
+                    Standard text:
+                    <span style="color: #000; font-weight: bold">#000000</span>
+                    (Black)
+                  </li>
+                  <li>
+                    Mystery mode:
+                    <span style="color: #c42020; font-weight: bold"
+                      >#C42020</span
+                    >
+                    (Red)
+                  </li>
+                  <li>
+                    Description:
+                    <span style="color: #084036; font-weight: bold"
+                      >#084036</span
+                    >
+                    (Dark green)
+                  </li>
+                  <li>
+                    Digital display:
+                    <span style="color: #32ee25; font-weight: bold"
+                      >#32EE25</span
+                    >
+                    (Bright green)
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Silhouette Effect:</strong> <code>ColorAdjust</code>
+                effect with brightness set to -1.0 creates perfect black
+                silhouettes
+              </li>
+              <li>
+                <strong>Text Wrapping:</strong> Description text wraps at 111px
+                width to fit the screen area
+              </li>
+              <li>
+                <strong>Font Sizes:</strong> Carefully calibrated for
+                readability at 12-16px depending on component
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Layout Implementation Details</div>
+          <div class="card-content">
+            <p>
+              The View class uses a <code>Pane</code> as the root container,
+              allowing absolute positioning of all children. Key implementation
+              points:
+            </p>
+            <pre>
+// Root container setup
+Pane root = new Pane();
+root.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+// Background image
+ImageView background = new ImageView(backgroundImage);
+background.setFitWidth(SCREEN_WIDTH);
+background.setFitHeight(SCREEN_HEIGHT);
+root.getChildren().add(background);
+
+// Positioned components
+pokemonImageView.setX(SCREEN_X);
+pokemonImageView.setY(SCREEN_Y);
+pokemonImageView.setFitWidth(SCREEN_WIDTH);
+pokemonImageView.setFitHeight(SCREEN_HEIGHT);
+
+nameLabel.setLayoutX(NAME_X);
+nameLabel.setLayoutY(NAME_Y);
+nameLabel.setFont(pixelFont);</pre
+            >
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Responsive Behavior</div>
+          <div class="card-content">
+            <p>
+              <strong>Current Implementation:</strong> Fixed window size
+              (548×400) for pixel-perfect display matching the background image.
+            </p>
+            <div class="info-box" style="margin-top: 15px">
+              <strong>Why Fixed Size?</strong> This ensures the UI remains
+              aligned with the background graphics. Resizing would require
+              dynamic scaling of all positioned elements, which would compromise
+              the authentic retro aesthetic.
+            </div>
+            <p style="margin-top: 15px">
+              <strong>Extension Opportunity:</strong> For a responsive version,
+              you could:
+            </p>
+            <ul style="margin-left: 25px; margin-top: 10px">
+              <li>Scale all coordinates proportionally to window size</li>
+              <li>Use percentage-based positioning</li>
+              <li>Implement SVG graphics instead of PNG for scaling</li>
+              <li>Add multiple layout profiles for different screen sizes</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORKFLOW -->
+      <section id="workflow" class="section">
+        <h2 class="section-title">Development Workflow</h2>
+
+        <div class="grid">
+          <div class="card">
+            <div class="card-title">Adding New Pokemon</div>
+            <div class="card-content">
+              <ol>
+                <li>
+                  <strong>Prepare the sprite image:</strong> Ensure it's a PNG
+                  file with transparent background, sized appropriately (square
+                  recommended)
+                </li>
+                <li>
+                  <strong>Add image to resources:</strong> Place the file in
+                  <code>src/main/resources/pokedex/</code>
+                </li>
+                <li>
+                  <strong>Update JSON data:</strong> Add a new entry to
+                  <code>kanto_pokemon.json</code> with all required fields
+                </li>
+                <li>
+                  <strong>Verify filename match:</strong> Ensure the
+                  <code>picture</code> field in JSON exactly matches the image
+                  filename
+                </li>
+                <li>
+                  <strong>Rebuild project:</strong> Run
+                  <code>mvn clean install</code>
+                </li>
+                <li>
+                  <strong>Test:</strong> Run the application and navigate to the
+                  new Pokémon to verify display
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Modifying UI Layout</div>
+            <div class="card-content">
+              <ol>
+                <li>
+                  <strong>Locate constants:</strong> Open
+                  <code>PokedexView.java</code> and find the positioning
+                  constants at the top
+                </li>
+                <li>
+                  <strong>Adjust coordinates:</strong> Modify
+                  <code>SCREEN_X</code>, <code>SCREEN_Y</code>, or other
+                  position/size constants as needed
+                </li>
+                <li>
+                  <strong>Recompile and test:</strong> Run the application to
+                  verify positioning looks correct
+                </li>
+                <li>
+                  <strong>Update button hitboxes:</strong> If buttons no longer
+                  align with graphics, adjust their coordinates
+                </li>
+                <li>
+                  <strong>Consider background changes:</strong> If modifying the
+                  background image, update all dependent coordinates accordingly
+                </li>
+              </ol>
+              <div class="warning" style="margin-top: 15px">
+                <strong>Pro Tip:</strong> Use graphic editing software to
+                measure exact pixel coordinates on the background image before
+                updating constants.
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Adding New Features</div>
+            <div class="card-content">
+              <p><strong>Follow the MVC pattern:</strong></p>
+              <ol>
+                <li>
+                  <strong>Model:</strong> Add state variables and business logic
+                  methods to <code>PokedexModel.java</code>
+                </li>
+                <li>
+                  <strong>View:</strong> Add new UI components and positioning
+                  in
+                  <code>PokedexView.java</code>
+                </li>
+                <li>
+                  <strong>Controller:</strong> Create event handlers and wire up
+                  interactions in <code>PokedexController.java</code>
+                </li>
+                <li>
+                  <strong>Test thoroughly:</strong> Verify all state transitions
+                  work correctly and UI updates properly
+                </li>
+              </ol>
+              <p style="margin-top: 15px">
+                <strong>Example - Adding a "Favorite" feature:</strong>
+              </p>
+              <ul style="margin-left: 25px; margin-top: 10px">
+                <li>
+                  Model: Add <code>Set&lt;Integer&gt; favorites</code> and
+                  <code>toggleFavorite()</code> method
+                </li>
+                <li>
+                  View: Add a star icon/button and highlight for favorites
+                </li>
+                <li>
+                  Controller: Add <code>onFavoriteToggle()</code> handler and
+                  update view to show favorite status
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Testing Checklist</div>
+          <div class="card-content">
+            <p>Before considering a feature complete, verify the following:</p>
+            <table>
+              <tr>
+                <th>Category</th>
+                <th>Test Cases</th>
+              </tr>
+              <tr>
+                <td><strong>Power State</strong></td>
+                <td>
+                  <ul style="margin: 10px 0 0 20px">
+                    <li>Power on/off functionality works correctly</li>
+                    <li>Screen clears when powered off</li>
+                    <li>All interactions blocked when off</li>
+                    <li>Device can be powered back on</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Navigation</strong></td>
+                <td>
+                  <ul style="margin: 10px 0 0 20px">
+                    <li>Next button advances to next Pokémon</li>
+                    <li>Previous button goes back</li>
+                    <li>Navigation wraps at boundaries (151 → 1, 1 → 151)</li>
+                    <li>Navigation only works when powered on</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Display</strong></td>
+                <td>
+                  <ul style="margin: 10px 0 0 20px">
+                    <li>Images load correctly for all Pokémon</li>
+                    <li>Text fits within designated areas</li>
+                    <li>Font renders properly (no missing characters)</li>
+                    <li>Colors match specification</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Reveal/Hide</strong></td>
+                <td>
+                  <ul style="margin: 10px 0 0 20px">
+                    <li>Toggle changes display appropriately</li>
+                    <li>Silhouette effect applies/removes correctly</li>
+                    <li>Name shows/hides as "???"</li>
+                    <li>State persists during navigation</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Data Integrity</strong></td>
+                <td>
+                  <ul style="margin: 10px 0 0 20px">
+                    <li>All 151 Pokémon load successfully</li>
+                    <li>No duplicate dex numbers</li>
+                    <li>Types display correctly (1-2 types)</li>
+                    <li>Descriptions fit in display area</li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Common Issues & Solutions</div>
+          <div class="card-content">
+            <table>
+              <tr>
+                <th>Issue</th>
+                <th>Possible Causes</th>
+                <th>Solutions</th>
+              </tr>
+              <tr>
+                <td><strong>Images not loading</strong></td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Incorrect resource path</li>
+                    <li>File not in resources folder</li>
+                    <li>Filename mismatch with JSON</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>
+                      Verify files exist in
+                      <code>src/main/resources/pokedex/</code>
+                    </li>
+                    <li>Check filename spelling matches JSON exactly</li>
+                    <li>Rebuild project: <code>mvn clean install</code></li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>JSON parsing error</strong></td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Invalid JSON syntax</li>
+                    <li>Field name mismatch</li>
+                    <li>Wrong data type</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Validate JSON with online validator</li>
+                    <li>
+                      Ensure field names match <code>Pokemon.java</code>
+                      exactly
+                    </li>
+                    <li>Check data types (string vs number vs boolean)</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Font not displaying</strong></td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Font file missing</li>
+                    <li>Incorrect font path</li>
+                    <li>Font loading failed silently</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Verify TTF file in <code>resources/fonts/</code></li>
+                    <li>Check console for font loading errors</li>
+                    <li>Use fallback font if load fails</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Module errors</strong></td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Missing module declarations</li>
+                    <li>Packages not exported</li>
+                    <li>Reflection access denied</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>
+                      Verify <code>module-info.java</code> requires all
+                      dependencies
+                    </li>
+                    <li>Export packages used by other modules</li>
+                    <li>Open model package to Jackson for reflection</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Buttons not working</strong></td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Incorrect hitbox positioning</li>
+                    <li>Event handlers not connected</li>
+                    <li>Powered-off state blocking actions</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Adjust button coordinates to match background</li>
+                    <li>Verify controller wires up all handlers</li>
+                    <li>Check <code>isPoweredOn</code> state</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>UI misalignment</strong></td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Background image changed</li>
+                    <li>Coordinate constants incorrect</li>
+                    <li>Window size mismatch</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Measure exact pixel positions from image</li>
+                    <li>Update all relevant constants in View</li>
+                    <li>Ensure window size matches background dimensions</li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Debugging Tips</div>
+          <div class="card-content">
+            <ul class="feature-list">
+              <li>
+                <strong>Console Logging:</strong> Add System.out.println()
+                statements to track state changes and method calls
+              </li>
+              <li>
+                <strong>Resource Loading:</strong> Always check if
+                getResourceAsStream() returns null before using the resource
+              </li>
+              <li>
+                <strong>State Inspection:</strong> Print Model state variables
+                after each interaction to verify correct updates
+              </li>
+              <li>
+                <strong>JSON Validation:</strong> Use online JSON validators
+                (jsonlint.com) to catch syntax errors
+              </li>
+              <li>
+                <strong>Visual Debugging:</strong> Temporarily make button
+                hitboxes visible to verify positioning
+              </li>
+              <li>
+                <strong>Maven Clean:</strong> When in doubt, run
+                <code>mvn clean install</code> to ensure fresh build
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXTENSION IDEAS -->
+      <section id="extensions" class="section">
+        <h2 class="section-title">Extension Ideas</h2>
+
+        <div class="info-box">
+          <p>
+            This project provides an excellent foundation for expanding
+            functionality. Here are some ideas for taking it further, organized
+            by difficulty level and feature category.
+          </p>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="card-title">🎯 Feature Enhancements</div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  <strong>Search Functionality:</strong> Add a search bar to
+                  find Pokémon by name or type
+                </li>
+                <li>
+                  <strong>Favorite System:</strong> Allow users to mark and
+                  filter favorite Pokémon
+                </li>
+                <li>
+                  <strong>Evolution Tree:</strong> Visual display of evolution
+                  chains with arrows
+                </li>
+                <li>
+                  <strong>Sound Effects:</strong> Add button click sounds and
+                  Pokémon cries
+                </li>
+                <li>
+                  <strong>Animations:</strong> Smooth transitions when
+                  navigating between Pokémon
+                </li>
+                <li>
+                  <strong>Compare Mode:</strong> Side-by-side comparison of two
+                  Pokémon
+                </li>
+                <li>
+                  <strong>Type Effectiveness:</strong> Show type matchup chart
+                  for current Pokémon
+                </li>
+                <li>
+                  <strong>Multiple Regions:</strong> Support for Johto, Hoenn,
+                  Sinnoh, etc. with region selector
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📊 Data Improvements</div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  <strong>Base Stats:</strong> Display HP, Attack, Defense,
+                  Special Attack, Special Defense, Speed
+                </li>
+                <li>
+                  <strong>Stat Visualization:</strong> Show stats as radar chart
+                  or bar graph
+                </li>
+                <li>
+                  <strong>Abilities:</strong> List Pokémon abilities with
+                  descriptions
+                </li>
+                <li>
+                  <strong>Move Sets:</strong> Show learnable moves and level
+                  requirements
+                </li>
+                <li>
+                  <strong>Evolution Requirements:</strong> Display level, stone,
+                  or trade requirements
+                </li>
+                <li>
+                  <strong>Catch Information:</strong> Include catch rate,
+                  locations, and encounter rates
+                </li>
+                <li>
+                  <strong>Alternate Forms:</strong> Support for Mega Evolutions,
+                  regional variants, etc.
+                </li>
+                <li>
+                  <strong>Pokédex Entries:</strong> Multiple versions from
+                  different games
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">⚙️ Technical Upgrades</div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  <strong>Unit Testing:</strong> Add JUnit tests for Model and
+                  Controller logic
+                </li>
+                <li>
+                  <strong>External API:</strong> Integrate with PokéAPI
+                  (pokeapi.co) for live data
+                </li>
+                <li>
+                  <strong>Data Caching:</strong> Cache API responses to reduce
+                  network requests
+                </li>
+                <li>
+                  <strong>User Preferences:</strong> Save/load settings and
+                  favorites to file
+                </li>
+                <li>
+                  <strong>Export Functionality:</strong> Export Pokémon data to
+                  CSV, PDF, or JSON
+                </li>
+                <li>
+                  <strong>Multi-language:</strong> Support for multiple
+                  languages (i18n)
+                </li>
+                <li>
+                  <strong>Responsive Layout:</strong> Dynamic sizing for
+                  different screen resolutions
+                </li>
+                <li>
+                  <strong>Offline Mode:</strong> Full functionality without
+                  internet connection
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🎨 UI/UX Enhancements</div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  <strong>Themes:</strong> Multiple color schemes (original,
+                  blue, purple, etc.)
+                </li>
+                <li>
+                  <strong>Animations:</strong> Fade transitions, slide effects,
+                  sprite animations
+                </li>
+                <li>
+                  <strong>Keyboard Navigation:</strong> Arrow keys and hotkeys
+                  for all functions
+                </li>
+                <li>
+                  <strong>Touch Support:</strong> Swipe gestures for navigation
+                  on tablets
+                </li>
+                <li>
+                  <strong>Accessibility:</strong> Screen reader support and high
+                  contrast mode
+                </li>
+                <li>
+                  <strong>Custom Backgrounds:</strong> Allow users to upload
+                  custom Pokédex skins
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🎮 Game Features</div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  <strong>Quiz Mode:</strong> "Who's that Pokémon?" guessing
+                  game
+                </li>
+                <li>
+                  <strong>Collection Tracker:</strong> Mark which Pokémon you've
+                  "caught"
+                </li>
+                <li>
+                  <strong>Completion Statistics:</strong> Track percentage of
+                  Pokédex completed
+                </li>
+                <li>
+                  <strong>Daily Challenge:</strong> New Pokémon to identify each
+                  day
+                </li>
+                <li>
+                  <strong>Team Builder:</strong> Create and save battle teams
+                </li>
+                <li>
+                  <strong>Type Coverage:</strong> Analyze team type strengths
+                  and weaknesses
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🔗 Integration Ideas</div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  <strong>Database:</strong> Store data in SQLite or H2 for
+                  better performance
+                </li>
+                <li>
+                  <strong>Cloud Sync:</strong> Sync favorites and progress
+                  across devices
+                </li>
+                <li>
+                  <strong>Social Features:</strong> Share favorite teams or
+                  collections
+                </li>
+                <li>
+                  <strong>Import from Games:</strong> Read save data from
+                  Pokémon game files
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Implementation Difficulty Guide</div>
+          <div class="card-content">
+            <table>
+              <tr>
+                <th>Difficulty</th>
+                <th>Example Features</th>
+                <th>Estimated Time</th>
+              </tr>
+              <tr>
+                <td><strong>Easy</strong></td>
+                <td>
+                  Favorite marking, keyboard shortcuts, themes, additional data
+                  fields
+                </td>
+                <td>2-5 hours</td>
+              </tr>
+              <tr>
+                <td><strong>Medium</strong></td>
+                <td>
+                  Search functionality, stat visualization, sound effects,
+                  animations, export to file
+                </td>
+                <td>1-3 days</td>
+              </tr>
+              <tr>
+                <td><strong>Hard</strong></td>
+                <td>
+                  API integration, database implementation, evolution tree
+                  visualization, quiz mode
+                </td>
+                <td>1-2 weeks</td>
+              </tr>
+              <tr>
+                <td><strong>Advanced</strong></td>
+                <td>
+                  Cloud sync, multi-user features, responsive layout, full
+                  accessibility
+                </td>
+                <td>2-4 weeks</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEPENDENCIES -->
+      <section id="dependencies" class="section">
+        <h2 class="section-title">Dependencies</h2>
+
+        <div class="card">
+          <div class="card-title">Maven Dependencies (pom.xml)</div>
+          <div class="card-content">
+            <table>
+              <tr>
+                <th>Dependency</th>
+                <th>Version</th>
+                <th>Purpose</th>
+              </tr>
+              <tr>
+                <td>org.openjfx:javafx-controls</td>
+                <td>21</td>
+                <td>Core JavaFX UI controls (Scene, Stage, Node hierarchy)</td>
+              </tr>
+              <tr>
+                <td>org.openjfx:javafx-fxml</td>
+                <td>21</td>
+                <td>
+                  FXML support (not currently used, but included for future UI
+                  design)
+                </td>
+              </tr>
+              <tr>
+                <td>com.fasterxml.jackson.core:jackson-databind</td>
+                <td>2.15.2</td>
+                <td>
+                  JSON parsing and data binding - converts JSON to Java objects
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Dependency Details</div>
+          <div class="card-content">
+            <div class="info-box">
+              <h4 style="color: var(--primary); margin-bottom: 10px">
+                JavaFX 21
+              </h4>
+              <p>
+                Modern UI toolkit for Java desktop applications. Provides rich
+                graphics, media, and UI controls. Requires explicit module
+                declaration in Java 9+.
+              </p>
+              <p style="margin-top: 10px">
+                <strong>Key Components Used:</strong>
+              </p>
+              <ul style="margin-left: 20px">
+                <li>
+                  <code>javafx.application.Application</code> - Application
+                  lifecycle
+                </li>
+                <li><code>javafx.scene.Scene</code> - Scene graph container</li>
+                <li>
+                  <code>javafx.scene.layout.Pane</code> - Layout container
+                </li>
+                <li><code>javafx.scene.control.Label</code> - Text display</li>
+                <li>
+                  <code>javafx.scene.image.ImageView</code> - Image rendering
+                </li>
+                <li>
+                  <code>javafx.scene.shape.Rectangle</code> - Button hitboxes
+                </li>
+                <li>
+                  <code>javafx.scene.effect.ColorAdjust</code> - Visual effects
+                </li>
+              </ul>
+            </div>
+
+            <div class="info-box" style="margin-top: 20px">
+              <h4 style="color: var(--primary); margin-bottom: 10px">
+                Jackson Databind 2.15.2
+              </h4>
+              <p>
+                High-performance JSON processor for Java. Handles serialization
+                and deserialization between JSON and POJOs.
+              </p>
+              <p style="margin-top: 10px">
+                <strong>Why Jackson?</strong>
+              </p>
+              <ul style="margin-left: 20px">
+                <li>Fast and efficient JSON parsing</li>
+                <li>Automatic mapping to Java objects</li>
+                <li>Support for generic collections (List, Map)</li>
+                <li>Annotation-based customization available</li>
+                <li>Widely used industry standard</li>
+              </ul>
+              <p style="margin-top: 10px">
+                <strong>Key Class Used:</strong>
+                <code>com.fasterxml.jackson.databind.ObjectMapper</code>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Java Module System Configuration</div>
+          <div class="card-content">
+            <p>
+              The project uses JPMS (Java Platform Module System). The
+              <code>module-info.java</code> file declares module dependencies
+              and accessibility:
+            </p>
+            <pre>
+module com.pokedex {
+    // Required modules
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires com.fasterxml.jackson.databind;
+    
+    // Export packages (make accessible to other modules)
+    exports com.pokedex;
+    
+    // Open packages for reflection (needed for Jackson)
+    opens com.pokedex.model to com.fasterxml.jackson.databind;
+}</pre
+            >
+            <div class="warning" style="margin-top: 20px">
+              <strong>Important:</strong> The <code>opens</code> directive is
+              critical for Jackson. Without it, Jackson cannot use reflection to
+              access private fields in the Pokemon class, resulting in
+              deserialization errors.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Build Configuration</div>
+          <div class="card-content">
+            <p>
+              Key Maven plugin configuration for running the JavaFX application:
+            </p>
+            <pre>
+&lt;plugin&gt;
+    &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+    &lt;artifactId&gt;javafx-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;0.0.8&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;mainClass&gt;com.pokedex.PokedexApp&lt;/mainClass&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</pre
+            >
+            <p style="margin-top: 15px">
+              This plugin handles JavaFX module path configuration
+              automatically, allowing you to run the application with
+              <code>mvn javafx:run</code>.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Alternative Dependency Management</div>
+          <div class="card-content">
+            <p>
+              <strong>If not using Maven:</strong> You'll need to manually
+              configure module paths and classpath. Here's how for different
+              build systems:
+            </p>
+
+            <p style="margin-top: 15px">
+              <strong>Gradle Configuration:</strong>
+            </p>
+            <pre>
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
+}
+
+javafx {
+    version = "21"
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+}
+
+application {
+    mainModule = 'com.pokedex'
+    mainClass = 'com.pokedex.PokedexApp'
+}</pre
+            >
+
+            <p style="margin-top: 20px">
+              <strong>Manual Compilation (command line):</strong>
+            </p>
+            <div class="command-block">
+              # Compile<br />
+              javac --module-path /path/to/javafx-sdk-21/lib:jackson-jars \<br />
+              --add-modules javafx.controls,com.fasterxml.jackson.databind \<br />
+              -d out src/main/java/com/pokedex/*.java<br /><br />
+
+              # Run<br />
+              java --module-path /path/to/javafx-sdk-21/lib:jackson-jars:out
+              \<br />
+              --add-modules javafx.controls,com.fasterxml.jackson.databind \<br />
+              com.pokedex.PokedexApp
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BEST PRACTICES -->
+      <section id="best-practices" class="section">
+        <h2 class="section-title">Best Practices</h2>
+
+        <div class="highlight-box">
+          <h3 style="margin-bottom: 20px; color: var(--primary)">
+            Code Organization
+          </h3>
+          <ul class="feature-list">
+            <li>
+              <strong>MVC Separation:</strong> Keep business logic in Model, UI
+              in View, coordination in Controller. Never access View directly
+              from Model or vice versa - always go through Controller.
+            </li>
+            <li>
+              <strong>Constants:</strong> UI coordinates and dimensions are
+              defined as constants at the top of the View class for easy
+              maintenance. Group related constants together.
+            </li>
+            <li>
+              <strong>Resource Management:</strong> Use ClassLoader for resource
+              access to ensure portability between development and production
+              environments. Always use getResourceAsStream() for files in the
+              JAR.
+            </li>
+            <li>
+              <strong>Error Handling:</strong> Check for null resources and
+              handle loading failures gracefully with try-catch blocks and user
+              feedback.
+            </li>
+            <li>
+              <strong>State Validation:</strong> Always verify powered-on state
+              before allowing interactions. Use guard clauses at the start of
+              Controller methods.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-title">MVC Best Practices</div>
+          <div class="card-content">
+            <table>
+              <tr>
+                <th>✅ DO</th>
+                <th>❌ DON'T</th>
+              </tr>
+              <tr>
+                <td>
+                  Keep Model completely UI-independent - should work without
+                  JavaFX
+                </td>
+                <td>Import JavaFX classes in Model layer</td>
+              </tr>
+              <tr>
+                <td>Make View a passive component that only displays data</td>
+                <td>Put business logic or state management in View</td>
+              </tr>
+              <tr>
+                <td>
+                  Have Controller mediate all communication between layers
+                </td>
+                <td>
+                  Let Model directly update View or View directly change Model
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Return copies or immutable data from Model to prevent external
+                  modification
+                </td>
+                <td>
+                  Return direct references to internal collections in Model
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Keep methods focused with single responsibility (one method
+                  does one thing)
+                </td>
+                <td>Create large multi-purpose methods that do many things</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Security & Validation</div>
+          <div class="card-content">
+            <ul>
+              <li>
+                <strong>JSON Validation:</strong> Validate JSON structure before
+                deserialization to prevent parsing errors
+              </li>
+              <li>
+                <strong>Array Bounds:</strong> Check array bounds before
+                accessing Pokemon list (especially with user-driven navigation)
+              </li>
+              <li>
+                <strong>Resource Existence:</strong> Handle missing image files
+                gracefully with fallback images or error messages
+              </li>
+              <li>
+                <strong>Input Sanitization:</strong> If adding search
+                functionality, sanitize user input to prevent injection issues
+              </li>
+              <li>
+                <strong>Data Validation:</strong> Validate evolution stage
+                values (1-3), dex numbers (1-151), and ensure required fields
+                exist
+              </li>
+              <li>
+                <strong>Type Safety:</strong> Use strong typing and avoid raw
+                types or excessive casting
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Performance Considerations</div>
+          <div class="card-content">
+            <p><strong>Current Implementation:</strong></p>
+            <ul>
+              <li>
+                <strong>Lazy Image Loading:</strong> Images are loaded on-demand
+                per Pokemon, not all at startup - saves memory
+              </li>
+              <li>
+                <strong>JSON Caching:</strong> JSON is loaded once at startup
+                and cached in memory for the application lifetime
+              </li>
+              <li>
+                <strong>Effect Reuse:</strong> ColorAdjust effect is created
+                once and reused for all silhouettes
+              </li>
+              <li>
+                <strong>Font Sharing:</strong> Custom font is loaded once and
+                shared across all labels
+              </li>
+            </ul>
+
+            <p style="margin-top: 20px">
+              <strong>Optimization Opportunities:</strong>
+            </p>
+            <ul>
+              <li>
+                <strong>Image Caching:</strong> Cache loaded images to avoid
+                reloading when navigating back to previously viewed Pokemon
+              </li>
+              <li>
+                <strong>Preloading:</strong> Preload adjacent Pokemon images in
+                background for smoother navigation
+              </li>
+              <li>
+                <strong>Virtual Scrolling:</strong> If implementing a grid view,
+                only render visible items
+              </li>
+              <li>
+                <strong>Thumbnail Generation:</strong> Create smaller thumbnails
+                for list views to reduce memory usage
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Code Quality Guidelines</div>
+          <div class="card-content">
+            <ul class="feature-list">
+              <li>
+                <strong>Naming Conventions:</strong> Use descriptive names
+                (onPowerOn not doThing), follow Java naming standards
+              </li>
+              <li>
+                <strong>Documentation:</strong> Add Javadoc comments to public
+                methods explaining parameters and return values
+              </li>
+              <li>
+                <strong>Method Length:</strong> Keep methods short (ideally
+                under 30 lines) - extract complex logic into helper methods
+              </li>
+              <li>
+                <strong>Magic Numbers:</strong> Avoid magic numbers in code -
+                use named constants with descriptive names
+              </li>
+              <li>
+                <strong>DRY Principle:</strong> Don't Repeat Yourself - extract
+                repeated code into reusable methods
+              </li>
+              <li>
+                <strong>Error Messages:</strong> Provide helpful error messages
+                that guide users or developers to solutions
+              </li>
+              <li>
+                <strong>Logging:</strong> Use proper logging (java.util.logging)
+                instead of System.out.println for production code
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Testing Recommendations</div>
+          <div class="card-content">
+            <p>
+              While the current project doesn't include tests, here's what you
+              should test if expanding:
+            </p>
+            <p style="margin-top: 15px">
+              <strong>Model Layer (Easy to Unit Test):</strong>
+            </p>
+            <ul style="margin-left: 25px">
+              <li>Navigation boundary conditions (wrap-around)</li>
+              <li>Power state transitions</li>
+              <li>Reveal/hide toggle behavior</li>
+              <li>Data loading and parsing</li>
+              <li>State consistency after operations</li>
+            </ul>
+
+            <p style="margin-top: 15px">
+              <strong>Controller Layer (Integration Tests):</strong>
+            </p>
+            <ul style="margin-left: 25px">
+              <li>Event handler responses</li>
+              <li>View update triggers</li>
+              <li>State validation enforcement</li>
+            </ul>
+
+            <p style="margin-top: 15px">
+              <strong>View Layer (Manual/Visual Tests):</strong>
+            </p>
+            <ul style="margin-left: 25px">
+              <li>UI rendering correctness</li>
+              <li>Button positioning accuracy</li>
+              <li>Effect application (silhouettes)</li>
+              <li>Text wrapping and fitting</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Version Control Best Practices</div>
+          <div class="card-content">
+            <p><strong>.gitignore recommendations:</strong></p>
+            <pre>
+# Build artifacts
+target/
+*.class
+*.jar
+*.war
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Maven
+dependency-reduced-pom.xml
+
+# Logs
+*.log</pre
+            >
+            <p style="margin-top: 15px">
+              <strong>Commit Message Guidelines:</strong>
+            </p>
+            <ul style="margin-left: 25px">
+              <li>Use present tense: "Add feature" not "Added feature"</li>
+              <li>
+                Be specific: "Fix navigation wrap-around bug" not "Fix bug"
+              </li>
+              <li>Reference issues/tickets when applicable</li>
+              <li>Keep first line under 50 characters</li>
+              <li>Add detailed explanation in body for complex changes</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p style="font-size: 14px; margin-bottom: 10px">
+        JavaFX Pokedex Developer Documentation
+      </p>
+      <p style="font-size: 12px; opacity: 0.7">
+        Built with JavaFX 21 • MVC Architecture • Java Module System
+      </p>
+    </footer>
+  </body>
+</html>
