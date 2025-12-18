@@ -1,0 +1,40 @@
+# --- Maven Build Artifacts ---
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# If you use the Maven Wrapper
+!.mvn/wrapper/maven-wrapper.jar
+
+# --- VSCode Specific ---
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# --- Java/JVM Specific ---
+*.class
+*.log
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# --- OS Specific (Windows/macOS/Linux) ---
+Thumbs.db
+desktop.ini
+.DS_Store
+.directory
+
+# --- Crash reports and logs ---
+hs_err_pid*
+replay_pid*
