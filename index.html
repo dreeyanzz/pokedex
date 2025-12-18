@@ -3,9 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JavaFX Pokedex - Developer Documentation</title>
+    <title>Pokedex - Developer Documentation</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;600;800&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Prism.js Palenight Theme -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
       rel="stylesheet"
     />
     <style>
@@ -18,11 +23,25 @@
         --bg: #f8f8f8;
         --surface: #ffffff;
         --surface-dark: #1a1a1a;
-        --code-bg: #0d1117;
+        --code-bg: #292d3e;
         --success: #00c851;
         --border: #e0e0e0;
         --code-orange: #ff8c42;
         --code-yellow: #ffd166;
+
+        /* Palenight Theme Colors */
+        --palenight-bg: #292d3e;
+        --palenight-fg: #a6accd;
+        --palenight-selection: #717cb4;
+        --palenight-comment: #676e95;
+        --palenight-cyan: #89ddff;
+        --palenight-green: #c3e88d;
+        --palenight-orange: #f78c6c;
+        --palenight-pink: #ff5370;
+        --palenight-purple: #c792ea;
+        --palenight-red: #ff5370;
+        --palenight-yellow: #ffcb6b;
+        --palenight-blue: #82aaff;
       }
 
       * {
@@ -289,38 +308,106 @@
         color: var(--text);
       }
 
+      /* Palenight Theme for Code Blocks */
       code {
-        background: var(--code-bg);
-        color: var(--code-yellow);
+        background: var(--palenight-bg);
+        color: var(--palenight-cyan);
         padding: 3px 8px;
         border-radius: 4px;
         font-size: 14px;
         font-family: "Space Mono", monospace;
       }
+
       pre {
-        background: var(--code-bg);
-        color: var(--code-yellow);
-        padding: 25px;
-        border-radius: 8px;
+        background: var(--palenight-bg) !important;
+        padding: 25px !important;
+        border-radius: 8px !important;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        font-size: 13px;
-        line-height: 1.6;
-        margin: 15px 0;
+        font-size: 13px !important;
+        line-height: 1.6 !important;
+        margin: 15px 0 !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
+
+      pre code {
+        background: transparent !important;
+        padding: 0 !important;
+        color: var(--palenight-fg) !important;
+        font-size: 13px !important;
+      }
+
       pre::-webkit-scrollbar {
         height: 8px;
       }
       pre::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(0, 0, 0, 0.2);
         border-radius: 4px;
       }
       pre::-webkit-scrollbar-thumb {
-        background: rgba(255, 209, 102, 0.3);
+        background: rgba(130, 170, 255, 0.3);
         border-radius: 4px;
       }
       pre::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 209, 102, 0.5);
+        background: rgba(130, 170, 255, 0.5);
+      }
+
+      /* Prism Palenight Theme Overrides */
+      .token.comment,
+      .token.prolog,
+      .token.doctype,
+      .token.cdata {
+        color: var(--palenight-comment) !important;
+        font-style: italic;
+      }
+
+      .token.punctuation {
+        color: var(--palenight-fg) !important;
+      }
+
+      .token.property,
+      .token.tag,
+      .token.boolean,
+      .token.number,
+      .token.constant,
+      .token.symbol,
+      .token.deleted {
+        color: var(--palenight-orange) !important;
+      }
+
+      .token.selector,
+      .token.attr-name,
+      .token.string,
+      .token.char,
+      .token.builtin,
+      .token.inserted {
+        color: var(--palenight-green) !important;
+      }
+
+      .token.operator,
+      .token.entity,
+      .token.url,
+      .language-css .token.string,
+      .style .token.string {
+        color: var(--palenight-cyan) !important;
+      }
+
+      .token.atrule,
+      .token.attr-value,
+      .token.keyword {
+        color: var(--palenight-purple) !important;
+      }
+
+      .token.function,
+      .token.class-name {
+        color: var(--palenight-yellow) !important;
+      }
+
+      .token.regex,
+      .token.important,
+      .token.variable {
+        color: var(--palenight-orange) !important;
       }
 
       table {
@@ -379,13 +466,14 @@
       }
 
       .command-block {
-        background: var(--code-bg);
-        color: var(--code-yellow);
+        background: var(--palenight-bg);
+        color: var(--palenight-green);
         padding: 15px 20px;
         border-radius: 8px;
         font-family: "Space Mono", monospace;
         margin: 15px 0;
         border-left: 4px solid var(--primary);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
       .warning {
@@ -433,101 +521,168 @@
         line-height: 1.8;
       }
 
+      /* VS Code File Tree - Updated with Connectors */
       .tree-diagram {
-        font-family: "Space Mono", monospace;
+        font-family: "Consolas", "Monaco", "Courier New", monospace;
         background: #1e1e1e;
-        color: #d4d4d4;
-        padding: 30px;
+        color: #cccccc;
+        padding: 20px;
         border-radius: 8px;
         margin: 20px 0;
         overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        border: 1px solid #333;
+        border: 1px solid #2d2d30;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        font-size: 13px;
+        line-height: 22px;
       }
-      .tree-diagram::-webkit-scrollbar {
-        height: 8px;
-      }
-      .tree-diagram::-webkit-scrollbar-track {
-        background: #2a2a2a;
-        border-radius: 4px;
-      }
-      .tree-diagram::-webkit-scrollbar-thumb {
-        background: #4a4a4a;
-        border-radius: 4px;
-      }
-      .tree-diagram::-webkit-scrollbar-thumb:hover {
-        background: #5a5a5a;
-      }
-      .tree-list {
-        list-style: none;
-        padding-left: 0;
+
+      /* 1. Reset the list styles */
+      .tree-line {
         margin: 0;
-        margin-left: 24px;
-        position: relative;
+        padding-left: 20px; /* This defines the indentation width */
+        list-style: none;
       }
-      .tree-list::before {
+
+      /* 2. Reset padding for the very first root level so it sits flush */
+      .tree-diagram > .tree-line {
+        padding-left: 0;
+      }
+
+      /* 3. Prepare the list item for absolute positioning of lines */
+      .tree-line li {
+        position: relative;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      /* 4. THE VERTICAL LINE (│) 
+   Draws a line on the left side of every item */
+      .tree-line ul li::before {
         content: "";
         position: absolute;
         top: 0;
-        left: 10px;
         bottom: 0;
-        width: 1px;
-        background: #4a4a4a;
+        left: -10px; /* Position line in the padding area */
+        border-left: 1px solid #454545; /* Line color */
       }
-      .tree-list > li:last-child > .tree-list::before {
-        display: none;
-      }
-      .tree-item {
-        padding: 4px 0;
-        position: relative;
-        padding-left: 50px;
-        line-height: 1.6;
-        color: #d4d4d4;
-      }
-      .tree-item::before {
+
+      /* 5. THE HORIZONTAL LINE (─) 
+   Draws a dash connecting the vertical line to the text */
+      .tree-line ul li::after {
         content: "";
         position: absolute;
-        top: 14px;
-        left: 10px;
-        width: 14px;
-        height: 1px;
-        background: #4a4a4a;
+        top: 11px; /* Align with middle of text (approx half of line-height) */
+        left: -10px; /* Connect to vertical line */
+        width: 8px; /* Length of the branch */
+        border-top: 1px solid #454545;
       }
-      .tree-item::after {
-        position: absolute;
-        left: 28px;
-        top: 4px;
+
+      /* 6. THE CORNER FIX (└)
+   For the last item in a list, stop the vertical line 
+   at the horizontal intersection */
+      .tree-line ul li:last-child::before {
+        height: 12px; /* Stop vertical line at the branch height */
+      }
+
+      /* Existing Item Styles (Kept largely the same) */
+      .tree-item {
+        display: flex;
+        align-items: center;
+        padding: 1px 0;
+        white-space: nowrap;
+        /* Add a tiny gap so text doesn't touch the line */
+        padding-left: 5px;
+      }
+
+      .tree-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        cursor: default;
+      }
+
+      /* Icon containers */
+      .icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Folder icon base */
+      .icon-folder {
+        color: #dcb67a;
         font-size: 16px;
       }
-      .tree-item.folder {
-        color: var(--code-orange);
+
+      .icon-folder-src {
+        color: #90cbf9;
+      }
+
+      .icon-folder-resources {
+        color: #f1a60e;
+      }
+
+      .icon-folder-java {
+        color: #cc3e44;
+      }
+
+      .icon-folder-model {
+        color: #89e051;
+      }
+
+      .icon-folder-fonts {
+        color: #519aba;
+      }
+
+      /* File icons */
+      .icon-file-java {
+        color: #cc3e44;
+        font-weight: bold;
+        font-size: 10px;
+      }
+
+      .icon-file-json {
+        color: #cbcb41;
+        font-weight: bold;
+        font-size: 10px;
+      }
+
+      .icon-file-png {
+        color: #a074c4;
+        font-size: 14px;
+      }
+
+      .icon-file-ttf {
+        color: #519aba;
+        font-size: 14px;
+      }
+
+      .icon-file-xml {
+        color: #f47321;
+        font-weight: bold;
+        font-size: 10px;
+      }
+
+      .icon-file-md {
+        color: #42a5f5;
+        font-weight: bold;
+        font-size: 10px;
+      }
+
+      .file-name {
+        color: #cccccc;
+      }
+
+      .folder-name {
+        color: #cccccc;
         font-weight: 500;
       }
-      .tree-item.file {
-        color: var(--code-yellow);
-      }
-      .tree-item.folder::after {
-        content: "📁";
-        filter: saturate(0.7);
-      }
-      .tree-item.file::after {
-        content: "📄";
-        filter: saturate(0.5) brightness(0.9);
-      }
-      .tree-diagram > div:first-child {
-        color: var(--code-orange);
-        font-weight: 600;
-        margin-bottom: 12px;
-        font-size: 15px;
-        padding-left: 28px;
-        position: relative;
-      }
-      .tree-diagram > div:first-child::before {
-        content: "📁";
-        position: absolute;
-        left: 0;
-        font-size: 16px;
-        filter: saturate(0.7);
+
+      .text-dim {
+        color: #6a6a6a;
+        font-style: italic;
       }
 
       .footer {
@@ -751,7 +906,6 @@
         td {
           padding: 10px 8px;
         }
-        /* Make tables scrollable on mobile with visual indicator */
         .card-content {
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
@@ -773,7 +927,6 @@
         table {
           min-width: 600px;
         }
-        /* Add scroll shadow indicator */
         .card-content {
           position: relative;
         }
@@ -792,15 +945,24 @@
           pointer-events: none;
         }
         pre {
-          padding: 15px;
-          font-size: 12px;
+          padding: 15px !important;
+          font-size: 12px !important;
         }
         code {
           font-size: 12px;
         }
         .tree-diagram {
-          padding: 20px;
-          font-size: 13px;
+          padding: 15px;
+          font-size: 12px;
+          line-height: 20px;
+        }
+        .tree-line .tree-line {
+          padding-left: 14px;
+        }
+        .icon {
+          width: 14px;
+          height: 14px;
+          font-size: 12px;
         }
         .flow-diagram {
           padding: 20px 10px;
@@ -844,14 +1006,18 @@
           gap: 10px;
         }
         .tree-diagram {
-          padding: 15px;
-          font-size: 12px;
+          padding: 12px;
+          font-size: 11px;
+          line-height: 18px;
         }
-        .tree-list {
-          margin-left: 16px;
+        .tree-line .tree-line {
+          padding-left: 12px;
         }
-        .tree-item {
-          padding-left: 36px;
+        .icon {
+          width: 13px;
+          height: 13px;
+          font-size: 11px;
+          margin-right: 4px;
         }
         .flow-box-title {
           font-size: 14px;
@@ -1235,8 +1401,7 @@
               (Plain Old Java Object) is used by Jackson for JSON
               deserialization.
             </p>
-            <pre>
-public class Pokemon {
+            <pre><code class="language-java">public class Pokemon {
     private String picture;          // Filename of sprite image
     private String name;             // Pokémon name
     private int evolutionStage;      // 1, 2, or 3
@@ -1246,8 +1411,7 @@ public class Pokemon {
     private List&lt;String&gt; types;      // e.g., ["Fire", "Flying"]
     
     // Getters and setters for all fields
-}</pre
-            >
+}</code></pre>
             <div class="info-box" style="margin-top: 20px">
               <strong>Jackson Annotations:</strong> No special annotations are
               needed because field names match JSON keys exactly. Jackson uses
@@ -1266,8 +1430,7 @@ public class Pokemon {
               initializes the MVC components. It sets up the Scene and Stage,
               then delegates control to the Controller.
             </p>
-            <pre>
-public class PokedexApp extends Application {
+            <pre><code class="language-java">public class PokedexApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Initialize MVC components
@@ -1292,8 +1455,7 @@ public class PokedexApp extends Application {
         // Initial display
         controller.updateView();
     }
-}</pre
-            >
+}</code></pre>
           </div>
         </div>
 
@@ -1306,8 +1468,7 @@ public class PokedexApp extends Application {
               to load resources, ensuring they work correctly whether running
               from IDE or JAR file.
             </p>
-            <pre>
-// Loading an image
+            <pre><code class="language-java">// Loading an image
 InputStream stream = getClass()
     .getResourceAsStream("/pokedex/bulbasaur.png");
 if (stream != null) {
@@ -1318,8 +1479,7 @@ if (stream != null) {
 // Loading font
 InputStream fontStream = getClass()
     .getResourceAsStream("/fonts/PressStart2P-Regular.ttf");
-Font customFont = Font.loadFont(fontStream, 12);</pre
-            >
+Font customFont = Font.loadFont(fontStream, 12);</code></pre>
             <div class="warning" style="margin-top: 20px">
               <strong>Always check for null!</strong> If a resource is not
               found, <code>getResourceAsStream()</code> returns null. Always
@@ -1336,8 +1496,7 @@ Font customFont = Font.loadFont(fontStream, 12);</pre
               Java objects. The Model uses this to populate the Pokémon list at
               startup.
             </p>
-            <pre>
-public void loadPokemonData() throws IOException {
+            <pre><code class="language-java">public void loadPokemonData() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     InputStream jsonStream = getClass()
         .getResourceAsStream("/kanto_pokemon.json");
@@ -1353,8 +1512,7 @@ public void loadPokemonData() throws IOException {
     );
     
     currentIndex = 0; // Start at first Pokémon
-}</pre
-            >
+}</code></pre>
           </div>
         </div>
 
@@ -1366,8 +1524,7 @@ public void loadPokemonData() throws IOException {
               background image. Constants define each component's exact location
               to ensure pixel-perfect alignment.
             </p>
-            <pre>
-// View class constants
+            <pre><code class="language-java">// View class constants
 private static final double SCREEN_X = 128;
 private static final double SCREEN_Y = 125;
 private static final double SCREEN_WIDTH = 104;
@@ -1379,8 +1536,7 @@ private static final double NAME_Y = 128;
 private static final double DESC_X = 77;
 private static final double DESC_Y = 314;
 private static final double DESC_WIDTH = 111;
-private static final double DESC_HEIGHT = 43;</pre
-            >
+private static final double DESC_HEIGHT = 43;</code></pre>
             <div class="info-box" style="margin-top: 20px">
               <strong>Design Principle:</strong> This approach trades
               flexibility for precision. The UI perfectly matches the background
@@ -1397,8 +1553,7 @@ private static final double DESC_HEIGHT = 43;</pre
               Pokémon sprite is shown as a black silhouette using JavaFX's
               ColorAdjust effect.
             </p>
-            <pre>
-// Create the effect
+            <pre><code class="language-java">// Create the effect
 ColorAdjust blackout = new ColorAdjust();
 blackout.setBrightness(-1.0);  // Maximum darkness
 
@@ -1407,8 +1562,7 @@ if (!model.isRevealMode()) {
     pokemonImageView.setEffect(blackout);
 } else {
     pokemonImageView.setEffect(null);  // Clear effect
-}</pre
-            >
+}</code></pre>
           </div>
         </div>
       </section>
@@ -1421,49 +1575,215 @@ if (!model.isRevealMode()) {
           <div class="card-title">📁 Directory Layout</div>
           <div class="card-content">
             <div class="tree-diagram">
-              <div>pokedex-project/</div>
-              <ul class="tree-list">
-                <li class="tree-item folder">src/</li>
-                <ul class="tree-list">
-                  <li class="tree-item folder">main/</li>
-                  <ul class="tree-list">
-                    <li class="tree-item folder">java/</li>
-                    <ul class="tree-list">
-                      <li class="tree-item folder">com.pokedex/</li>
-                      <ul class="tree-list">
-                        <li class="tree-item file">PokedexApp.java</li>
-                        <li class="tree-item file">PokedexController.java</li>
-                        <li class="tree-item file">PokedexModel.java</li>
-                        <li class="tree-item file">PokedexView.java</li>
-                        <li class="tree-item folder">model/</li>
-                        <ul class="tree-list">
-                          <li class="tree-item file">Pokemon.java</li>
-                        </ul>
-                      </ul>
-                      <li class="tree-item file">module-info.java</li>
-                    </ul>
-                    <li class="tree-item folder">resources/</li>
-                    <ul class="tree-list">
-                      <li class="tree-item file">kanto_pokemon.json</li>
-                      <li class="tree-item folder">pokedex/</li>
-                      <ul class="tree-list">
-                        <li class="tree-item file">pokedex.png</li>
-                        <li class="tree-item file">bulbasaur.png</li>
-                        <li class="tree-item file">ivysaur.png</li>
-                        <li class="tree-item file">... (more sprites)</li>
-                        <li class="tree-item file">
-                          (151 Pokemon images total)
+              <ul class="tree-line">
+                <li>
+                  <div class="tree-item">
+                    <span class="icon icon-folder">📁</span>
+                    <span class="folder-name">pokedex-project</span>
+                  </div>
+                  <ul class="tree-line">
+                    <li>
+                      <div class="tree-item">
+                        <span class="icon icon-folder-src">📂</span>
+                        <span class="folder-name">src</span>
+                      </div>
+                      <ul class="tree-line">
+                        <li>
+                          <div class="tree-item">
+                            <span class="icon icon-folder">📁</span>
+                            <span class="folder-name">main</span>
+                          </div>
+                          <ul class="tree-line">
+                            <li>
+                              <div class="tree-item">
+                                <span class="icon icon-folder-java">📁</span>
+                                <span class="folder-name">java</span>
+                              </div>
+                              <ul class="tree-line">
+                                <li>
+                                  <div class="tree-item">
+                                    <span class="icon icon-folder">📁</span>
+                                    <span class="folder-name">com.pokedex</span>
+                                  </div>
+                                  <ul class="tree-line">
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-file-java"
+                                          >J</span
+                                        >
+                                        <span class="file-name"
+                                          >PokedexApp.java</span
+                                        >
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-file-java"
+                                          >J</span
+                                        >
+                                        <span class="file-name"
+                                          >PokedexController.java</span
+                                        >
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-file-java"
+                                          >J</span
+                                        >
+                                        <span class="file-name"
+                                          >PokedexModel.java</span
+                                        >
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-file-java"
+                                          >J</span
+                                        >
+                                        <span class="file-name"
+                                          >PokedexView.java</span
+                                        >
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-folder-model"
+                                          >📁</span
+                                        >
+                                        <span class="folder-name">model</span>
+                                      </div>
+                                      <ul class="tree-line">
+                                        <li>
+                                          <div class="tree-item">
+                                            <span class="icon icon-file-java"
+                                              >J</span
+                                            >
+                                            <span class="file-name"
+                                              >Pokemon.java</span
+                                            >
+                                          </div>
+                                        </li>
+                                      </ul>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li>
+                                  <div class="tree-item">
+                                    <span class="icon icon-file-java">J</span>
+                                    <span class="file-name"
+                                      >module-info.java</span
+                                    >
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="tree-item">
+                                <span class="icon icon-folder-resources"
+                                  >📁</span
+                                >
+                                <span class="folder-name">resources</span>
+                              </div>
+                              <ul class="tree-line">
+                                <li>
+                                  <div class="tree-item">
+                                    <span class="icon icon-file-json">{}</span>
+                                    <span class="file-name"
+                                      >kanto_pokemon.json</span
+                                    >
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="tree-item">
+                                    <span class="icon icon-folder">📁</span>
+                                    <span class="folder-name">pokedex</span>
+                                  </div>
+                                  <ul class="tree-line">
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-file-png"
+                                          >🖼</span
+                                        >
+                                        <span class="file-name"
+                                          >pokedex.png</span
+                                        >
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-file-png"
+                                          >🖼</span
+                                        >
+                                        <span class="file-name"
+                                          >bulbasaur.png</span
+                                        >
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-file-png"
+                                          >🖼</span
+                                        >
+                                        <span class="file-name"
+                                          >ivysaur.png</span
+                                        >
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item text-dim">
+                                        <span class="icon"></span>
+                                        <span>... (more sprites)</span>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item text-dim">
+                                        <span class="icon"></span>
+                                        <span>(151 Pokemon images total)</span>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li>
+                                  <div class="tree-item">
+                                    <span class="icon icon-folder-fonts"
+                                      >📁</span
+                                    >
+                                    <span class="folder-name">fonts</span>
+                                  </div>
+                                  <ul class="tree-line">
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-file-ttf"
+                                          >🔤</span
+                                        >
+                                        <span class="file-name"
+                                          >PressStart2P-Regular.ttf</span
+                                        >
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
                         </li>
                       </ul>
-                      <li class="tree-item folder">fonts/</li>
-                      <ul class="tree-list">
-                        <li class="tree-item file">PressStart2P-Regular.ttf</li>
-                      </ul>
-                    </ul>
+                    </li>
+                    <li>
+                      <div class="tree-item">
+                        <span class="icon icon-file-xml">&lt;&gt;</span>
+                        <span class="file-name">pom.xml</span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="tree-item">
+                        <span class="icon icon-file-md">M</span>
+                        <span class="file-name">README.md</span>
+                      </div>
+                    </li>
                   </ul>
-                </ul>
-                <li class="tree-item file">pom.xml</li>
-                <li class="tree-item file">README.md</li>
+                </li>
               </ul>
             </div>
           </div>
@@ -1501,15 +1821,15 @@ if (!model.isRevealMode()) {
               <strong>Module System Note:</strong> Ensure your
               <code>module-info.java</code> properly exports packages and opens
               the model package to Jackson for reflection:
-              <pre style="margin-top: 10px">
-module com.pokedex {
+              <pre
+                style="margin-top: 10px"
+              ><code class="language-java">module com.pokedex {
     requires javafx.controls;
     requires com.fasterxml.jackson.databind;
     
     exports com.pokedex;
     opens com.pokedex.model to com.fasterxml.jackson.databind;
-}</pre
-              >
+}</code></pre>
             </div>
           </div>
         </div>
@@ -1518,8 +1838,7 @@ module com.pokedex {
           <div class="card-title">Maven Configuration (pom.xml)</div>
           <div class="card-content">
             <p>Key sections of the Maven configuration:</p>
-            <pre>
-&lt;properties&gt;
+            <pre><code class="language-xml">&lt;properties&gt;
     &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
     &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
     &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
@@ -1550,8 +1869,7 @@ module com.pokedex {
             &lt;/configuration&gt;
         &lt;/plugin&gt;
     &lt;/plugins&gt;
-&lt;/build&gt;</pre
-            >
+&lt;/build&gt;</code></pre>
           </div>
         </div>
       </section>
@@ -1567,8 +1885,7 @@ module com.pokedex {
               The Pokémon data is stored in a JSON array. Each entry follows
               this structure:
             </p>
-            <pre>
-[
+            <pre><code class="language-json">[
   {
     "picture": "bulbasaur.png",
     "name": "Bulbasaur",
@@ -1587,8 +1904,7 @@ module com.pokedex {
     "isLegendary": false,
     "types": ["Grass", "Poison"]
   }
-]</pre
-            >
+]</code></pre>
           </div>
         </div>
 
@@ -1883,8 +2199,7 @@ module com.pokedex {
               allowing absolute positioning of all children. Key implementation
               points:
             </p>
-            <pre>
-// Root container setup
+            <pre><code class="language-java">// Root container setup
 Pane root = new Pane();
 root.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -1902,8 +2217,7 @@ pokemonImageView.setFitHeight(SCREEN_HEIGHT);
 
 nameLabel.setLayoutX(NAME_X);
 nameLabel.setLayoutY(NAME_Y);
-nameLabel.setFont(pixelFont);</pre
-            >
+nameLabel.setFont(pixelFont);</code></pre>
           </div>
         </div>
 
@@ -2651,8 +2965,7 @@ nameLabel.setFont(pixelFont);</pre
               <code>module-info.java</code> file declares module dependencies
               and accessibility:
             </p>
-            <pre>
-module com.pokedex {
+            <pre><code class="language-java">module com.pokedex {
     // Required modules
     requires javafx.controls;
     requires javafx.fxml;
@@ -2663,8 +2976,7 @@ module com.pokedex {
     
     // Open packages for reflection (needed for Jackson)
     opens com.pokedex.model to com.fasterxml.jackson.databind;
-}</pre
-            >
+}</code></pre>
             <div class="warning" style="margin-top: 20px">
               <strong>Important:</strong> The <code>opens</code> directive is
               critical for Jackson. Without it, Jackson cannot use reflection to
@@ -2680,16 +2992,14 @@ module com.pokedex {
             <p>
               Key Maven plugin configuration for running the JavaFX application:
             </p>
-            <pre>
-&lt;plugin&gt;
+            <pre><code class="language-xml">&lt;plugin&gt;
     &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
     &lt;artifactId&gt;javafx-maven-plugin&lt;/artifactId&gt;
     &lt;version&gt;0.0.8&lt;/version&gt;
     &lt;configuration&gt;
         &lt;mainClass&gt;com.pokedex.PokedexApp&lt;/mainClass&gt;
     &lt;/configuration&gt;
-&lt;/plugin&gt;</pre
-            >
+&lt;/plugin&gt;</code></pre>
             <p style="margin-top: 15px">
               This plugin handles JavaFX module path configuration
               automatically, allowing you to run the application with
@@ -2710,8 +3020,7 @@ module com.pokedex {
             <p style="margin-top: 15px">
               <strong>Gradle Configuration:</strong>
             </p>
-            <pre>
-plugins {
+            <pre><code class="language-groovy">plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.14'
 }
@@ -2728,8 +3037,7 @@ dependencies {
 application {
     mainModule = 'com.pokedex'
     mainClass = 'com.pokedex.PokedexApp'
-}</pre
-            >
+}</code></pre>
 
             <p style="margin-top: 20px">
               <strong>Manual Compilation (command line):</strong>
@@ -2994,8 +3302,7 @@ application {
           <div class="card-title">Version Control Best Practices</div>
           <div class="card-content">
             <p><strong>.gitignore recommendations:</strong></p>
-            <pre>
-# Build artifacts
+            <pre><code class="language-bash"># Build artifacts
 target/
 *.class
 *.jar
@@ -3017,8 +3324,7 @@ Thumbs.db
 dependency-reduced-pom.xml
 
 # Logs
-*.log</pre
-            >
+*.log</code></pre>
             <p style="margin-top: 15px">
               <strong>Commit Message Guidelines:</strong>
             </p>
@@ -3044,5 +3350,13 @@ dependency-reduced-pom.xml
         Built with JavaFX 21 • MVC Architecture • Java Module System
       </p>
     </footer>
+
+    <!-- Prism.js for Syntax Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-groovy.min.js"></script>
   </body>
 </html>
