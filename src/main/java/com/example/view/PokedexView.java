@@ -1,16 +1,19 @@
 package com.example.view;
 
+import java.io.InputStream;
+import java.util.List;
+
 import com.example.model.Pokemon;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-
-import java.io.InputStream;
-import java.util.List;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer; // Add this import
+import javafx.scene.text.Font; // Add this import
 
 /**
  * View class for the Pokedex application.
@@ -24,7 +27,7 @@ public class PokedexView {
     private static final double SCREEN_W = 104, SCREEN_H = 104;
     private static final double POKEMON_NUMBER_X = 79, POKEMON_NUMBER_Y = 140;
     private static final double DESC_X = 77, DESC_Y = 314, DESC_W = 111, DESC_H = 43;
-    
+
     // Button hitboxes
     private static final double BTN_REVEAL_X = 30, BTN_REVEAL_Y = 272, BTN_REVEAL_SIZE = 37;
     private static final double BTN_LEFT_X = 205, BTN_LEFT_Y = 309, NAV_W = 17, NAV_H = 17;
@@ -41,7 +44,7 @@ public class PokedexView {
     private Label detailsLabel2;
     private Label detailsLabel3;
     private ColorAdjust silhouetteEffect;
-    
+
     // Buttons
     private Button btnReveal;
     private Button btnOn;
@@ -50,13 +53,14 @@ public class PokedexView {
     private Button btnRight;
 
     private final Class<?> resourceClass;
+    private MediaPlayer mediaPlayer; // Add a field to keep track of the player
 
     public PokedexView(Class<?> resourceClass) {
         this.resourceClass = resourceClass;
         this.root = new Pane();
         this.silhouetteEffect = new ColorAdjust();
         this.silhouetteEffect.setBrightness(-1.0);
-        
+
         initializeUI();
     }
 
@@ -73,8 +77,7 @@ public class PokedexView {
     private void setupBackground() {
         try {
             ImageView background = new ImageView(
-                new Image(resourceClass.getResourceAsStream("/pokedex_bg.png"))
-            );
+                    new Image(resourceClass.getResourceAsStream("/pokedex_bg.png")));
             background.setFitWidth(WIN_W);
             background.setFitHeight(WIN_H);
             root.getChildren().add(background);
@@ -91,7 +94,7 @@ public class PokedexView {
         mainScreenImage.setFitHeight(SCREEN_H);
         mainScreenImage.setPreserveRatio(true);
         mainScreenImage.setEffect(silhouetteEffect);
-        
+
         root.getChildren().add(mainScreenImage);
     }
 
@@ -111,12 +114,11 @@ public class PokedexView {
         detailsLabel3.setPrefWidth(172);
 
         root.getChildren().addAll(
-            pokemonNumberLabel, 
-            descriptionLabel, 
-            detailsLabel1, 
-            detailsLabel2, 
-            detailsLabel3
-        );
+                pokemonNumberLabel,
+                descriptionLabel,
+                detailsLabel1,
+                detailsLabel2,
+                detailsLabel3);
     }
 
     private void setupButtons() {
@@ -134,19 +136,18 @@ public class PokedexView {
         lbl.setLayoutX(x);
         lbl.setLayoutY(y);
         lbl.autosize();
-        
+
         try {
             Font f = Font.loadFont(
-                resourceClass.getResourceAsStream("/fonts/PressStart2P-Regular.ttf"), 
-                fontSize
-            );
+                    resourceClass.getResourceAsStream("/fonts/PressStart2P-Regular.ttf"),
+                    fontSize);
             if (f != null) {
                 lbl.setFont(f);
             }
         } catch (Exception e) {
             System.out.println("Font not found");
         }
-        
+
         lbl.setStyle("-fx-text-fill: " + colorHex + ";");
         return lbl;
     }
@@ -164,7 +165,8 @@ public class PokedexView {
      * Display a Pokemon in revealed state
      */
     public void displayPokemonRevealed(Pokemon pokemon) {
-        if (pokemon == null) return;
+        if (pokemon == null)
+            return;
 
         // Remove silhouette effect
         mainScreenImage.setEffect(null);
@@ -183,10 +185,35 @@ public class PokedexView {
     }
 
     /**
+     * Plays the "Who's that Pokemon" sound effect.
+     */
+    private void playWhosThatPokemonSound() {
+        try {
+            // Stop existing sound if it's already playing
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
+
+            String path = resourceClass.getResource("/whos-that-pokemon.mp3").toExternalForm();
+            Media media = new Media(path);
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.err.println("Could not play sound: " + e.getMessage());
+        }
+    }
+
+    /**
      * Display a Pokemon in hidden/silhouette state
      */
-    public void displayPokemonHidden(Pokemon pokemon) {
-        if (pokemon == null) return;
+    public void displayPokemonHidden(Pokemon pokemon, boolean isPoweredOn) {
+        if (pokemon == null)
+            return;
+
+        // Play the sound effect
+        if (isPoweredOn) {
+            playWhosThatPokemonSound();
+        }
 
         // Apply silhouette effect
         mainScreenImage.setEffect(silhouetteEffect);

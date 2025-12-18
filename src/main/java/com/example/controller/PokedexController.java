@@ -124,7 +124,7 @@ public class PokedexController {
         if (model.isRevealed()) {
             view.displayPokemonRevealed(currentPokemon);
         } else {
-            view.displayPokemonHidden(currentPokemon);
+            view.displayPokemonHidden(currentPokemon, model.isPoweredOn());
         }
     }
 
