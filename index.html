@@ -72,7 +72,7 @@
           var(--secondary) 100%
         );
         color: white;
-        padding: 80px 40px;
+        padding: 60px 20px;
         position: relative;
         overflow: hidden;
       }
@@ -101,8 +101,8 @@
 
       .title {
         font-family: "Press Start 2P", cursive;
-        font-size: 48px;
-        margin-bottom: 20px;
+        font-size: 32px;
+        margin-bottom: 15px;
         text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
         animation: glitch 3s infinite;
       }
@@ -125,42 +125,56 @@
         }
       }
       .subtitle {
-        font-size: 18px;
+        font-size: 14px;
         opacity: 0.9;
         font-weight: 400;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
       }
 
       /* --- NAVIGATION --- */
       .nav {
         background: var(--surface-dark);
-        padding: 20px 40px;
         position: sticky;
         top: 0;
         z-index: 100;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       }
+
+      .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--accent);
+        font-size: 24px;
+        padding: 15px 20px;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+      }
+
       .nav-content {
         max-width: 1200px;
         margin: 0 auto;
         display: flex;
-        gap: 30px;
+        gap: 20px;
         flex-wrap: wrap;
+        padding: 15px 20px;
       }
+
       .nav a {
         color: var(--accent);
         text-decoration: none;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
         transition: all 0.3s;
         position: relative;
-        padding: 10px 5px;
+        padding: 8px 5px;
         display: inline-block;
       }
       .nav a::after {
         content: "";
         position: absolute;
-        bottom: 5px;
+        bottom: 3px;
         left: 0;
         width: 0;
         height: 2px;
@@ -178,12 +192,12 @@
       .container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 60px 40px;
+        padding: 40px 20px;
       }
       .section {
-        margin-bottom: 80px;
+        margin-bottom: 60px;
         animation: fadeInUp 0.6s ease-out;
-        scroll-margin-top: 100px;
+        scroll-margin-top: 80px;
       }
       @keyframes fadeInUp {
         from {
@@ -197,8 +211,8 @@
       }
 
       .section-title {
-        font-size: 36px;
-        margin-bottom: 30px;
+        font-size: 28px;
+        margin-bottom: 25px;
         color: var(--primary);
         font-weight: 800;
         position: relative;
@@ -206,16 +220,16 @@
       }
       .section-title::before {
         content: "//";
-        margin-right: 15px;
+        margin-right: 12px;
         color: var(--secondary);
       }
       .section-title::after {
         content: "";
         position: absolute;
-        bottom: -10px;
+        bottom: -8px;
         left: 0;
         width: 100%;
-        height: 4px;
+        height: 3px;
         background: linear-gradient(90deg, var(--primary), var(--accent));
       }
 
@@ -224,8 +238,8 @@
         background: var(--surface);
         border: 2px solid var(--border);
         border-radius: 12px;
-        padding: 30px;
-        margin-bottom: 30px;
+        padding: 25px;
+        margin-bottom: 25px;
         transition: all 0.3s;
         position: relative;
         overflow: hidden;
@@ -241,22 +255,15 @@
         transform: scaleY(0);
         transition: transform 0.3s;
       }
-      .card:hover::before {
-        transform: scaleY(1);
-      }
-      .card:hover {
-        transform: translateX(10px);
-        box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.1);
-      }
 
-      /* Disable hover effects on touch devices */
-      @media (hover: none) {
-        .card:hover {
-          transform: none;
-          box-shadow: none;
-        }
+      /* Only apply hover effects on non-touch devices */
+      @media (hover: hover) and (pointer: fine) {
         .card:hover::before {
-          transform: scaleY(0);
+          transform: scaleY(1);
+        }
+        .card:hover {
+          transform: translateX(10px);
+          box-shadow: -10px 10px 30px rgba(0, 0, 0, 0.1);
         }
       }
 
@@ -265,10 +272,10 @@
       }
 
       .card-title {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 700;
         color: var(--code-orange);
-        margin-bottom: 15px;
+        margin-bottom: 12px;
       }
       .card-content {
         color: var(--text-light);
@@ -277,22 +284,22 @@
 
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-        margin-top: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 25px;
       }
 
       /* --- ELEMENTS --- */
       .badge {
         display: inline-block;
-        padding: 6px 16px;
+        padding: 5px 14px;
         background: var(--secondary);
         color: white;
         border-radius: 20px;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
-        margin-right: 10px;
-        margin-bottom: 10px;
+        margin-right: 8px;
+        margin-bottom: 8px;
       }
       .badge.mvc {
         background: var(--primary);
@@ -312,15 +319,16 @@
       code {
         background: var(--palenight-bg);
         color: var(--palenight-cyan);
-        padding: 3px 8px;
+        padding: 2px 6px;
         border-radius: 4px;
-        font-size: 14px;
+        font-size: 13px;
         font-family: "Space Mono", monospace;
+        word-break: break-word;
       }
 
       pre {
         background: var(--palenight-bg) !important;
-        padding: 25px !important;
+        padding: 20px !important;
         border-radius: 8px !important;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -414,37 +422,31 @@
         width: 100%;
         border-collapse: collapse;
         margin: 20px 0;
-        font-size: 14px;
+        font-size: 13px;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
       th {
         background: var(--secondary);
         color: white;
-        padding: 12px;
+        padding: 12px 10px;
         text-align: left;
         font-weight: 600;
-        position: sticky;
-        top: 0;
-        z-index: 10;
+        white-space: nowrap;
       }
       td {
-        padding: 12px;
+        padding: 12px 10px;
         border-bottom: 1px solid var(--border);
       }
       tr:last-child td {
         border-bottom: none;
       }
-      tr:hover {
-        background: rgba(59, 76, 202, 0.05);
-      }
 
-      /* Scrollable table wrapper for mobile */
-      .table-wrapper {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        margin: 20px 0;
-      }
-      .table-wrapper table {
-        margin: 0;
+      @media (hover: hover) and (pointer: fine) {
+        tr:hover {
+          background: rgba(59, 76, 202, 0.05);
+        }
       }
 
       .feature-list {
@@ -452,8 +454,8 @@
         padding: 0;
       }
       .feature-list li {
-        padding: 12px 0;
-        padding-left: 30px;
+        padding: 10px 0;
+        padding-left: 25px;
         position: relative;
       }
       .feature-list li::before {
@@ -462,24 +464,27 @@
         left: 0;
         color: var(--primary);
         font-weight: bold;
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .command-block {
         background: var(--palenight-bg);
         color: var(--palenight-green);
-        padding: 15px 20px;
+        padding: 15px;
         border-radius: 8px;
         font-family: "Space Mono", monospace;
         margin: 15px 0;
         border-left: 4px solid var(--primary);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        font-size: 13px;
       }
 
       .warning {
         background: rgba(255, 222, 0, 0.1);
         border-left: 4px solid var(--accent);
-        padding: 15px 20px;
+        padding: 15px;
         border-radius: 4px;
         margin: 15px 0;
       }
@@ -487,7 +492,7 @@
       .info-box {
         background: rgba(59, 76, 202, 0.1);
         border-left: 4px solid var(--secondary);
-        padding: 20px;
+        padding: 18px;
         border-radius: 8px;
         margin: 20px 0;
       }
@@ -500,28 +505,28 @@
         );
         border: 2px solid var(--border);
         border-radius: 12px;
-        padding: 30px;
-        margin: 30px 0;
+        padding: 25px;
+        margin: 25px 0;
       }
 
       ol {
-        margin-left: 25px;
+        margin-left: 20px;
         color: var(--text-light);
       }
       ol li {
-        padding: 8px 0;
+        padding: 6px 0;
         line-height: 1.8;
       }
       ul {
-        margin-left: 25px;
+        margin-left: 20px;
         color: var(--text-light);
       }
       ul li {
-        padding: 8px 0;
+        padding: 6px 0;
         line-height: 1.8;
       }
 
-      /* VS Code File Tree - Updated with Connectors */
+      /* VS Code File Tree */
       .tree-diagram {
         font-family: "Consolas", "Monaco", "Courier New", monospace;
         background: #1e1e1e;
@@ -530,76 +535,66 @@
         border-radius: 8px;
         margin: 20px 0;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
         border: 1px solid #2d2d30;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         font-size: 13px;
         line-height: 22px;
       }
 
-      /* 1. Reset the list styles */
       .tree-line {
         margin: 0;
-        padding-left: 20px; /* This defines the indentation width */
+        padding-left: 20px;
         list-style: none;
       }
 
-      /* 2. Reset padding for the very first root level so it sits flush */
       .tree-diagram > .tree-line {
         padding-left: 0;
       }
 
-      /* 3. Prepare the list item for absolute positioning of lines */
       .tree-line li {
         position: relative;
         padding-top: 0;
         padding-bottom: 0;
       }
 
-      /* 4. THE VERTICAL LINE (│) 
-   Draws a line on the left side of every item */
       .tree-line ul li::before {
         content: "";
         position: absolute;
         top: 0;
         bottom: 0;
-        left: -10px; /* Position line in the padding area */
-        border-left: 1px solid #454545; /* Line color */
+        left: -10px;
+        border-left: 1px solid #454545;
       }
 
-      /* 5. THE HORIZONTAL LINE (─) 
-   Draws a dash connecting the vertical line to the text */
       .tree-line ul li::after {
         content: "";
         position: absolute;
-        top: 11px; /* Align with middle of text (approx half of line-height) */
-        left: -10px; /* Connect to vertical line */
-        width: 8px; /* Length of the branch */
+        top: 11px;
+        left: -10px;
+        width: 8px;
         border-top: 1px solid #454545;
       }
 
-      /* 6. THE CORNER FIX (└)
-   For the last item in a list, stop the vertical line 
-   at the horizontal intersection */
       .tree-line ul li:last-child::before {
-        height: 12px; /* Stop vertical line at the branch height */
+        height: 12px;
       }
 
-      /* Existing Item Styles (Kept largely the same) */
       .tree-item {
         display: flex;
         align-items: center;
         padding: 1px 0;
         white-space: nowrap;
-        /* Add a tiny gap so text doesn't touch the line */
         padding-left: 5px;
       }
 
-      .tree-item:hover {
-        background: rgba(255, 255, 255, 0.05);
-        cursor: default;
+      @media (hover: hover) and (pointer: fine) {
+        .tree-item:hover {
+          background: rgba(255, 255, 255, 0.05);
+          cursor: default;
+        }
       }
 
-      /* Icon containers */
       .icon {
         width: 16px;
         height: 16px;
@@ -610,7 +605,6 @@
         justify-content: center;
       }
 
-      /* Folder icon base */
       .icon-folder {
         color: #dcb67a;
         font-size: 16px;
@@ -636,7 +630,6 @@
         color: #519aba;
       }
 
-      /* File icons */
       .icon-file-java {
         color: #cc3e44;
         font-weight: bold;
@@ -689,13 +682,13 @@
         background: var(--surface-dark);
         color: white;
         text-align: center;
-        padding: 40px 20px;
-        margin-top: 80px;
+        padding: 30px 20px;
+        margin-top: 60px;
       }
 
       /* Flow Diagram Styles */
       .flow-diagram {
-        padding: 40px 20px;
+        padding: 30px 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -705,29 +698,35 @@
         background: white;
         border: 2px solid var(--border);
         border-radius: 8px;
-        padding: 20px 30px;
-        min-width: 280px;
+        padding: 18px 25px;
+        min-width: 240px;
+        width: 100%;
+        max-width: 400px;
         text-align: center;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         transition: all 0.3s;
       }
-      .flow-box:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+      @media (hover: hover) and (pointer: fine) {
+        .flow-box:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
       }
+
       .flow-box-title {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 800;
         margin-bottom: 8px;
         letter-spacing: 0.5px;
       }
       .flow-box-subtitle {
-        font-size: 13px;
+        font-size: 12px;
         color: var(--text-light);
         margin-bottom: 6px;
       }
       .flow-box-desc {
-        font-size: 12px;
+        font-size: 11px;
         color: var(--text-light);
         font-style: italic;
       }
@@ -763,13 +762,13 @@
       .data-box {
         border-color: #888;
         background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
-        min-width: 240px;
-        padding: 16px 24px;
+        min-width: 200px;
+        padding: 14px 20px;
       }
       .resource-box .flow-box-title,
       .data-box .flow-box-title {
         color: #555;
-        font-size: 14px;
+        font-size: 13px;
       }
       .flow-arrow {
         display: flex;
@@ -780,7 +779,7 @@
       }
       .flow-arrow-down {
         width: 2px;
-        height: 40px;
+        height: 35px;
         background: linear-gradient(
           to bottom,
           var(--secondary),
@@ -804,9 +803,9 @@
         position: absolute;
         left: 20px;
         background: white;
-        padding: 4px 12px;
+        padding: 3px 10px;
         border-radius: 12px;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 600;
         color: var(--secondary);
         white-space: nowrap;
@@ -815,8 +814,8 @@
       }
       .flow-split {
         display: flex;
-        gap: 60px;
-        margin-top: 20px;
+        gap: 40px;
+        margin-top: 15px;
         justify-content: center;
         width: 100%;
         max-width: 800px;
@@ -828,215 +827,193 @@
         align-items: center;
         flex: 1;
       }
-      @media (max-width: 768px) {
-        .flow-split {
-          flex-direction: column;
-          gap: 20px;
-        }
-        .flow-box {
-          min-width: 240px;
-        }
-      }
 
-      /* Comprehensive Responsive Design */
-      @media (max-width: 1024px) {
-        .container {
-          padding: 40px 20px;
-        }
-        .header {
-          padding: 60px 20px;
-        }
-        .title {
-          font-size: 36px;
-        }
-        .subtitle {
-          font-size: 16px;
-        }
-        .section-title {
-          font-size: 28px;
-        }
-      }
-
+      /* Mobile-specific improvements */
       @media (max-width: 768px) {
         body {
           font-size: 14px;
         }
+
         .header {
-          padding: 40px 20px;
+          padding: 40px 15px;
         }
+
         .title {
-          font-size: 24px;
+          font-size: 22px;
         }
+
         .subtitle {
-          font-size: 14px;
-          letter-spacing: 1px;
+          font-size: 11px;
+          letter-spacing: 0.5px;
         }
-        .nav {
-          padding: 15px 20px;
+
+        /* Collapsible mobile navigation */
+        .nav-toggle {
+          display: block;
         }
+
         .nav-content {
-          gap: 15px;
-          font-size: 13px;
+          display: none;
+          flex-direction: column;
+          gap: 0;
+          padding: 0;
         }
+
+        .nav-content.active {
+          display: flex;
+        }
+
+        .nav a {
+          padding: 12px 20px;
+          width: 100%;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav a::after {
+          display: none;
+        }
+
         .container {
           padding: 30px 15px;
         }
+
         .section {
-          margin-bottom: 50px;
+          margin-bottom: 40px;
+          scroll-margin-top: 60px;
         }
+
         .section-title {
-          font-size: 24px;
-          margin-bottom: 20px;
-        }
-        .card {
-          padding: 20px;
-          margin-bottom: 20px;
-        }
-        .card-title {
           font-size: 20px;
+          margin-bottom: 20px;
         }
+
+        .card {
+          padding: 18px;
+          margin-bottom: 20px;
+        }
+
+        .card-title {
+          font-size: 17px;
+        }
+
         .grid {
           grid-template-columns: 1fr;
           gap: 20px;
         }
+
         table {
-          font-size: 13px;
+          font-size: 12px;
         }
+
         th,
         td {
           padding: 10px 8px;
         }
-        .card-content {
-          overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
-        }
-        .card-content::-webkit-scrollbar {
-          height: 6px;
-        }
-        .card-content::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 3px;
-        }
-        .card-content::-webkit-scrollbar-thumb {
-          background: var(--secondary);
-          border-radius: 3px;
-        }
-        .card-content::-webkit-scrollbar-thumb:hover {
-          background: var(--primary);
-        }
-        table {
-          min-width: 600px;
-        }
-        .card-content {
-          position: relative;
-        }
-        .card-content::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          width: 30px;
-          background: linear-gradient(
-            to left,
-            rgba(255, 255, 255, 0.9),
-            transparent
-          );
-          pointer-events: none;
-        }
+
         pre {
           padding: 15px !important;
           font-size: 12px !important;
         }
+
         code {
           font-size: 12px;
         }
+
+        .command-block {
+          font-size: 12px;
+          padding: 12px;
+        }
+
         .tree-diagram {
           padding: 15px;
-          font-size: 12px;
+          font-size: 11px;
           line-height: 20px;
         }
+
         .tree-line .tree-line {
           padding-left: 14px;
         }
+
         .icon {
           width: 14px;
           height: 14px;
-          font-size: 12px;
+          font-size: 11px;
         }
+
         .flow-diagram {
           padding: 20px 10px;
         }
+
         .flow-box {
           min-width: 100%;
-          padding: 16px 20px;
+          padding: 15px 18px;
         }
+
         .flow-split {
+          flex-direction: column;
           gap: 15px;
         }
+
         .arrow-label {
-          font-size: 10px;
-          padding: 3px 8px;
+          font-size: 9px;
+          padding: 2px 8px;
         }
+
         .badge {
-          font-size: 11px;
-          padding: 5px 12px;
+          font-size: 10px;
+          padding: 4px 10px;
         }
       }
 
       @media (max-width: 480px) {
         .title {
-          font-size: 20px;
+          font-size: 18px;
+          line-height: 1.3;
         }
+
         .subtitle {
-          font-size: 12px;
+          font-size: 10px;
         }
+
         .section-title {
-          font-size: 20px;
+          font-size: 18px;
         }
+
         .card {
           padding: 15px;
         }
+
         .card-title {
-          font-size: 18px;
+          font-size: 16px;
         }
-        .nav-content {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 10px;
-        }
+
         .tree-diagram {
           padding: 12px;
-          font-size: 11px;
+          font-size: 10px;
           line-height: 18px;
         }
+
         .tree-line .tree-line {
           padding-left: 12px;
         }
+
         .icon {
-          width: 13px;
-          height: 13px;
-          font-size: 11px;
+          width: 12px;
+          height: 12px;
+          font-size: 10px;
           margin-right: 4px;
         }
+
         .flow-box-title {
-          font-size: 14px;
+          font-size: 13px;
         }
+
         .flow-box-subtitle {
-          font-size: 12px;
-        }
-        .flow-box-desc {
           font-size: 11px;
         }
-      }
 
-      /* Tablet landscape optimization */
-      @media (min-width: 769px) and (max-width: 1024px) {
-        .grid {
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-        .flow-split {
-          gap: 40px;
+        .flow-box-desc {
+          font-size: 10px;
         }
       }
 
@@ -1072,17 +1049,18 @@
     </header>
 
     <nav class="nav">
-      <div class="nav-content">
-        <a href="#overview">Overview</a>
-        <a href="#architecture">Architecture</a>
-        <a href="#components">Components</a>
-        <a href="#project-structure">Structure</a>
-        <a href="#data">Data</a>
-        <a href="#ui">UI System</a>
-        <a href="#workflow">Workflow</a>
-        <a href="#extensions">Extensions</a>
-        <a href="#dependencies">Dependencies</a>
-        <a href="#best-practices">Best Practices</a>
+      <button class="nav-toggle" onclick="toggleNav()">☰ Menu</button>
+      <div class="nav-content" id="navContent">
+        <a href="#overview" onclick="closeNav()">Overview</a>
+        <a href="#architecture" onclick="closeNav()">Architecture</a>
+        <a href="#components" onclick="closeNav()">Components</a>
+        <a href="#project-structure" onclick="closeNav()">Structure</a>
+        <a href="#data" onclick="closeNav()">Data</a>
+        <a href="#ui" onclick="closeNav()">UI System</a>
+        <a href="#workflow" onclick="closeNav()">Workflow</a>
+        <a href="#extensions" onclick="closeNav()">Extensions</a>
+        <a href="#dependencies" onclick="closeNav()">Dependencies</a>
+        <a href="#best-practices" onclick="closeNav()">Best Practices</a>
       </div>
     </nav>
 
@@ -1093,13 +1071,13 @@
 
         <div class="card">
           <div class="card-content">
-            <p style="font-size: 18px; margin-bottom: 20px">
+            <p style="font-size: 16px; margin-bottom: 20px">
               A retro-styled Pokédex application built with JavaFX, featuring
               pixel-perfect UI positioning, JSON data loading, and an authentic
               Pokémon lookup experience.
             </p>
 
-            <div style="margin-top: 25px">
+            <div style="margin-top: 20px">
               <span class="badge mvc">MVC Architecture</span>
               <span class="badge javafx">JavaFX 21</span>
               <span class="badge jackson">Jackson JSON</span>
@@ -1180,7 +1158,7 @@
 
         <div class="info-box">
           <h3
-            style="font-size: 20px; margin-bottom: 15px; color: var(--primary)"
+            style="font-size: 18px; margin-bottom: 12px; color: var(--primary)"
           >
             MVC Design Pattern
           </h3>
@@ -1353,7 +1331,7 @@
             <p>
               The application maintains several state variables in the Model:
             </p>
-            <table style="margin-top: 20px">
+            <table style="margin-top: 15px">
               <tr>
                 <th>State Variable</th>
                 <th>Type</th>
@@ -1380,7 +1358,7 @@
                 <td>All loaded Pokémon data</td>
               </tr>
             </table>
-            <div class="warning" style="margin-top: 20px">
+            <div class="warning" style="margin-top: 15px">
               <strong>Important:</strong> All interactive actions (navigation,
               toggle) are blocked when <code>isPoweredOn == false</code>. This
               simulates a real device that must be powered on to function.
@@ -1412,7 +1390,7 @@
     
     // Getters and setters for all fields
 }</code></pre>
-            <div class="info-box" style="margin-top: 20px">
+            <div class="info-box" style="margin-top: 15px">
               <strong>Jackson Annotations:</strong> No special annotations are
               needed because field names match JSON keys exactly. Jackson uses
               reflection to map JSON properties to Java fields automatically.
@@ -1480,7 +1458,7 @@ if (stream != null) {
 InputStream fontStream = getClass()
     .getResourceAsStream("/fonts/PressStart2P-Regular.ttf");
 Font customFont = Font.loadFont(fontStream, 12);</code></pre>
-            <div class="warning" style="margin-top: 20px">
+            <div class="warning" style="margin-top: 15px">
               <strong>Always check for null!</strong> If a resource is not
               found, <code>getResourceAsStream()</code> returns null. Always
               validate before using to avoid NullPointerException.
@@ -1537,7 +1515,7 @@ private static final double DESC_X = 77;
 private static final double DESC_Y = 314;
 private static final double DESC_WIDTH = 111;
 private static final double DESC_HEIGHT = 43;</code></pre>
-            <div class="info-box" style="margin-top: 20px">
+            <div class="info-box" style="margin-top: 15px">
               <strong>Design Principle:</strong> This approach trades
               flexibility for precision. The UI perfectly matches the background
               image design, creating an authentic retro device experience.
@@ -1799,7 +1777,7 @@ if (!model.isRevealMode()) {
               <li>Git (for cloning)</li>
             </ul>
 
-            <p style="margin-top: 20px">
+            <p style="margin-top: 15px">
               <strong>Step 1: Clone Repository</strong>
             </p>
             <div class="command-block">
@@ -1807,17 +1785,17 @@ if (!model.isRevealMode()) {
               cd pokedex-project
             </div>
 
-            <p style="margin-top: 20px">
+            <p style="margin-top: 15px">
               <strong>Step 2: Build Project</strong>
             </p>
             <div class="command-block">mvn clean install</div>
 
-            <p style="margin-top: 20px">
+            <p style="margin-top: 15px">
               <strong>Step 3: Run Application</strong>
             </p>
             <div class="command-block">mvn javafx:run</div>
 
-            <div class="warning" style="margin-top: 20px">
+            <div class="warning" style="margin-top: 15px">
               <strong>Module System Note:</strong> Ensure your
               <code>module-info.java</code> properly exports packages and opens
               the model package to Jackson for reflection:
@@ -1984,7 +1962,7 @@ if (!model.isRevealMode()) {
                 fit in the display area
               </li>
             </ul>
-            <div class="info-box" style="margin-top: 20px">
+            <div class="info-box" style="margin-top: 15px">
               <strong>Tip:</strong> Keep descriptions under 150 characters to
               ensure they fit properly in the UI. The font and text wrapping are
               configured for concise entries.
@@ -2125,7 +2103,7 @@ if (!model.isRevealMode()) {
                   <td>Next</td>
                 </tr>
               </table>
-              <div class="info-box" style="margin-top: 20px">
+              <div class="info-box" style="margin-top: 15px">
                 <strong>Implementation Note:</strong> Buttons are created as
                 transparent <code>Rectangle</code> objects with click handlers.
                 They are positioned precisely over the background button
@@ -2238,7 +2216,7 @@ nameLabel.setFont(pixelFont);</code></pre>
               <strong>Extension Opportunity:</strong> For a responsive version,
               you could:
             </p>
-            <ul style="margin-left: 25px; margin-top: 10px">
+            <ul style="margin-left: 20px; margin-top: 10px">
               <li>Scale all coordinates proportionally to window size</li>
               <li>Use percentage-based positioning</li>
               <li>Implement SVG graphics instead of PNG for scaling</li>
@@ -2348,7 +2326,7 @@ nameLabel.setFont(pixelFont);</code></pre>
               <p style="margin-top: 15px">
                 <strong>Example - Adding a "Favorite" feature:</strong>
               </p>
-              <ul style="margin-left: 25px; margin-top: 10px">
+              <ul style="margin-left: 20px; margin-top: 10px">
                 <li>
                   Model: Add <code>Set&lt;Integer&gt; favorites</code> and
                   <code>toggleFavorite()</code> method
@@ -2977,7 +2955,7 @@ nameLabel.setFont(pixelFont);</code></pre>
     // Open packages for reflection (needed for Jackson)
     opens com.pokedex.model to com.fasterxml.jackson.databind;
 }</code></pre>
-            <div class="warning" style="margin-top: 20px">
+            <div class="warning" style="margin-top: 15px">
               <strong>Important:</strong> The <code>opens</code> directive is
               critical for Jackson. Without it, Jackson cannot use reflection to
               access private fields in the Pokemon class, resulting in
@@ -3039,7 +3017,7 @@ application {
     mainClass = 'com.pokedex.PokedexApp'
 }</code></pre>
 
-            <p style="margin-top: 20px">
+            <p style="margin-top: 15px">
               <strong>Manual Compilation (command line):</strong>
             </p>
             <div class="command-block">
@@ -3063,7 +3041,7 @@ application {
         <h2 class="section-title">Best Practices</h2>
 
         <div class="highlight-box">
-          <h3 style="margin-bottom: 20px; color: var(--primary)">
+          <h3 style="margin-bottom: 15px; color: var(--primary)">
             Code Organization
           </h3>
           <ul class="feature-list">
@@ -3199,7 +3177,7 @@ application {
               </li>
             </ul>
 
-            <p style="margin-top: 20px">
+            <p style="margin-top: 15px">
               <strong>Optimization Opportunities:</strong>
             </p>
             <ul>
@@ -3269,7 +3247,7 @@ application {
             <p style="margin-top: 15px">
               <strong>Model Layer (Easy to Unit Test):</strong>
             </p>
-            <ul style="margin-left: 25px">
+            <ul style="margin-left: 20px">
               <li>Navigation boundary conditions (wrap-around)</li>
               <li>Power state transitions</li>
               <li>Reveal/hide toggle behavior</li>
@@ -3280,7 +3258,7 @@ application {
             <p style="margin-top: 15px">
               <strong>Controller Layer (Integration Tests):</strong>
             </p>
-            <ul style="margin-left: 25px">
+            <ul style="margin-left: 20px">
               <li>Event handler responses</li>
               <li>View update triggers</li>
               <li>State validation enforcement</li>
@@ -3289,7 +3267,7 @@ application {
             <p style="margin-top: 15px">
               <strong>View Layer (Manual/Visual Tests):</strong>
             </p>
-            <ul style="margin-left: 25px">
+            <ul style="margin-left: 20px">
               <li>UI rendering correctness</li>
               <li>Button positioning accuracy</li>
               <li>Effect application (silhouettes)</li>
@@ -3328,7 +3306,7 @@ dependency-reduced-pom.xml
             <p style="margin-top: 15px">
               <strong>Commit Message Guidelines:</strong>
             </p>
-            <ul style="margin-left: 25px">
+            <ul style="margin-left: 20px">
               <li>Use present tense: "Add feature" not "Added feature"</li>
               <li>
                 Be specific: "Fix navigation wrap-around bug" not "Fix bug"
@@ -3358,5 +3336,34 @@ dependency-reduced-pom.xml
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-groovy.min.js"></script>
+
+    <script>
+      function toggleNav() {
+        const navContent = document.getElementById("navContent");
+        navContent.classList.toggle("active");
+      }
+
+      function closeNav() {
+        const navContent = document.getElementById("navContent");
+        if (window.innerWidth <= 768) {
+          navContent.classList.remove("active");
+        }
+      }
+
+      // Close nav when clicking outside on mobile
+      document.addEventListener("click", function (event) {
+        const nav = document.querySelector(".nav");
+        const navToggle = document.querySelector(".nav-toggle");
+        const navContent = document.getElementById("navContent");
+
+        if (
+          window.innerWidth <= 768 &&
+          !nav.contains(event.target) &&
+          navContent.classList.contains("active")
+        ) {
+          navContent.classList.remove("active");
+        }
+      });
+    </script>
   </body>
 </html>
