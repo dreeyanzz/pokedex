@@ -664,6 +664,12 @@
         font-size: 10px;
       }
 
+      .icon-file-mp3 {
+        color: #f48fb1;
+        font-weight: bold;
+        font-size: 10px;
+      }
+
       .file-name {
         color: #cccccc;
       }
@@ -1073,8 +1079,8 @@
           <div class="card-content">
             <p style="font-size: 16px; margin-bottom: 20px">
               A retro-styled Pokédex application built with JavaFX, featuring
-              pixel-perfect UI positioning, JSON data loading, and an authentic
-              Pokémon lookup experience.
+              pixel-perfect UI positioning, JSON data loading, sound effects,
+              and an authentic Pokémon lookup experience.
             </p>
 
             <div style="margin-top: 20px">
@@ -1098,6 +1104,7 @@
                 <li>Detailed Pokémon information display</li>
                 <li>Silhouette effect for hidden Pokémon</li>
                 <li>Authentic retro pixel art style</li>
+                <li>"Who's That Pokemon?" sound effect</li>
               </ul>
             </div>
           </div>
@@ -1109,10 +1116,11 @@
                 <li>MVC pattern implementation</li>
                 <li>JavaFX custom UI design</li>
                 <li>JSON data parsing with Jackson</li>
-                <li>Resource management (images, fonts)</li>
+                <li>Resource management (images, fonts, audio)</li>
                 <li>Event-driven programming</li>
                 <li>State management patterns</li>
                 <li>Java Module System (JPMS)</li>
+                <li>Media playback with JavaFX</li>
               </ul>
             </div>
           </div>
@@ -1136,6 +1144,11 @@
                 <td>JavaFX</td>
                 <td>21</td>
                 <td>UI framework for desktop application</td>
+              </tr>
+              <tr>
+                <td>JavaFX Media</td>
+                <td>21</td>
+                <td>Audio playback for sound effects</td>
               </tr>
               <tr>
                 <td>Jackson</td>
@@ -1174,6 +1187,7 @@
           <div class="card">
             <div class="card-title">📦 Model Layer</div>
             <div class="card-content">
+              <p><strong>Package:</strong> <code>com.example.model</code></p>
               <p><strong>File:</strong> <code>PokedexModel.java</code></p>
               <p style="margin-top: 10px"><strong>Responsibilities:</strong></p>
               <ul class="feature-list">
@@ -1189,10 +1203,10 @@
                 <strong>Key Methods:</strong>
               </p>
               <ul>
-                <li><code>loadPokemonData()</code> - JSON parsing</li>
+                <li><code>loadData()</code> - JSON parsing</li>
                 <li><code>nextPokemon()</code> - Navigate forward</li>
                 <li><code>previousPokemon()</code> - Navigate backward</li>
-                <li><code>toggleRevealHide()</code> - Toggle display mode</li>
+                <li><code>toggleReveal()</code> - Toggle display mode</li>
                 <li><code>getCurrentPokemon()</code> - Get active Pokémon</li>
                 <li><code>powerOn() / powerOff()</code> - State control</li>
               </ul>
@@ -1202,6 +1216,7 @@
           <div class="card">
             <div class="card-title">🎨 View Layer</div>
             <div class="card-content">
+              <p><strong>Package:</strong> <code>com.example.view</code></p>
               <p><strong>File:</strong> <code>PokedexView.java</code></p>
               <p style="margin-top: 10px"><strong>Responsibilities:</strong></p>
               <ul class="feature-list">
@@ -1211,18 +1226,20 @@
                 <li>Applies visual effects (silhouettes)</li>
                 <li>Manages layout and positioning</li>
                 <li>Loads fonts and background images</li>
+                <li>Plays sound effects</li>
                 <li>Updates UI based on model state</li>
               </ul>
               <p style="margin-top: 15px">
                 <strong>UI Components:</strong>
               </p>
               <ul>
-                <li>Background image (pokedex.png)</li>
+                <li>Background image (pokedex_bg.png)</li>
                 <li>Pokémon sprite display (ImageView)</li>
                 <li>Name, description, types labels</li>
                 <li>Dex number display</li>
                 <li>Interactive button rectangles</li>
                 <li>Custom pixel font (Press Start 2P)</li>
+                <li>MediaPlayer for sound effects</li>
               </ul>
             </div>
           </div>
@@ -1230,6 +1247,9 @@
           <div class="card">
             <div class="card-title">🎮 Controller Layer</div>
             <div class="card-content">
+              <p>
+                <strong>Package:</strong> <code>com.example.controller</code>
+              </p>
               <p><strong>File:</strong> <code>PokedexController.java</code></p>
               <p style="margin-top: 10px"><strong>Responsibilities:</strong></p>
               <ul class="feature-list">
@@ -1239,19 +1259,22 @@
                 <li>Coordinates application flow</li>
                 <li>Enforces business rules (e.g., powered-on requirement)</li>
                 <li>Manages button click handlers</li>
+                <li>Loads Pokemon data at startup</li>
               </ul>
               <p style="margin-top: 15px">
                 <strong>Event Handlers:</strong>
               </p>
               <ul>
-                <li><code>onPowerOn()</code> - Activates the Pokédex</li>
-                <li><code>onPowerOff()</code> - Deactivates the Pokédex</li>
-                <li><code>onNext()</code> - Shows next Pokémon</li>
-                <li><code>onPrevious()</code> - Shows previous Pokémon</li>
+                <li><code>handlePowerOn()</code> - Activates the Pokédex</li>
+                <li><code>handlePowerOff()</code> - Deactivates the Pokédex</li>
+                <li><code>handleNextPokemon()</code> - Shows next Pokémon</li>
                 <li>
-                  <code>onRevealHideToggle()</code> - Toggles mystery mode
+                  <code>handlePreviousPokemon()</code> - Shows previous Pokémon
                 </li>
-                <li><code>updateView()</code> - Refreshes display</li>
+                <li>
+                  <code>handleToggleReveal()</code> - Toggles mystery mode
+                </li>
+                <li><code>updateDisplay()</code> - Refreshes display</li>
               </ul>
             </div>
           </div>
@@ -1299,7 +1322,7 @@
                   </div>
                   <div class="flow-box resource-box">
                     <div class="flow-box-title">RESOURCES</div>
-                    <div class="flow-box-subtitle">Images & Fonts</div>
+                    <div class="flow-box-subtitle">Images, Fonts & Audio</div>
                   </div>
                 </div>
 
@@ -1343,7 +1366,7 @@
                 <td>Currently displayed Pokémon position</td>
               </tr>
               <tr>
-                <td><code>isRevealMode</code></td>
+                <td><code>isRevealed</code></td>
                 <td>boolean</td>
                 <td>Whether Pokémon details are visible</td>
               </tr>
@@ -1353,7 +1376,7 @@
                 <td>Whether the Pokédex is active</td>
               </tr>
               <tr>
-                <td><code>pokemonList</code></td>
+                <td><code>pokedexList</code></td>
                 <td>List&lt;Pokemon&gt;</td>
                 <td>All loaded Pokémon data</td>
               </tr>
@@ -1379,59 +1402,82 @@
               (Plain Old Java Object) is used by Jackson for JSON
               deserialization.
             </p>
-            <pre><code class="language-java">public class Pokemon {
+            <pre><code class="language-java">package com.example.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+
+public class Pokemon {
     private String picture;          // Filename of sprite image
     private String name;             // Pokémon name
     private int evolutionStage;      // 1, 2, or 3
     private String shortDescription; // Brief description
     private int dexNumber;           // National Pokédex number
-    private boolean isLegendary;     // Legendary status
+    
+    @JsonProperty("isLegendary")
+    private boolean legendary;       // Legendary status
+    
     private List&lt;String&gt; types;      // e.g., ["Fire", "Flying"]
     
     // Getters and setters for all fields
 }</code></pre>
             <div class="info-box" style="margin-top: 15px">
-              <strong>Jackson Annotations:</strong> No special annotations are
-              needed because field names match JSON keys exactly. Jackson uses
-              reflection to map JSON properties to Java fields automatically.
+              <strong>Jackson Annotations:</strong> The
+              <code>@JsonProperty("isLegendary")</code> annotation maps the JSON
+              field "isLegendary" to the boolean field "legendary". All other
+              fields use automatic mapping since they match JSON keys exactly.
             </div>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-title">
-            PokedexApp.java - Application Entry Point
-          </div>
+          <div class="card-title">App.java - Application Entry Point</div>
           <div class="card-content">
             <p>
               The main class that extends <code>Application</code> and
               initializes the MVC components. It sets up the Scene and Stage,
               then delegates control to the Controller.
             </p>
-            <pre><code class="language-java">public class PokedexApp extends Application {
+            <pre><code class="language-java">package com.example;
+
+import com.example.controller.PokedexController;
+import com.example.model.PokedexModel;
+import com.example.view.PokedexView;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class App extends Application {
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage stage) {
         // Initialize MVC components
         PokedexModel model = new PokedexModel();
-        PokedexView view = new PokedexView();
+        PokedexView view = new PokedexView(getClass());
         PokedexController controller = 
-            new PokedexController(model, view);
+            new PokedexController(model, view, getClass());
+        
+        // Load data
+        controller.loadData();
         
         // Create scene
         Scene scene = new Scene(
             view.getRoot(), 
-            view.SCREEN_WIDTH, 
-            view.SCREEN_HEIGHT
+            PokedexView.getWindowWidth(), 
+            PokedexView.getWindowHeight()
         );
         
         // Setup stage
-        primaryStage.setTitle("Pokédex");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
+        stage.setTitle("Pokédex");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
         
-        // Initial display
-        controller.updateView();
+        // Initialize to powered off state
+        controller.initializePoweredOff();
+    }
+    
+    public static void main(String[] args) {
+        launch(args);
     }
 }</code></pre>
           </div>
@@ -1442,22 +1488,35 @@
           <div class="card-content">
             <p>
               The application uses
-              <code>ClassLoader.getResourceAsStream()</code>
+              <code>Class.getResourceAsStream()</code>
               to load resources, ensuring they work correctly whether running
-              from IDE or JAR file.
+              from IDE or JAR file. The Class object is passed to the View and
+              Controller for resource access.
             </p>
-            <pre><code class="language-java">// Loading an image
-InputStream stream = getClass()
-    .getResourceAsStream("/pokedex/bulbasaur.png");
+            <pre><code class="language-java">// In View constructor - passed from App
+public PokedexView(Class<?> resourceClass) {
+    this.resourceClass = resourceClass;
+    // ... initialization
+}
+
+// Loading an image
+String imgPath = "/pokedex/pokemon-pictures/1.png";
+InputStream stream = resourceClass.getResourceAsStream(imgPath);
 if (stream != null) {
     Image image = new Image(stream);
     imageView.setImage(image);
 }
 
 // Loading font
-InputStream fontStream = getClass()
+InputStream fontStream = resourceClass
     .getResourceAsStream("/fonts/PressStart2P-Regular.ttf");
-Font customFont = Font.loadFont(fontStream, 12);</code></pre>
+Font customFont = Font.loadFont(fontStream, 12);
+
+// Loading audio
+String audioPath = resourceClass
+    .getResource("/whos-that-pokemon.mp3").toExternalForm();
+Media media = new Media(audioPath);
+MediaPlayer player = new MediaPlayer(media);</code></pre>
             <div class="warning" style="margin-top: 15px">
               <strong>Always check for null!</strong> If a resource is not
               found, <code>getResourceAsStream()</code> returns null. Always
@@ -1474,22 +1533,24 @@ Font customFont = Font.loadFont(fontStream, 12);</code></pre>
               Java objects. The Model uses this to populate the Pokémon list at
               startup.
             </p>
-            <pre><code class="language-java">public void loadPokemonData() throws IOException {
+            <pre><code class="language-java">public boolean loadData(InputStream inputStream) {
     ObjectMapper mapper = new ObjectMapper();
-    InputStream jsonStream = getClass()
-        .getResourceAsStream("/kanto_pokemon.json");
-    
-    if (jsonStream == null) {
-        throw new IOException("Cannot find JSON file");
+    try {
+        if (inputStream == null) {
+            return false;
+        }
+        
+        // Deserialize JSON array into List&lt;Pokemon&gt;
+        pokedexList = mapper.readValue(
+            inputStream,
+            new TypeReference&lt;List&lt;Pokemon&gt;&gt;() {}
+        );
+        
+        return !pokedexList.isEmpty();
+    } catch (IOException e) {
+        e.printStackTrace();
+        return false;
     }
-    
-    // Deserialize JSON array into List&lt;Pokemon&gt;
-    pokemonList = mapper.readValue(
-        jsonStream,
-        new TypeReference&lt;List&lt;Pokemon&gt;&gt;() {}
-    );
-    
-    currentIndex = 0; // Start at first Pokémon
 }</code></pre>
           </div>
         </div>
@@ -1503,18 +1564,16 @@ Font customFont = Font.loadFont(fontStream, 12);</code></pre>
               to ensure pixel-perfect alignment.
             </p>
             <pre><code class="language-java">// View class constants
-private static final double SCREEN_X = 128;
-private static final double SCREEN_Y = 125;
-private static final double SCREEN_WIDTH = 104;
-private static final double SCREEN_HEIGHT = 104;
+private static final double WIN_W = 548;
+private static final double WIN_H = 400;
+private static final double SCREEN_X = 128, SCREEN_Y = 125;
+private static final double SCREEN_W = 104, SCREEN_H = 104;
 
-private static final double NAME_X = 337;
-private static final double NAME_Y = 128;
+private static final double POKEMON_NUMBER_X = 79;
+private static final double POKEMON_NUMBER_Y = 140;
 
-private static final double DESC_X = 77;
-private static final double DESC_Y = 314;
-private static final double DESC_WIDTH = 111;
-private static final double DESC_HEIGHT = 43;</code></pre>
+private static final double DESC_X = 77, DESC_Y = 314;
+private static final double DESC_W = 111, DESC_H = 43;</code></pre>
             <div class="info-box" style="margin-top: 15px">
               <strong>Design Principle:</strong> This approach trades
               flexibility for precision. The UI perfectly matches the background
@@ -1527,20 +1586,71 @@ private static final double DESC_HEIGHT = 43;</code></pre>
           <div class="card-title">Silhouette Effect Implementation</div>
           <div class="card-content">
             <p>
-              When in mystery mode (<code>isRevealMode = false</code>), the
+              When in mystery mode (<code>isRevealed = false</code>), the
               Pokémon sprite is shown as a black silhouette using JavaFX's
               ColorAdjust effect.
             </p>
-            <pre><code class="language-java">// Create the effect
-ColorAdjust blackout = new ColorAdjust();
-blackout.setBrightness(-1.0);  // Maximum darkness
+            <pre><code class="language-java">// Create the effect (in View constructor)
+silhouetteEffect = new ColorAdjust();
+silhouetteEffect.setBrightness(-1.0);  // Maximum darkness
 
-// Apply to ImageView
-if (!model.isRevealMode()) {
-    pokemonImageView.setEffect(blackout);
+// Apply to ImageView (in displayPokemonHidden)
+if (!model.isRevealed()) {
+    mainScreenImage.setEffect(silhouetteEffect);
 } else {
-    pokemonImageView.setEffect(null);  // Clear effect
+    mainScreenImage.setEffect(null);  // Clear effect
 }</code></pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔊 Sound Effect Implementation (NEW!)</div>
+          <div class="card-content">
+            <p>
+              The application plays a "Who's That Pokemon?" sound effect when
+              entering mystery mode. This enhances the authentic Pokemon
+              experience.
+            </p>
+            <pre><code class="language-java">// MediaPlayer field in View class
+private MediaPlayer mediaPlayer;
+
+// Play sound when displaying hidden Pokemon
+private void playWhosThatPokemonSound() {
+    try {
+        // Stop existing sound if playing
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+        
+        // Load and play sound
+        String path = resourceClass
+            .getResource("/whos-that-pokemon.mp3")
+            .toExternalForm();
+        Media media = new Media(path);
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
+    } catch (Exception e) {
+        System.err.println("Could not play sound: " + e.getMessage());
+    }
+}
+
+// Called from displayPokemonHidden method
+public void displayPokemonHidden(Pokemon pokemon, boolean isPoweredOn) {
+    if (pokemon == null) return;
+    
+    // Play sound effect
+    if (isPoweredOn) {
+        playWhosThatPokemonSound();
+    }
+    
+    // Apply silhouette and update UI
+    // ...
+}</code></pre>
+            <div class="info-box" style="margin-top: 15px">
+              <strong>Module Requirement:</strong> To use JavaFX Media, you must
+              add <code>requires javafx.media;</code> to your module-info.java
+              file and include the javafx-media dependency in pom.xml.
+            </div>
           </div>
         </div>
       </section>
@@ -1557,7 +1667,7 @@ if (!model.isRevealMode()) {
                 <li>
                   <div class="tree-item">
                     <span class="icon icon-folder">📁</span>
-                    <span class="folder-name">pokedex-project</span>
+                    <span class="folder-name">demo</span>
                   </div>
                   <ul class="tree-line">
                     <li>
@@ -1581,7 +1691,7 @@ if (!model.isRevealMode()) {
                                 <li>
                                   <div class="tree-item">
                                     <span class="icon icon-folder">📁</span>
-                                    <span class="folder-name">com.pokedex</span>
+                                    <span class="folder-name">com.example</span>
                                   </div>
                                   <ul class="tree-line">
                                     <li>
@@ -1589,40 +1699,28 @@ if (!model.isRevealMode()) {
                                         <span class="icon icon-file-java"
                                           >J</span
                                         >
-                                        <span class="file-name"
-                                          >PokedexApp.java</span
-                                        >
+                                        <span class="file-name">App.java</span>
                                       </div>
                                     </li>
                                     <li>
                                       <div class="tree-item">
-                                        <span class="icon icon-file-java"
-                                          >J</span
-                                        >
-                                        <span class="file-name"
-                                          >PokedexController.java</span
+                                        <span class="icon icon-folder">📁</span>
+                                        <span class="folder-name"
+                                          >controller</span
                                         >
                                       </div>
-                                    </li>
-                                    <li>
-                                      <div class="tree-item">
-                                        <span class="icon icon-file-java"
-                                          >J</span
-                                        >
-                                        <span class="file-name"
-                                          >PokedexModel.java</span
-                                        >
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div class="tree-item">
-                                        <span class="icon icon-file-java"
-                                          >J</span
-                                        >
-                                        <span class="file-name"
-                                          >PokedexView.java</span
-                                        >
-                                      </div>
+                                      <ul class="tree-line">
+                                        <li>
+                                          <div class="tree-item">
+                                            <span class="icon icon-file-java"
+                                              >J</span
+                                            >
+                                            <span class="file-name"
+                                              >PokedexController.java</span
+                                            >
+                                          </div>
+                                        </li>
+                                      </ul>
                                     </li>
                                     <li>
                                       <div class="tree-item">
@@ -1638,7 +1736,35 @@ if (!model.isRevealMode()) {
                                               >J</span
                                             >
                                             <span class="file-name"
+                                              >PokedexModel.java</span
+                                            >
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="tree-item">
+                                            <span class="icon icon-file-java"
+                                              >J</span
+                                            >
+                                            <span class="file-name"
                                               >Pokemon.java</span
+                                            >
+                                          </div>
+                                        </li>
+                                      </ul>
+                                    </li>
+                                    <li>
+                                      <div class="tree-item">
+                                        <span class="icon icon-folder">📁</span>
+                                        <span class="folder-name">view</span>
+                                      </div>
+                                      <ul class="tree-line">
+                                        <li>
+                                          <div class="tree-item">
+                                            <span class="icon icon-file-java"
+                                              >J</span
+                                            >
+                                            <span class="file-name"
+                                              >PokedexView.java</span
                                             >
                                           </div>
                                         </li>
@@ -1666,9 +1792,17 @@ if (!model.isRevealMode()) {
                               <ul class="tree-line">
                                 <li>
                                   <div class="tree-item">
-                                    <span class="icon icon-file-json">{}</span>
+                                    <span class="icon icon-file-png">🖼</span>
                                     <span class="file-name"
-                                      >kanto_pokemon.json</span
+                                      >pokedex_bg.png</span
+                                    >
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="tree-item">
+                                    <span class="icon icon-file-mp3">♪</span>
+                                    <span class="file-name"
+                                      >whos-that-pokemon.mp3</span
                                     >
                                   </div>
                                 </li>
@@ -1680,45 +1814,53 @@ if (!model.isRevealMode()) {
                                   <ul class="tree-line">
                                     <li>
                                       <div class="tree-item">
-                                        <span class="icon icon-file-png"
-                                          >🖼</span
+                                        <span class="icon icon-file-json"
+                                          >{}</span
                                         >
                                         <span class="file-name"
-                                          >pokedex.png</span
+                                          >kanto_pokemon.json</span
                                         >
                                       </div>
                                     </li>
                                     <li>
                                       <div class="tree-item">
-                                        <span class="icon icon-file-png"
-                                          >🖼</span
-                                        >
-                                        <span class="file-name"
-                                          >bulbasaur.png</span
+                                        <span class="icon icon-folder">📁</span>
+                                        <span class="folder-name"
+                                          >pokemon-pictures</span
                                         >
                                       </div>
-                                    </li>
-                                    <li>
-                                      <div class="tree-item">
-                                        <span class="icon icon-file-png"
-                                          >🖼</span
-                                        >
-                                        <span class="file-name"
-                                          >ivysaur.png</span
-                                        >
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div class="tree-item text-dim">
-                                        <span class="icon"></span>
-                                        <span>... (more sprites)</span>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div class="tree-item text-dim">
-                                        <span class="icon"></span>
-                                        <span>(151 Pokemon images total)</span>
-                                      </div>
+                                      <ul class="tree-line">
+                                        <li>
+                                          <div class="tree-item">
+                                            <span class="icon icon-file-png"
+                                              >🖼</span
+                                            >
+                                            <span class="file-name">1.png</span>
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="tree-item">
+                                            <span class="icon icon-file-png"
+                                              >🖼</span
+                                            >
+                                            <span class="file-name">2.png</span>
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="tree-item text-dim">
+                                            <span class="icon"></span>
+                                            <span>... (more sprites)</span>
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="tree-item text-dim">
+                                            <span class="icon"></span>
+                                            <span
+                                              >(151 Pokemon images total)</span
+                                            >
+                                          </div>
+                                        </li>
+                                      </ul>
                                     </li>
                                   </ul>
                                 </li>
@@ -1764,6 +1906,24 @@ if (!model.isRevealMode()) {
                 </li>
               </ul>
             </div>
+            <div class="info-box" style="margin-top: 15px">
+              <strong>Key Structure Notes:</strong>
+              <ul style="margin-left: 20px; margin-top: 10px">
+                <li>
+                  Pokemon images are in
+                  <code>/pokedex/pokemon-pictures/</code> subdirectory
+                </li>
+                <li>
+                  Background image is at root resources level:
+                  <code>/pokedex_bg.png</code>
+                </li>
+                <li>
+                  Sound effect is at root resources level:
+                  <code>/whos-that-pokemon.mp3</code>
+                </li>
+                <li>MVC packages are separated: controller, model, view</li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -1782,7 +1942,7 @@ if (!model.isRevealMode()) {
             </p>
             <div class="command-block">
               git clone &lt;repository-url&gt;<br />
-              cd pokedex-project
+              cd demo
             </div>
 
             <p style="margin-top: 15px">
@@ -1801,12 +1961,26 @@ if (!model.isRevealMode()) {
               the model package to Jackson for reflection:
               <pre
                 style="margin-top: 10px"
-              ><code class="language-java">module com.pokedex {
+              ><code class="language-java">module com.example {
+    // JavaFX dependencies
     requires javafx.controls;
-    requires com.fasterxml.jackson.databind;
+    requires javafx.graphics;
+    requires javafx.media;        // Required for sound effects
+    requires javafx.fxml;
     
-    exports com.pokedex;
-    opens com.pokedex.model to com.fasterxml.jackson.databind;
+    // Jackson dependencies
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.annotation;
+    
+    // Export packages
+    exports com.example;
+    exports com.example.controller;
+    exports com.example.view;
+    exports com.example.model;
+    
+    // Open for reflection (Jackson)
+    opens com.example.model to com.fasterxml.jackson.databind;
 }</code></pre>
             </div>
           </div>
@@ -1820,14 +1994,23 @@ if (!model.isRevealMode()) {
     &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
     &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
     &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
-    &lt;javafx.version&gt;21&lt;/javafx.version&gt;
 &lt;/properties&gt;
 
 &lt;dependencies&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
         &lt;artifactId&gt;javafx-controls&lt;/artifactId&gt;
-        &lt;version&gt;${javafx.version}&lt;/version&gt;
+        &lt;version&gt;21&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+        &lt;artifactId&gt;javafx-fxml&lt;/artifactId&gt;
+        &lt;version&gt;21&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
+        &lt;artifactId&gt;javafx-media&lt;/artifactId&gt;
+        &lt;version&gt;21&lt;/version&gt;
     &lt;/dependency&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
@@ -1842,9 +2025,14 @@ if (!model.isRevealMode()) {
             &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
             &lt;artifactId&gt;javafx-maven-plugin&lt;/artifactId&gt;
             &lt;version&gt;0.0.8&lt;/version&gt;
-            &lt;configuration&gt;
-                &lt;mainClass&gt;com.pokedex.PokedexApp&lt;/mainClass&gt;
-            &lt;/configuration&gt;
+            &lt;executions&gt;
+                &lt;execution&gt;
+                    &lt;id&gt;default-cli&lt;/id&gt;
+                    &lt;configuration&gt;
+                        &lt;mainClass&gt;com.example.App&lt;/mainClass&gt;
+                    &lt;/configuration&gt;
+                &lt;/execution&gt;
+            &lt;/executions&gt;
         &lt;/plugin&gt;
     &lt;/plugins&gt;
 &lt;/build&gt;</code></pre>
@@ -1865,24 +2053,30 @@ if (!model.isRevealMode()) {
             </p>
             <pre><code class="language-json">[
   {
-    "picture": "bulbasaur.png",
-    "name": "Bulbasaur",
+    "picture": "pokemon-pictures/1.png",
+    "name": "bulbasaur",
     "evolutionStage": 1,
     "shortDescription": "A strange seed was planted on its back at birth...",
     "dexNumber": 1,
     "isLegendary": false,
-    "types": ["Grass", "Poison"]
+    "types": ["grass", "poison"]
   },
   {
-    "picture": "ivysaur.png",
-    "name": "Ivysaur",
+    "picture": "pokemon-pictures/2.png",
+    "name": "ivysaur",
     "evolutionStage": 2,
     "shortDescription": "When the bulb on its back grows large...",
     "dexNumber": 2,
     "isLegendary": false,
-    "types": ["Grass", "Poison"]
+    "types": ["grass", "poison"]
   }
 ]</code></pre>
+            <div class="info-box" style="margin-top: 15px">
+              <strong>Image Path Structure:</strong> Note that the "picture"
+              field includes the subdirectory path "pokemon-pictures/". The View
+              prepends "/pokedex/" to create the full resource path:
+              "/pokedex/pokemon-pictures/1.png"
+            </div>
           </div>
         </div>
 
@@ -1899,8 +2093,7 @@ if (!model.isRevealMode()) {
                 <td><code>picture</code></td>
                 <td>String</td>
                 <td>
-                  Filename of the Pokémon sprite (must exist in
-                  <code>resources/pokedex/</code>)
+                  Relative path to sprite (e.g., "pokemon-pictures/1.png")
                 </td>
               </tr>
               <tr>
@@ -1931,7 +2124,7 @@ if (!model.isRevealMode()) {
               <tr>
                 <td><code>types</code></td>
                 <td>Array[String]</td>
-                <td>Pokémon types (e.g., ["Fire"], ["Water", "Flying"])</td>
+                <td>Pokémon types (e.g., ["fire"], ["water", "flying"])</td>
               </tr>
             </table>
           </div>
@@ -1942,8 +2135,8 @@ if (!model.isRevealMode()) {
           <div class="card-content">
             <ul class="feature-list">
               <li>
-                <strong>Picture field:</strong> Must match an actual image file
-                in <code>resources/pokedex/</code>
+                <strong>Picture field:</strong> Must be a relative path from
+                /pokedex/ directory (includes "pokemon-pictures/" subdirectory)
               </li>
               <li>
                 <strong>Evolution stage:</strong> Must be 1, 2, or 3 (no other
@@ -1981,22 +2174,22 @@ if (!model.isRevealMode()) {
               </tr>
               <tr>
                 <td>Bulbasaur</td>
-                <td>Grass, Poison</td>
+                <td>grass, poison</td>
                 <td>Dual-type</td>
               </tr>
               <tr>
                 <td>Charmander</td>
-                <td>Fire</td>
+                <td>fire</td>
                 <td>Single-type</td>
               </tr>
               <tr>
                 <td>Gyarados</td>
-                <td>Water, Flying</td>
+                <td>water, flying</td>
                 <td>Dual-type</td>
               </tr>
               <tr>
                 <td>Zapdos</td>
-                <td>Electric, Flying</td>
+                <td>electric, flying</td>
                 <td>Dual-type, Legendary</td>
               </tr>
             </table>
@@ -2049,13 +2242,8 @@ if (!model.isRevealMode()) {
                   <td>111 × 43 px</td>
                 </tr>
                 <tr>
-                  <td><strong>Name Label</strong></td>
-                  <td>337, 128</td>
-                  <td>Auto-sized</td>
-                </tr>
-                <tr>
-                  <td><strong>Type Display</strong></td>
-                  <td>337, 173</td>
+                  <td><strong>Details Labels</strong></td>
+                  <td>337, 128 (starts)</td>
                   <td>Auto-sized</td>
                 </tr>
               </table>
@@ -2075,37 +2263,37 @@ if (!model.isRevealMode()) {
                 <tr>
                   <td><strong>Reveal/Hide</strong></td>
                   <td>30, 272</td>
-                  <td>25 × 25 px</td>
+                  <td>37 × 37 px</td>
                   <td>Toggle Mode</td>
                 </tr>
                 <tr>
                   <td><strong>Power On</strong></td>
-                  <td>127.7, 14.3</td>
-                  <td>15 × 15 px</td>
+                  <td>127.72, 14.34</td>
+                  <td>16 × 16 px</td>
                   <td>Boot Device</td>
                 </tr>
                 <tr>
                   <td><strong>Power Off</strong></td>
-                  <td>84.6, 14.3</td>
-                  <td>15 × 15 px</td>
+                  <td>84.65, 14.34</td>
+                  <td>16 × 16 px</td>
                   <td>Shutdown</td>
                 </tr>
                 <tr>
                   <td><strong>Navigate Left</strong></td>
                   <td>205, 309</td>
-                  <td>25 × 28 px</td>
+                  <td>17 × 17 px</td>
                   <td>Previous</td>
                 </tr>
                 <tr>
                   <td><strong>Navigate Right</strong></td>
                   <td>244, 309</td>
-                  <td>25 × 28 px</td>
+                  <td>17 × 17 px</td>
                   <td>Next</td>
                 </tr>
               </table>
               <div class="info-box" style="margin-top: 15px">
                 <strong>Implementation Note:</strong> Buttons are created as
-                transparent <code>Rectangle</code> objects with click handlers.
+                transparent <code>Button</code> objects with opacity set to 0.
                 They are positioned precisely over the background button
                 graphics.
               </div>
@@ -2132,7 +2320,7 @@ if (!model.isRevealMode()) {
                   <li>
                     Mystery mode:
                     <span style="color: #c42020; font-weight: bold"
-                      >#C42020</span
+                      >#C42020FF</span
                     >
                     (Red)
                   </li>
@@ -2163,7 +2351,7 @@ if (!model.isRevealMode()) {
               </li>
               <li>
                 <strong>Font Sizes:</strong> Carefully calibrated for
-                readability at 12-16px depending on component
+                readability (6-12px depending on component)
               </li>
             </ul>
           </div>
@@ -2178,24 +2366,24 @@ if (!model.isRevealMode()) {
               points:
             </p>
             <pre><code class="language-java">// Root container setup
-Pane root = new Pane();
-root.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+root = new Pane();
 
 // Background image
-ImageView background = new ImageView(backgroundImage);
-background.setFitWidth(SCREEN_WIDTH);
-background.setFitHeight(SCREEN_HEIGHT);
+ImageView background = new ImageView(
+    new Image(resourceClass.getResourceAsStream("/pokedex_bg.png"))
+);
+background.setFitWidth(WIN_W);
+background.setFitHeight(WIN_H);
 root.getChildren().add(background);
 
 // Positioned components
-pokemonImageView.setX(SCREEN_X);
-pokemonImageView.setY(SCREEN_Y);
-pokemonImageView.setFitWidth(SCREEN_WIDTH);
-pokemonImageView.setFitHeight(SCREEN_HEIGHT);
+mainScreenImage.setLayoutX(SCREEN_X);
+mainScreenImage.setLayoutY(SCREEN_Y);
+mainScreenImage.setFitWidth(SCREEN_W);
+mainScreenImage.setFitHeight(SCREEN_H);
 
-nameLabel.setLayoutX(NAME_X);
-nameLabel.setLayoutY(NAME_Y);
-nameLabel.setFont(pixelFont);</code></pre>
+pokemonNumberLabel.setLayoutX(POKEMON_NUMBER_X);
+pokemonNumberLabel.setLayoutY(POKEMON_NUMBER_Y);</code></pre>
           </div>
         </div>
 
@@ -2242,7 +2430,8 @@ nameLabel.setFont(pixelFont);</code></pre>
                 </li>
                 <li>
                   <strong>Add image to resources:</strong> Place the file in
-                  <code>src/main/resources/pokedex/</code>
+                  <code>src/main/resources/pokedex/pokemon-pictures/</code> with
+                  number as filename (e.g., "152.png")
                 </li>
                 <li>
                   <strong>Update JSON data:</strong> Add a new entry to
@@ -2250,8 +2439,8 @@ nameLabel.setFont(pixelFont);</code></pre>
                 </li>
                 <li>
                   <strong>Verify filename match:</strong> Ensure the
-                  <code>picture</code> field in JSON exactly matches the image
-                  filename
+                  <code>picture</code> field in JSON matches:
+                  "pokemon-pictures/152.png"
                 </li>
                 <li>
                   <strong>Rebuild project:</strong> Run
@@ -2335,8 +2524,8 @@ nameLabel.setFont(pixelFont);</code></pre>
                   View: Add a star icon/button and highlight for favorites
                 </li>
                 <li>
-                  Controller: Add <code>onFavoriteToggle()</code> handler and
-                  update view to show favorite status
+                  Controller: Add <code>handleFavoriteToggle()</code> handler
+                  and update view to show favorite status
                 </li>
               </ul>
             </div>
@@ -2391,8 +2580,20 @@ nameLabel.setFont(pixelFont);</code></pre>
                   <ul style="margin: 10px 0 0 20px">
                     <li>Toggle changes display appropriately</li>
                     <li>Silhouette effect applies/removes correctly</li>
-                    <li>Name shows/hides as "???"</li>
+                    <li>Mystery text shows "Who's that Pokemon?"</li>
+                    <li>Sound effect plays when hiding (if powered on)</li>
                     <li>State persists during navigation</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Sound</strong></td>
+                <td>
+                  <ul style="margin: 10px 0 0 20px">
+                    <li>Sound plays when entering mystery mode</li>
+                    <li>Previous sound stops when new one starts</li>
+                    <li>No sound when powered off</li>
+                    <li>No errors if sound file missing</li>
                   </ul>
                 </td>
               </tr>
@@ -2433,9 +2634,12 @@ nameLabel.setFont(pixelFont);</code></pre>
                   <ul style="margin: 5px 0 0 15px">
                     <li>
                       Verify files exist in
-                      <code>src/main/resources/pokedex/</code>
+                      <code>src/main/resources/pokedex/pokemon-pictures/</code>
                     </li>
                     <li>Check filename spelling matches JSON exactly</li>
+                    <li>
+                      Verify JSON has correct path: "pokemon-pictures/X.png"
+                    </li>
                     <li>Rebuild project: <code>mvn clean install</code></li>
                   </ul>
                 </td>
@@ -2457,6 +2661,25 @@ nameLabel.setFont(pixelFont);</code></pre>
                       exactly
                     </li>
                     <li>Check data types (string vs number vs boolean)</li>
+                    <li>Verify "isLegendary" field is boolean</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Sound not playing</strong></td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Sound file missing</li>
+                    <li>Incorrect path</li>
+                    <li>javafx.media not included</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul style="margin: 5px 0 0 15px">
+                    <li>Verify MP3 file in <code>resources/</code> root</li>
+                    <li>Check path: "/whos-that-pokemon.mp3"</li>
+                    <li>Add javafx-media dependency in pom.xml</li>
+                    <li>Add "requires javafx.media;" to module-info.java</li>
                   </ul>
                 </td>
               </tr>
@@ -2492,6 +2715,7 @@ nameLabel.setFont(pixelFont);</code></pre>
                       Verify <code>module-info.java</code> requires all
                       dependencies
                     </li>
+                    <li>Include javafx.media requirement</li>
                     <li>Export packages used by other modules</li>
                     <li>Open model package to Jackson for reflection</li>
                   </ul>
@@ -2557,11 +2781,15 @@ nameLabel.setFont(pixelFont);</code></pre>
               </li>
               <li>
                 <strong>Visual Debugging:</strong> Temporarily make button
-                hitboxes visible to verify positioning
+                hitboxes visible (set opacity to 0.3) to verify positioning
               </li>
               <li>
                 <strong>Maven Clean:</strong> When in doubt, run
                 <code>mvn clean install</code> to ensure fresh build
+              </li>
+              <li>
+                <strong>Sound Testing:</strong> Check console for MediaPlayer
+                errors if sound doesn't play
               </li>
             </ul>
           </div>
@@ -2598,8 +2826,8 @@ nameLabel.setFont(pixelFont);</code></pre>
                   chains with arrows
                 </li>
                 <li>
-                  <strong>Sound Effects:</strong> Add button click sounds and
-                  Pokémon cries
+                  <strong>More Sound Effects:</strong> Add button click sounds,
+                  different cries for each Pokemon
                 </li>
                 <li>
                   <strong>Animations:</strong> Smooth transitions when
@@ -2616,6 +2844,10 @@ nameLabel.setFont(pixelFont);</code></pre>
                 <li>
                   <strong>Multiple Regions:</strong> Support for Johto, Hoenn,
                   Sinnoh, etc. with region selector
+                </li>
+                <li>
+                  <strong>Volume Control:</strong> Add slider to adjust sound
+                  effect volume
                 </li>
               </ul>
             </div>
@@ -2739,7 +2971,7 @@ nameLabel.setFont(pixelFont);</code></pre>
               <ul>
                 <li>
                   <strong>Quiz Mode:</strong> "Who's that Pokémon?" guessing
-                  game
+                  game (already has sound effect!)
                 </li>
                 <li>
                   <strong>Collection Tracker:</strong> Mark which Pokémon you've
@@ -2802,14 +3034,14 @@ nameLabel.setFont(pixelFont);</code></pre>
                 <td><strong>Easy</strong></td>
                 <td>
                   Favorite marking, keyboard shortcuts, themes, additional data
-                  fields
+                  fields, volume control
                 </td>
                 <td>2-5 hours</td>
               </tr>
               <tr>
                 <td><strong>Medium</strong></td>
                 <td>
-                  Search functionality, stat visualization, sound effects,
+                  Search functionality, stat visualization, more sound effects,
                   animations, export to file
                 </td>
                 <td>1-3 days</td>
@@ -2856,9 +3088,13 @@ nameLabel.setFont(pixelFont);</code></pre>
               <tr>
                 <td>org.openjfx:javafx-fxml</td>
                 <td>21</td>
+                <td>FXML support (included but not currently used)</td>
+              </tr>
+              <tr>
+                <td>org.openjfx:javafx-media</td>
+                <td>21</td>
                 <td>
-                  FXML support (not currently used, but included for future UI
-                  design)
+                  Media playback support (MediaPlayer, Media) for sound effects
                 </td>
               </tr>
               <tr>
@@ -2898,15 +3134,43 @@ nameLabel.setFont(pixelFont);</code></pre>
                 </li>
                 <li><code>javafx.scene.control.Label</code> - Text display</li>
                 <li>
-                  <code>javafx.scene.image.ImageView</code> - Image rendering
+                  <code>javafx.scene.control.Button</code> - Interactive buttons
                 </li>
                 <li>
-                  <code>javafx.scene.shape.Rectangle</code> - Button hitboxes
+                  <code>javafx.scene.image.ImageView</code> - Image rendering
                 </li>
                 <li>
                   <code>javafx.scene.effect.ColorAdjust</code> - Visual effects
                 </li>
+                <li>
+                  <code>javafx.scene.media.MediaPlayer</code> - Audio playback
+                </li>
+                <li><code>javafx.scene.media.Media</code> - Audio resources</li>
               </ul>
+            </div>
+
+            <div class="info-box" style="margin-top: 20px">
+              <h4 style="color: var(--primary); margin-bottom: 10px">
+                JavaFX Media 21
+              </h4>
+              <p>
+                Audio and video playback support for JavaFX. Used in this
+                project for playing the "Who's That Pokemon?" sound effect.
+              </p>
+              <p style="margin-top: 10px">
+                <strong>Why JavaFX Media?</strong>
+              </p>
+              <ul style="margin-left: 20px">
+                <li>Native support for MP3, WAV, and other audio formats</li>
+                <li>Simple API for audio playback control</li>
+                <li>Integrated with JavaFX event system</li>
+                <li>Good performance for UI sound effects</li>
+              </ul>
+              <p style="margin-top: 10px">
+                <strong>Key Classes Used:</strong>
+                <code>javafx.scene.media.MediaPlayer</code> and
+                <code>javafx.scene.media.Media</code>
+              </p>
             </div>
 
             <div class="info-box" style="margin-top: 20px">
@@ -2943,23 +3207,34 @@ nameLabel.setFont(pixelFont);</code></pre>
               <code>module-info.java</code> file declares module dependencies
               and accessibility:
             </p>
-            <pre><code class="language-java">module com.pokedex {
-    // Required modules
+            <pre><code class="language-java">module com.example {
+    // JavaFX dependencies
     requires javafx.controls;
+    requires javafx.graphics;
+    requires javafx.media;        // Required for sound effects!
     requires javafx.fxml;
+    
+    // Jackson dependencies for JSON parsing
     requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.annotation;
     
     // Export packages (make accessible to other modules)
-    exports com.pokedex;
+    exports com.example;
+    exports com.example.controller;
+    exports com.example.view;
+    exports com.example.model;
     
     // Open packages for reflection (needed for Jackson)
-    opens com.pokedex.model to com.fasterxml.jackson.databind;
+    opens com.example.model to com.fasterxml.jackson.databind;
 }</code></pre>
             <div class="warning" style="margin-top: 15px">
               <strong>Important:</strong> The <code>opens</code> directive is
               critical for Jackson. Without it, Jackson cannot use reflection to
               access private fields in the Pokemon class, resulting in
-              deserialization errors.
+              deserialization errors. Also note that
+              <code>requires javafx.media</code> is essential for sound
+              playback.
             </div>
           </div>
         </div>
@@ -2974,9 +3249,14 @@ nameLabel.setFont(pixelFont);</code></pre>
     &lt;groupId&gt;org.openjfx&lt;/groupId&gt;
     &lt;artifactId&gt;javafx-maven-plugin&lt;/artifactId&gt;
     &lt;version&gt;0.0.8&lt;/version&gt;
-    &lt;configuration&gt;
-        &lt;mainClass&gt;com.pokedex.PokedexApp&lt;/mainClass&gt;
-    &lt;/configuration&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;default-cli&lt;/id&gt;
+            &lt;configuration&gt;
+                &lt;mainClass&gt;com.example.App&lt;/mainClass&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
 &lt;/plugin&gt;</code></pre>
             <p style="margin-top: 15px">
               This plugin handles JavaFX module path configuration
@@ -3005,7 +3285,7 @@ nameLabel.setFont(pixelFont);</code></pre>
 
 javafx {
     version = "21"
-    modules = ['javafx.controls', 'javafx.fxml']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.media']
 }
 
 dependencies {
@@ -3013,8 +3293,8 @@ dependencies {
 }
 
 application {
-    mainModule = 'com.pokedex'
-    mainClass = 'com.pokedex.PokedexApp'
+    mainModule = 'com.example'
+    mainClass = 'com.example.App'
 }</code></pre>
 
             <p style="margin-top: 15px">
@@ -3023,14 +3303,16 @@ application {
             <div class="command-block">
               # Compile<br />
               javac --module-path /path/to/javafx-sdk-21/lib:jackson-jars \<br />
-              --add-modules javafx.controls,com.fasterxml.jackson.databind \<br />
-              -d out src/main/java/com/pokedex/*.java<br /><br />
+              --add-modules
+              javafx.controls,javafx.media,com.fasterxml.jackson.databind \<br />
+              -d out src/main/java/com/example/*.java<br /><br />
 
               # Run<br />
               java --module-path /path/to/javafx-sdk-21/lib:jackson-jars:out
               \<br />
-              --add-modules javafx.controls,com.fasterxml.jackson.databind \<br />
-              com.pokedex.PokedexApp
+              --add-modules
+              javafx.controls,javafx.media,com.fasterxml.jackson.databind \<br />
+              com.example.App
             </div>
           </div>
         </div>
@@ -3056,20 +3338,24 @@ application {
               maintenance. Group related constants together.
             </li>
             <li>
-              <strong>Resource Management:</strong> Use ClassLoader for resource
-              access to ensure portability between development and production
-              environments. Always use getResourceAsStream() for files in the
-              JAR.
+              <strong>Resource Management:</strong> Pass the Class object for
+              resource access to ensure portability between development and
+              production environments. Always use getResourceAsStream() for
+              files in the JAR.
             </li>
             <li>
               <strong>Error Handling:</strong> Check for null resources and
               handle loading failures gracefully with try-catch blocks and user
-              feedback.
+              feedback. Especially important for audio files.
             </li>
             <li>
               <strong>State Validation:</strong> Always verify powered-on state
               before allowing interactions. Use guard clauses at the start of
               Controller methods.
+            </li>
+            <li>
+              <strong>Media Resource Cleanup:</strong> Stop previous MediaPlayer
+              instances before starting new ones to prevent audio overlap.
             </li>
           </ul>
         </div>
@@ -3103,12 +3389,10 @@ application {
               </tr>
               <tr>
                 <td>
-                  Return copies or immutable data from Model to prevent external
-                  modification
+                  Pass resource Class from App to View and Controller for
+                  consistent resource loading
                 </td>
-                <td>
-                  Return direct references to internal collections in Model
-                </td>
+                <td>Use getClass() inside View/Controller (may fail in JAR)</td>
               </tr>
               <tr>
                 <td>
@@ -3135,7 +3419,8 @@ application {
               </li>
               <li>
                 <strong>Resource Existence:</strong> Handle missing image files
-                gracefully with fallback images or error messages
+                gracefully with fallback images or error messages. Same for
+                audio files.
               </li>
               <li>
                 <strong>Input Sanitization:</strong> If adding search
@@ -3175,6 +3460,10 @@ application {
                 <strong>Font Sharing:</strong> Custom font is loaded once and
                 shared across all labels
               </li>
+              <li>
+                <strong>Sound Management:</strong> MediaPlayer instance is
+                reused, stopping previous playback before starting new
+              </li>
             </ul>
 
             <p style="margin-top: 15px">
@@ -3197,6 +3486,10 @@ application {
                 <strong>Thumbnail Generation:</strong> Create smaller thumbnails
                 for list views to reduce memory usage
               </li>
+              <li>
+                <strong>Audio Preloading:</strong> Preload sound effect at
+                startup to eliminate first-play delay
+              </li>
             </ul>
           </div>
         </div>
@@ -3207,7 +3500,7 @@ application {
             <ul class="feature-list">
               <li>
                 <strong>Naming Conventions:</strong> Use descriptive names
-                (onPowerOn not doThing), follow Java naming standards
+                (handlePowerOn not doThing), follow Java naming standards
               </li>
               <li>
                 <strong>Documentation:</strong> Add Javadoc comments to public
@@ -3272,6 +3565,7 @@ application {
               <li>Button positioning accuracy</li>
               <li>Effect application (silhouettes)</li>
               <li>Text wrapping and fitting</li>
+              <li>Sound playback functionality</li>
             </ul>
           </div>
         </div>
@@ -3325,7 +3619,8 @@ dependency-reduced-pom.xml
         JavaFX Pokedex Developer Documentation
       </p>
       <p style="font-size: 12px; opacity: 0.7">
-        Built with JavaFX 21 • MVC Architecture • Java Module System
+        Built with JavaFX 21 • MVC Architecture • Java Module System • Sound
+        Effects
       </p>
     </footer>
 
